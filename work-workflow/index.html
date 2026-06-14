@@ -1049,7 +1049,6 @@ function qaGenerateTechnicalAnswer(q, code, docs) {
   }
 
   answer += '<br><b>🔧 排查方向</b><br>';
-  const qLower = q.toLowerCase();
   if (qLower.includes('黑屏') || qLower.includes('卡顿')) {
     answer += '1. 检查 P2P 连接状态（MISS 协议）<br>2. 查看 videoRender 是否正常初始化<br>3. 检查硬解码是否支持当前设备<br>';
   } else if (qLower.includes('埋点') || qLower.includes('统计')) {
