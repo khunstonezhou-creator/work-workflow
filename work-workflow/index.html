@@ -177,13 +177,13 @@ a:hover{text-decoration:underline}
         <div style="padding:14px 16px">
           <div style="display:flex;gap:8px;align-items:center">
             <div style="flex:1;position:relative">
-              <input id="kb-search-input" placeholder="输入问题，AI 智能分析（如：多语言推送未翻译、iOS声音中断、云台离线UI）" style="width:100%;padding:10px 14px 10px 36px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;transition:border-color 0.2s" oninput="kbSearchLive()" onkeydown="if(event.key==='Enter')kbSearchLive()">
+              <input id="kb-search-input" placeholder="输入任何问题，AI 智能分析（如：如何处理多语言推送？iOS声音中断怎么办？C700有什么已知问题？）" style="width:100%;padding:10px 14px 10px 36px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;transition:border-color 0.2s" oninput="kbSearchLive()" onkeydown="if(event.key==='Enter')kbSearchLive()">
               <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#999;font-size:14px">🔍</span>
             </div>
             <button class="btn" onclick="kbSearchLive()" style="padding:10px 20px;font-size:13px">智能分析</button>
           </div>
           <div style="margin-top:6px;padding-left:4px">
-            <span style="font-size:10px;color:#bbb">💡 支持 Jira 编号、问题描述、功能模块、错误关键词</span>
+            <span style="font-size:10px;color:#bbb">💡 支持自然语言提问、Jira 编号、功能模块、错误描述等</span>
           </div>
           <div id="kb-search-results" style="margin-top:10px"></div>
         </div>
@@ -747,10 +747,30 @@ function kbSearchLive(){
 
 function kbSearchAnswer(q,el){
   el.innerHTML='<div style="padding:12px;color:#999;font-size:12px;text-align:center">🔍 正在分析...</div>';
-  // 收集所有数据源的结果
-  const solResults=searchSolutions(q);
-  const jiraResults=searchJiraIssues(q);
-  const docResults=searchFeishuDocs(q);
+
+  // 智能提取关键词和意图
+  const analysis=analyzeQuestion(q);
+  const keywords=analysis.keywords;
+
+  // 使用多个关键词进行搜索
+  const solResults=[];
+  const jiraResults=[];
+  const docResults=[];
+  const seenKeys=new Set();
+
+  // 用原始问题和提取的关键词分别搜索
+  [q,...keywords].forEach(query=>{
+    if(!query||query.length<2)return;
+    searchSolutions(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);solResults.push(r);}});
+    searchJiraIssues(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);jiraResults.push(r);}});
+    searchFeishuDocs(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);docResults.push(r);}});
+  });
+
+  // 按分数排序
+  solResults.sort((a,b)=>b.score-a.score);
+  jiraResults.sort((a,b)=>b.score-a.score);
+  docResults.sort((a,b)=>b.score-a.score);
+
   const totalHits=solResults.length+jiraResults.length+docResults.length;
 
   // 检测是否是 Jira 编号
@@ -765,46 +785,37 @@ function kbSearchAnswer(q,el){
     html+='<div style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;padding:16px">';
     html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">🔍 智能分析</div>';
     if(isJiraKey){
-      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未收录 <b>'+esc(jiraKey)+'</b> 的解决方案。以下是一些分析和建议：</div>';
+      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未收录 <b>'+esc(jiraKey)+'</b> 的解决方案。基于问题分析，以下是一些建议：</div>';
     }else{
-      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未找到「'+esc(q)+'」的相关内容。以下是一些建议：</div>';
+      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未找到「'+esc(q)+'」的直接匹配。基于问题分析，以下是一些建议：</div>';
     }
     html+='</div>';
+
+    // 问题分析
+    html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
+    html+='<div style="font-size:12px;font-weight:600;color:#1e40af;margin-bottom:8px">📋 问题分析</div>';
+    html+='<div style="padding:10px;background:#eff6ff;border-radius:6px">';
+    html+='<div style="font-size:12px;color:#1e3a8a;line-height:1.6">'+generateAnalysisAnswer(q,analysis)+'</div>';
+    html+='</div></div>';
 
     // Jira 项目分析
     if(isJiraKey){
       const project=jiraKey.split('-')[0];
       const projectInfo=analyzeJiraProject(project);
       html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
-      html+='<div style="font-size:12px;font-weight:600;color:#1e40af;margin-bottom:8px">📋 项目信息</div>';
-      html+='<div style="padding:10px;background:#eff6ff;border-radius:6px">';
-      html+='<div style="font-size:12px;color:#1e3a8a"><b>项目代码：</b>'+esc(project)+'</div>';
-      html+='<div style="font-size:12px;color:#1e3a8a;margin-top:4px"><b>可能的项目：</b>'+esc(projectInfo.name)+'</div>';
-      html+='<div style="font-size:12px;color:#1e3a8a;margin-top:4px"><b>常见问题类型：</b>'+esc(projectInfo.commonIssues)+'</div>';
-      html+='</div>';
-      html+='</div>';
+      html+='<div style="font-size:12px;font-weight:600;color:#7c3aed;margin-bottom:8px">🏷️ 项目信息</div>';
+      html+='<div style="padding:10px;background:#f5f3ff;border-radius:6px">';
+      html+='<div style="font-size:12px;color:#5b21b6"><b>项目代码：</b>'+esc(project)+'</div>';
+      html+='<div style="font-size:12px;color:#5b21b6;margin-top:4px"><b>可能的项目：</b>'+esc(projectInfo.name)+'</div>';
+      html+='<div style="font-size:12px;color:#5b21b6;margin-top:4px"><b>常见问题类型：</b>'+esc(projectInfo.commonIssues)+'</div>';
+      html+='</div></div>';
     }
 
     // 建议的处理步骤
     html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
     html+='<div style="font-size:12px;font-weight:600;color:#2e7d32;margin-bottom:8px">💡 建议的处理步骤</div>';
     html+='<div style="padding:10px;background:#f0fdf4;border-radius:6px">';
-    if(isJiraKey){
-      html+='<div style="font-size:12px;color:#166534;line-height:1.8">';
-      html+='1. <b>查看 Jira 详情</b>：点击下方链接查看问题描述和评论<br>';
-      html+='2. <b>分析问题分类</b>：根据标题和描述判断问题类型<br>';
-      html+='3. <b>检索历史方案</b>：在 Jira 中搜索类似问题的解决方案<br>';
-      html+='4. <b>参考竞品实现</b>：查看竞品（萤石、海康、Ring）的类似功能<br>';
-      html+='5. <b>记录解决方案</b>：处理完成后沉淀到知识库';
-      html+='</div>';
-    }else{
-      html+='<div style="font-size:12px;color:#166534;line-height:1.8">';
-      html+='1. <b>细化搜索词</b>：尝试使用更具体的关键词<br>';
-      html+='2. <b>查看分类</b>：浏览知识库的各个分类<br>';
-      html+='3. <b>搜索 Jira</b>：在 Jira 中直接搜索相关问题<br>';
-      html+='4. <b>参考文档</b>：查看飞书文档中的相关资料';
-      html+='</div>';
-    }
+    html+='<div style="font-size:12px;color:#166534;line-height:1.8">'+generateSuggestionSteps(q,analysis,isJiraKey)+'</div>';
     html+='</div></div>';
 
     // 快捷链接
@@ -812,7 +823,7 @@ function kbSearchAnswer(q,el){
     html+='<div style="font-size:12px;font-weight:600;color:#7c3aed;margin-bottom:8px">🔗 快捷操作</div>';
     html+='<div style="display:flex;flex-wrap:wrap;gap:8px">';
     if(isJiraKey){
-      html+='<a href="'+JIRA+esc(jiraKey)+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none;hover:background:#e5e7eb">📋 查看 Jira 详情</a>';
+      html+='<a href="'+JIRA+esc(jiraKey)+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">📋 查看 Jira 详情</a>';
       html+='<a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22'+encodeURIComponent(jiraKey)+'%22" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">🔍 Jira 搜索相似</a>';
     }
     html+='<a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22'+encodeURIComponent(q)+'%22" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">🔍 Jira 全文搜索</a>';
@@ -827,7 +838,7 @@ function kbSearchAnswer(q,el){
   // 头部：AI 回答
   html+='<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:16px">';
   html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">💡 智能回答</div>';
-  html+='<div style="font-size:13px;line-height:1.6">'+generateAIAnswer(q,solResults,jiraResults,docResults)+'</div>';
+  html+='<div style="font-size:13px;line-height:1.6">'+generateSmartAnswer(q,analysis,solResults,jiraResults,docResults)+'</div>';
   html+='</div>';
   // 解决方案详情
   if(solResults.length){
@@ -1365,6 +1376,53 @@ function analyzeJiraProject(project){
     'QISHIMAI1':{name:'启视迈',commonIssues:'第三方设备接入、功能适配'},
   };
   return projects[project]||{name:'未知项目',commonIssues:'请查看Jira详情了解具体问题'};
+}
+
+// 分析问题，提取关键词和意图
+function analyzeQuestion(q){
+  const result={keywords:[],intent:'unknown',category:null,isQuestion:false};
+  if(/怎么|如何|怎样|怎么办|怎么处理|如何解决/.test(q)){result.intent='how';result.isQuestion=true;}
+  else if(/是什么|什么是|是什么意思|有哪些/.test(q)){result.intent='what';result.isQuestion=true;}
+  else if(/为什么|原因是|原因是什么/.test(q)){result.intent='why';result.isQuestion=true;}
+  else if(/修复|解决|处理|优化|改进/.test(q)){result.intent='fix';}
+  else{result.intent='search';}
+  const stopWords=['的','了','吗','呢','啊','吧','是','在','有','和','与','或','怎么','如何','什么','为什么','请','帮','我','一下','看看','查看','查询','搜索','查找'];
+  const words=q.replace(/[,，。、！？\?\!]/g,' ').split(/\s+/).filter(w=>w.length>=2&&!stopWords.includes(w));
+  result.keywords=[...new Set(words)];
+  const categoryMap={'多语言':['多语言','翻译','i18n'],'iOS音频':['ios','音频','声音','对讲','监听','锁屏'],'UI适配':['ui','适配','显示','布局','深色','界面'],'存储回看':['存储','回看','下载','sd卡','云存'],'直播视频':['直播','视频','画面','清晰度','卡顿'],'云台PTZ':['云台','ptz','转动'],'推送消息':['推送','消息','通知','告警'],'看家助手':['看家','事件','围栏','警戒'],'配网绑定':['配网','绑定','连接','wifi'],'4G相关':['4g','流量','低功耗'],'C700双目':['c700','双目','宠物','大模型'],'门铃':['门铃','门口']};
+  const lowerQ=q.toLowerCase();
+  for(const [cat,kws] of Object.entries(categoryMap)){
+    if(kws.some(k=>lowerQ.includes(k))){result.category=cat;result.keywords.push(...kws.filter(k=>k.length>=2));result.keywords=[...new Set(result.keywords)];break;}
+  }
+  return result;
+}
+
+// 生成智能回答
+function generateSmartAnswer(q,analysis,sol,jira,docs){
+  let answer='';
+  if(analysis.intent==='how'||analysis.intent==='fix'){
+    if(sol.length){answer='根据知识库记录，这个问题有<b>已验证的解决方案</b>。';if(sol[0].solution)answer+='<br><br><strong>核心方案：</strong>'+esc(sol[0].solution).substring(0,120);if(sol[0].location)answer+='<br><strong>操作位置：</strong>'+esc(sol[0].location);}
+    else if(jira.length){answer='找到 <b>'+jira.length+'</b> 个相关问题，建议参考这些问题的处理方式。';}
+  }else if(analysis.intent==='what'){if(docs.length)answer='找到 <b>'+docs.length+'</b> 篇相关文档，可以了解详细信息。';
+  }else{const total=sol.length+jira.length+docs.length;answer='基于知识库分析，找到 <b>'+total+'</b> 条相关信息。';}
+  if(analysis.category)answer+='<br><br>🏷️ <b>问题分类：</b>'+analysis.category;
+  return answer||'正在分析问题，请稍候...';
+}
+
+// 生成分析回答（无结果时）
+function generateAnalysisAnswer(q,analysis){
+  let answer='';
+  if(analysis.intent==='how'||analysis.intent==='fix'){answer='这是一个<b>'+(analysis.category||'技术问题')+'</b>相关的咨询。<br><br>建议从以下几个方向入手：<br>1. 查看是否有类似的历史问题和解决方案<br>2. 分析问题的根本原因<br>3. 参考竞品（萤石、海康、Ring）的实现方案';}
+  else if(analysis.intent==='what'){answer='这是一个关于<b>'+(analysis.category||'功能特性')+'</b>的查询。<br><br>建议查阅相关的产品文档和技术规格说明。';}
+  else{answer='根据问题关键词「'+esc(q)+'」分析，'+(analysis.category?'这属于<b>'+analysis.category+'</b>类型的问题。':'请尝试更具体的描述或关键词。');}
+  return answer;
+}
+
+// 生成建议步骤
+function generateSuggestionSteps(q,analysis,isJiraKey){
+  if(isJiraKey)return '1. <b>查看 Jira 详情</b>：点击下方链接查看问题描述和评论<br>2. <b>分析问题分类</b>：根据标题和描述判断问题类型<br>3. <b>检索历史方案</b>：在 Jira 中搜索类似问题的解决方案<br>4. <b>参考竞品实现</b>：查看竞品（萤石、海康、Ring）的类似功能<br>5. <b>记录解决方案</b>：处理完成后沉淀到知识库';
+  if(analysis.intent==='how'||analysis.intent==='fix')return '1. <b>明确问题现象</b>：详细描述问题出现的场景和条件<br>2. <b>查看日志</b>：分析相关日志定位问题原因<br>3. <b>检索知识库</b>：搜索类似问题的解决方案<br>4. <b>参考技术文档</b>：查看相关的技术规格和设计文档<br>5. <b>验证方案</b>：在测试环境验证解决方案的有效性';
+  return '1. <b>细化搜索词</b>：使用更具体的关键词进行搜索<br>2. <b>查看分类</b>：浏览知识库的各个分类<br>3. <b>搜索 Jira</b>：在 Jira 中直接搜索相关问题<br>4. <b>参考文档</b>：查看飞书文档中的相关资料';
 }
 
 // 加载知识库文档索引
