@@ -1565,35 +1565,107 @@ function generateSmartAnswer(q,analysis,sol,jira,docs,code){
   // 分析问题意图并生成自然语言回答
   const qLower=q.toLowerCase();
 
+  // 检测是否是 Jira 编号
+  const jiraKeyMatch=q.match(/([A-Z][A-Z0-9]+-\d+)/i);
+  const isJiraKey=!!jiraKeyMatch;
+  const jiraKey=isJiraKey?jiraKeyMatch[1].toUpperCase():'';
+
   // 判断是否是技术问题（代码仓库可以回答）
-  // 技术问题：功能现状、技术细节、实现逻辑、配置方法、spec、硬编码、model等
   const isTechnicalQuestion=/功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|埋点|点位|expose|track|统计|接口|api|sdk|播放器|云台|看家|推送|存储|ai|算法|围栏|人脸识别|宠物检测|手势|通话|夜视|畸变|录制|回看|nas|sd卡/.test(qLower);
 
-  // 非技术问题：流程、接入、找人、文档、规范等（代码仓库不参与）
-  const isNonTechnicalQuestion=/接入流程|怎么接入|如何接入|厂商接入|对接流程|合作流程|申请流程|审批流程|找谁|联系谁|负责人|文档在哪|规范是什么|流程是什么|怎么申请|如何申请/.test(qLower);
+  // 非技术问题
+  const isNonTechnicalQuestion=/接入流程|怎么接入|如何接入|厂商接入|对接流程|合作流程|申请流程|审批流程|找谁|联系谁|负责人|文档在哪|规范是什么|流程是什么/.test(qLower);
+
+  // Jira 编号搜索 - 显示相似问题和建议
+  if(isJiraKey){
+    // 查找该 Jira 是否在本地数据中
+    const localIssue=ALL?.issues?.find(i=>i.key===jiraKey);
+
+    if(localIssue){
+      // 本地有该问题
+      answer='<b>结论</b>：找到该问题的详细信息。';
+      answer+='<br><br><b>📋 问题信息</b>';
+      answer+='<br>• <b>编号</b>：'+esc(localIssue.key);
+      answer+='<br>• <b>标题</b>：'+esc(localIssue.summary);
+      answer+='<br>• <b>状态</b>：'+esc(localIssue.status);
+      answer+='<br>• <b>负责人</b>：'+esc(localIssue.assignee);
+      answer+='<br>• <b>分类</b>：'+esc(localIssue.category||'未分类');
+
+      // 显示相似问题
+      if(jira.length>1){
+        const similar=jira.filter(r=>r.key!==jiraKey).slice(0,3);
+        if(similar.length){
+          answer+='<br><br><b>🔗 相似问题</b>';
+          similar.forEach(r=>{
+            answer+='<br>• <a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#4f46e5">'+esc(r.key)+'</a> '+esc(r.summary).substring(0,40)+' ['+esc(r.status)+']';
+          });
+        }
+      }
+
+      // 如果是技术问题，显示代码建议
+      if(isTechnicalQuestion&&code.length){
+        answer+='<br><br><b>💻 代码改进建议（高置信度）</b>';
+        code.slice(0,2).forEach(r=>{
+          answer+='<br>• 参考 <b>'+esc(r.title)+'</b>：'+esc(r.summary).substring(0,60);
+        });
+      }
+
+      // 如果有解决方案
+      if(sol.length){
+        answer+='<br><br><b>✅ 参考方案</b>';
+        answer+='<br>• '+esc(sol[0].summary);
+        if(sol[0].solution)answer+='<br>• 解决方案：'+esc(sol[0].solution).substring(0,80);
+      }
+
+      // 非技术问题，给出竞品参考建议
+      if(!isTechnicalQuestion){
+        answer+='<br><br><b>🔍 竞品参考建议</b>';
+        answer+='<br>• 调研萤石、海康、Ring等竞品的类似功能实现';
+        answer+='<br>• 参考行业最佳实践进行改进';
+        answer+='<br>• 收集用户反馈，优化产品体验';
+      }
+    }else{
+      // 本地没有该问题，提供分析和建议
+      answer='<b>结论</b>：本地数据中未找到 <b>'+esc(jiraKey)+'</b> 的详细信息。';
+      answer+='<br><br><b>📋 问题分析</b>';
+      const project=jiraKey.split('-')[0];
+      const projectInfo=analyzeJiraProject(project);
+      answer+='<br>• <b>项目</b>：'+esc(projectInfo.name);
+      answer+='<br>• <b>常见问题</b>：'+esc(projectInfo.commonIssues);
+
+      // 显示相似问题
+      if(jira.length){
+        answer+='<br><br><b>🔗 相似问题</b>';
+        jira.slice(0,3).forEach(r=>{
+          answer+='<br>• <a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#4f46e5">'+esc(r.key)+'</a> '+esc(r.summary).substring(0,40)+' ['+esc(r.status)+']';
+        });
+      }
+
+      // 技术问题给代码建议
+      if(isTechnicalQuestion&&code.length){
+        answer+='<br><br><b>💻 代码改进建议</b>';
+        code.slice(0,2).forEach(r=>{
+          answer+='<br>• 参考 <b>'+esc(r.title)+'</b>：'+esc(r.summary).substring(0,60);
+        });
+      }
+
+      // 非技术问题给竞品建议
+      if(!isTechnicalQuestion){
+        answer+='<br><br><b>🔍 竞品参考建议</b>';
+        answer+='<br>• 调研竞品（萤石、海康、Ring）的类似功能';
+        answer+='<br>• 参考行业最佳实践';
+        answer+='<br>• 联系 <b>周睿卿</b> 或 <b>赵容慧</b>（摄像机接入产品）获取支持';
+      }
+
+      answer+='<br><br><b>🔗 快捷操作</b>';
+      answer+='<br>• <a href="'+JIRA+esc(jiraKey)+'" target="_blank" style="color:#4f46e5">查看 Jira 详情</a>';
+      answer+='<br>• <a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22'+encodeURIComponent(jiraKey)+'%22" target="_blank" style="color:#4f46e5">Jira 搜索相似</a>';
+    }
+    return answer;
+  }
 
   // 技术问题 - 代码仓库参与回答（高置信度）
   if(isTechnicalQuestion&&!isNonTechnicalQuestion){
-    // 埋点/点位相关
-    if(/埋点|点位|expose|track|统计|数据上报/.test(qLower)){
-      if(code.length){
-        answer='<b>结论</b>：根据代码分析，找到了相关的埋点实现。';
-        answer+='<br><br><b>📋 埋点信息</b>';
-        answer+='<br>• 代码仓库中包含埋点相关的实现文件';
-        answer+='<br>• 建议查看代码中的 TrackUtil 或 useTrack 相关文件';
-        answer+='<br><br><b>💡 数据平台查询建议</b>';
-        answer+='<br>在数据平台中可按事件名、ref、card_id 等条件筛选统计';
-      }else{
-        answer='<b>结论</b>：知识库中暂未找到该埋点点位的直接信息。';
-        answer+='<br><br><b>📋 建议操作</b>';
-        answer+='<br>1. 查看代码仓库中的埋点实现文件';
-        answer+='<br>2. 咨询数据产品获取埋点文档';
-        answer+='<br>3. 联系 <b>周睿卿</b> 或 <b>赵容慧</b>（摄像机接入产品）获取技术支持';
-      }
-      return answer;
-    }
-
-    // 其他技术问题
     if(code.length){
       answer='<b>结论</b>：根据代码仓库分析，找到了相关功能的实现。';
       answer+='<br><br><b>💻 代码实现（实时状态 - 高置信度）</b>';
@@ -1602,7 +1674,6 @@ function generateSmartAnswer(q,analysis,sol,jira,docs,code){
       });
       answer+='<br><br><b>💡 建议</b>';
       answer+='<br>代码仓库显示的是当前最新实现，可直接参考。';
-      // 如果有知识库内容，也展示
       if(sol.length||docs.length){
         answer+='<br><br><b>📚 知识库补充</b>';
         if(sol.length)answer+='<br>• 历史方案：'+esc(sol[0].summary).substring(0,60);
