@@ -756,6 +756,7 @@ function kbSearchAnswer(q,el){
   const solResults=[];
   const jiraResults=[];
   const docResults=[];
+  const codeResults=[];
   const seenKeys=new Set();
 
   // 用原始问题和提取的关键词分别搜索
@@ -764,14 +765,16 @@ function kbSearchAnswer(q,el){
     searchSolutions(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);solResults.push(r);}});
     searchJiraIssues(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);jiraResults.push(r);}});
     searchFeishuDocs(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);docResults.push(r);}});
+    searchCodeRepo(query).forEach(r=>{if(!seenKeys.has(r.key)){seenKeys.add(r.key);codeResults.push(r);}});
   });
 
   // 按分数排序
   solResults.sort((a,b)=>b.score-a.score);
   jiraResults.sort((a,b)=>b.score-a.score);
   docResults.sort((a,b)=>b.score-a.score);
+  codeResults.sort((a,b)=>b.score-a.score);
 
-  const totalHits=solResults.length+jiraResults.length+docResults.length;
+  const totalHits=solResults.length+jiraResults.length+docResults.length+codeResults.length;
 
   // 检测是否是 Jira 编号
   const jiraKeyMatch=q.match(/([A-Z][A-Z0-9]+-\d+)/i);
@@ -838,7 +841,7 @@ function kbSearchAnswer(q,el){
   // 头部：AI 回答
   html+='<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:16px">';
   html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">💡 智能回答</div>';
-  html+='<div style="font-size:13px;line-height:1.6">'+generateSmartAnswer(q,analysis,solResults,jiraResults,docResults)+'</div>';
+  html+='<div style="font-size:13px;line-height:1.6">'+generateSmartAnswer(q,analysis,solResults,jiraResults,docResults,codeResults)+'</div>';
   html+='</div>';
   // 解决方案详情
   if(solResults.length){
@@ -892,7 +895,7 @@ function kbSearchAnswer(q,el){
   }
   // 参考文档
   if(docResults.length){
-    html+='<div style="padding:12px 16px">';
+    html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
     html+='<div style="font-size:11px;color:#667eea;font-weight:600;margin-bottom:8px">📚 参考文档 ('+docResults.length+')</div>';
     docResults.slice(0,3).forEach(r=>{
       html+='<div style="padding:8px 10px;background:#f0f4ff;border-radius:6px;margin-bottom:6px">';
@@ -903,6 +906,24 @@ function kbSearchAnswer(q,el){
     });
     html+='</div>';
   }
+
+  // 代码仓库（高置信度）
+  if(codeResults.length){
+    html+='<div style="padding:12px 16px">';
+    html+='<div style="font-size:11px;color:#059669;font-weight:600;margin-bottom:8px">💻 代码仓库 - 实时状态 <span style="font-size:10px;color:#059669;background:#d1fae5;padding:2px 6px;border-radius:4px;margin-left:4px">高置信度</span></div>';
+    codeResults.slice(0,3).forEach(r=>{
+      html+='<div style="padding:8px 10px;background:#ecfdf5;border-radius:6px;margin-bottom:6px;border-left:3px solid #059669">';
+      html+='<div style="display:flex;align-items:center;gap:6px">';
+      html+='<span style="font-size:12px">📄</span>';
+      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#059669;font-size:12px;font-weight:500;text-decoration:none">'+esc(r.title)+'</a>';
+      html+='<span style="font-size:10px;color:#6b7280;background:#f3f4f6;padding:2px 6px;border-radius:4px">'+esc(r.path)+'</span>';
+      html+='</div>';
+      if(r.summary)html+='<div style="color:#374151;font-size:11px;margin-top:4px;line-height:1.4">'+esc(r.summary).substring(0,80)+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+
   html+='</div>';
   el.innerHTML=html;
 }
@@ -1125,6 +1146,60 @@ function searchFeishuDocs(q){
     });
   });
   return results.sort((a,b)=>b.score-a.score).slice(0,8);
+}
+
+// 搜索代码仓库
+function searchCodeRepo(q){
+  const results=[];
+  const query=q.toLowerCase();
+  if(!CODE_DATA||!CODE_DATA.files)return results;
+
+  CODE_DATA.files.forEach(file=>{
+    let score=0;
+    const path=(file.path||'').toLowerCase();
+    const name=(file.name||'').toLowerCase();
+    const summary=(file.summary||'').toLowerCase();
+    const keywords=file.keywords||[];
+
+    // 关键词匹配
+    const words=query.split(/\s+/).filter(w=>w.length>=1);
+    words.forEach(w=>{
+      const wl=w.toLowerCase();
+      // 文件名匹配
+      if(name.includes(wl))score+=6;
+      // 路径匹配
+      if(path.includes(wl))score+=4;
+      // 摘要匹配
+      if(summary.includes(wl))score+=3;
+      // 关键词匹配
+      if(keywords.some(k=>k.includes(wl)||wl.includes(k)))score+=2;
+    });
+
+    // 完整查询匹配
+    if(summary.includes(query))score+=10;
+    if(path.includes(query))score+=8;
+
+    // 文件类型加分
+    if(file.type==='markdown')score+=2; // 文档权重更高
+
+    if(score>0){
+      // 构建 GitLab 链接
+      const gitlabUrl='https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot/-/blob/main/'+file.path;
+      results.push({
+        key:file.path,
+        title:file.name,
+        summary:file.summary.substring(0,100),
+        category:'代码仓库',
+        score,
+        source:'code',
+        url:gitlabUrl,
+        path:file.path,
+        type:file.type
+      });
+    }
+  });
+
+  return results.sort((a,b)=>b.score-a.score).slice(0,5);
 }
 
 function markKbDone(idx){
@@ -1396,6 +1471,7 @@ function showSug(key){
 // 知识库搜索
 let KB_DATA=null;
 let DOCS_DATA=null;
+let CODE_DATA=null; // 代码仓库索引
 let SOLUTIONS_RAW=''; // solutions.md 原始内容
 
 // Jira 项目分析
@@ -1480,13 +1556,20 @@ function analyzeQuestion(q){
 }
 
 // 生成智能回答
-function generateSmartAnswer(q,analysis,sol,jira,docs){
+function generateSmartAnswer(q,analysis,sol,jira,docs,code){
   let answer='';
   if(analysis.intent==='how'||analysis.intent==='fix'){
     if(sol.length){answer='根据知识库记录，这个问题有<b>已验证的解决方案</b>。';if(sol[0].solution)answer+='<br><br><strong>核心方案：</strong>'+esc(sol[0].solution).substring(0,120);if(sol[0].location)answer+='<br><strong>操作位置：</strong>'+esc(sol[0].location);}
+    else if(code.length){answer='代码仓库中找到相关实现，当前代码状态为<b>最新</b>。';answer+='<br><br>💡 <strong>建议：</strong>参考代码实现了解当前功能状态。';}
     else if(jira.length){answer='找到 <b>'+jira.length+'</b> 个相关问题，建议参考这些问题的处理方式。';}
-  }else if(analysis.intent==='what'){if(docs.length)answer='找到 <b>'+docs.length+'</b> 篇相关文档，可以了解详细信息。';
-  }else{const total=sol.length+jira.length+docs.length;answer='基于知识库分析，找到 <b>'+total+'</b> 条相关信息。';}
+  }else if(analysis.intent==='what'){
+    if(code.length)answer='代码仓库中找到相关文件，展示<b>当前实现状态</b>。';
+    else if(docs.length)answer='找到 <b>'+docs.length+'</b> 篇相关文档，可以了解详细信息。';
+  }else{
+    const total=sol.length+jira.length+docs.length+code.length;
+    answer='基于知识库分析，找到 <b>'+total+'</b> 条相关信息。';
+    if(code.length)answer+='其中代码仓库有 <b>'+code.length+'</b> 条实时数据。';
+  }
   if(analysis.category)answer+='<br><br>🏷️ <b>问题分类：</b>'+analysis.category;
   return answer||'正在分析问题，请稍候...';
 }
@@ -1511,6 +1594,8 @@ function generateSuggestionSteps(q,analysis,isJiraKey){
 fetch('knowledge-base/docs-index.json').then(r=>r.json()).then(d=>{DOCS_DATA=d}).catch(()=>{});
 // 加载 solutions.md 原始内容用于深度分析
 fetch('knowledge-base/solutions.md').then(r=>r.text()).then(d=>{SOLUTIONS_RAW=d}).catch(()=>{});
+// 加载代码仓库索引
+fetch('knowledge-base/code-index.json').then(r=>r.json()).then(d=>{CODE_DATA=d}).catch(()=>{});
 
 function kbSearch(query){
   const results=[];
