@@ -529,7 +529,7 @@ function qaSetQuestion(q) {
   qaAsk();
 }
 
-async function qaAsk() {
+function qaAsk() {
   const input = document.getElementById('qa-input');
   const question = input.value.trim();
   if (!question) return;
@@ -541,25 +541,38 @@ async function qaAsk() {
   // 显示加载状态
   const loadingId = qaAddLoading();
 
-  try {
-    let answer;
+  // 优先使用 AI 回答（如果配置了 API Key）
+  if (window.AI_CONFIG && window.AI_CONFIG.isEnabled()) {
+    // 带超时的 AI 调用
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), 30000)
+    );
 
-    // 优先使用 AI 回答（如果配置了 API Key）
-    if (window.AI_CONFIG && window.AI_CONFIG.isEnabled()) {
-      answer = await qaAskAI(question);
-    } else {
-      // 使用本地回答
-      answer = qaGenerateAnswer(question);
-    }
-
-    qaRemoveLoading(loadingId);
-    qaAddMessage(answer, 'assistant');
-  } catch (error) {
-    console.error('AI 回答失败:', error);
-    // 回退到本地回答
-    const answer = qaGenerateAnswer(question);
-    qaRemoveLoading(loadingId);
-    qaAddMessage(answer + '<br><br><span style="font-size:11px;color:#999">⚠️ AI 服务暂不可用，已切换到本地回答</span>', 'assistant');
+    Promise.race([qaAskAI(question), timeout])
+      .then(answer => {
+        qaRemoveLoading(loadingId);
+        qaAddMessage(answer, 'assistant');
+      })
+      .catch(error => {
+        console.error('AI 回答失败:', error);
+        // 回退到本地回答
+        const answer = qaGenerateAnswer(question);
+        qaRemoveLoading(loadingId);
+        qaAddMessage(answer + '<br><br><span style="font-size:11px;color:#999">⚠️ AI 服务响应超时，已切换到本地回答</span>', 'assistant');
+      });
+  } else {
+    // 使用本地回答（同步，快速）
+    setTimeout(() => {
+      try {
+        const answer = qaGenerateAnswer(question);
+        qaRemoveLoading(loadingId);
+        qaAddMessage(answer, 'assistant');
+      } catch (error) {
+        console.error('回答生成失败:', error);
+        qaRemoveLoading(loadingId);
+        qaAddMessage('抱歉，回答生成失败，请稍后重试。', 'assistant');
+      }
+    }, 300);
   }
 }
 
@@ -570,33 +583,44 @@ async function qaAskAI(question) {
   // 构建上下文信息
   const context = qaBuildContext(question);
 
-  const response = await fetch(config.apiEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': config.apiKey,
-      'anthropic-version': '2023-06-01'
-    },
-    body: JSON.stringify({
-      model: config.model,
-      max_tokens: config.maxTokens,
-      system: config.systemPrompt,
-      messages: [{
-        role: 'user',
-        content: context + '\n\n用户问题：' + question
-      }]
-    })
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-  if (!response.ok) {
-    throw new Error('API 请求失败: ' + response.status);
+  try {
+    const response = await fetch(config.apiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': config.apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: config.model,
+        max_tokens: config.maxTokens,
+        system: config.systemPrompt,
+        messages: [{
+          role: 'user',
+          content: context + '\n\n用户问题：' + question
+        }]
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error('API 请求失败: ' + response.status);
+    }
+
+    const data = await response.json();
+    const aiAnswer = data.content[0].text;
+
+    // 格式化 AI 回答
+    return qaFormatAIAnswer(aiAnswer);
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
   }
-
-  const data = await response.json();
-  const aiAnswer = data.content[0].text;
-
-  // 格式化 AI 回答
-  return qaFormatAIAnswer(aiAnswer);
 }
 
 // 构建上下文信息
@@ -806,12 +830,15 @@ function qaGenerateAnswer(q) {
   return qaGenerateGeneralAnswer(q, codeResults, docResults);
 }
 
-// 搜索相似 Jira 问题
+// 搜索相似 Jira 问题（优化性能，限制搜索范围）
 function qaSearchSimilarJiras(q, excludeKey) {
   if (!ALL_ISSUES || !ALL_ISSUES.issues) return [];
   const qLower = q.toLowerCase();
 
-  return ALL_ISSUES.issues
+  // 限制搜索数量，避免性能问题
+  const issues = ALL_ISSUES.issues.slice(0, 200);
+
+  return issues
     .filter(issue => issue.key !== excludeKey)
     .map(issue => {
       let score = 0;
