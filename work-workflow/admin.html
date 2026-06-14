@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理员面板 - 用户管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+.container { max-width: 800px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header p { opacity: 0.9; }
+.card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.card h2 { font-size: 18px; margin-bottom: 20px; color: #333; }
+.user-list { display: grid; gap: 12px; }
+.user-item { background: #f9fafb; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+.user-info { flex: 1; }
+.user-info .name { font-weight: 600; color: #333; }
+.user-info .email { font-size: 12px; color: #666; margin-top: 4px; }
+.user-info .dept { font-size: 12px; color: #999; }
+.user-actions { display: flex; gap: 8px; }
+.btn { padding: 8px 16px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: #667eea; color: white; }
+.btn-primary:hover { background: #5a6fd6; }
+.btn-danger { background: #ef4444; color: white; }
+.btn-danger:hover { background: #dc2626; }
+.btn-secondary { background: #e5e7eb; color: #374151; }
+.btn-secondary:hover { background: #d1d5db; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.badge-admin { background: #fef3c7; color: #92400e; }
+.badge-internal { background: #dbeafe; color: #1e40af; }
+.badge-external { background: #e5e7eb; color: #374151; }
+.badge-pending { background: #fef2f2; color: #dc2626; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat { background: white; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.stat-value { font-size: 24px; font-weight: 700; color: #667eea; }
+.stat-label { font-size: 12px; color: #666; margin-top: 4px; }
+.empty { text-align: center; padding: 40px; color: #999; }
+.nav { display: flex; gap: 12px; margin-bottom: 20px; }
+.nav a { padding: 10px 20px; background: white; border-radius: 8px; text-decoration: none; color: #333; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.nav a:hover { background: #f3f4f6; }
+.nav a.active { background: #667eea; color: white; }
+.modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; }
+.modal-content { background: white; border-radius: 12px; padding: 24px; max-width: 500px; margin: 100px auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h3 { font-size: 18px; }
+.close { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>👑 管理员面板</h1>
+    <p>管理用户权限和访问控制</p>
+  </div>
+
+  <div class="nav">
+    <a href="index.html" class="active">工作台</a>
+    <a href="admin.html">用户管理</a>
+    <a href="#" onclick="exportUsers()">导出数据</a>
+    <a href="#" onclick="logoutUser()">退出登录</a>
+  </div>
+
+  <!-- 统计卡片 -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="totalUsers">0</div>
+      <div class="stat-label">总用户数</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="adminCount">0</div>
+      <div class="stat-label">管理员</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="internalCount">0</div>
+      <div class="stat-label">小米内部人</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="externalCount">0</div>
+      <div class="stat-label">外部同学</div>
+    </div>
+  </div>
+
+  <!-- 待审核申请 -->
+  <div class="card">
+    <h2>📋 待审核申请 <span id="pendingCount" class="badge badge-pending">0</span></h2>
+    <div id="pendingList" class="user-list">
+      <div class="empty">暂无待审核申请</div>
+    </div>
+  </div>
+
+  <!-- 已批准用户 -->
+  <div class="card">
+    <h2>👥 已批准用户</h2>
+    <div id="approvedList" class="user-list">
+      <div class="empty">暂无用户</div>
+    </div>
+  </div>
+</div>
+
+<!-- 审核弹窗 -->
+<div id="reviewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>审核用户申请</h3>
+      <button class="close" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="reviewContent"></div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'workbench_users';
+const CURRENT_USER_KEY = 'workbench_current_user';
+
+// 检查管理员权限
+function checkAdmin() {
+  const user = getCurrentUser();
+  if (!user || user.role !== 'admin') {
+    alert('需要管理员权限');
+    window.location.href = 'auth-system.html';
+    return false;
+  }
+  return true;
+}
+
+function getCurrentUser() {
+  const data = localStorage.getItem(CURRENT_USER_KEY);
+  return data ? JSON.parse(data) : null;
+}
+
+function getUsers() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : { approved: [], pending: [] };
+}
+
+function saveUsers(users) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+// 渲染页面
+function render() {
+  const users = getUsers();
+
+  // 更新统计
+  document.getElementById('totalUsers').textContent = users.approved.length;
+  document.getElementById('adminCount').textContent = users.approved.filter(u => u.role === 'admin').length;
+  document.getElementById('internalCount').textContent = users.approved.filter(u => u.role === 'internal').length;
+  document.getElementById('externalCount').textContent = users.approved.filter(u => u.role === 'external').length;
+  document.getElementById('pendingCount').textContent = users.pending.length;
+
+  // 渲染待审核列表
+  const pendingList = document.getElementById('pendingList');
+  if (users.pending.length === 0) {
+    pendingList.innerHTML = '<div class="empty">暂无待审核申请</div>';
+  } else {
+    pendingList.innerHTML = users.pending.map((user, index) => `
+      <div class="user-item">
+        <div class="user-info">
+          <div class="name">${user.name} <span class="badge badge-pending">待审核</span></div>
+          <div class="email">${user.email}</div>
+          <div class="dept">${user.dept || '未填写部门'}</div>
+        </div>
+        <div class="user-actions">
+          <button class="btn btn-secondary" onclick="viewScreenshot(${index})">查看截图</button>
+          <button class="btn btn-primary" onclick="showReviewModal(${index})">审核</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // 渲染已批准用户列表
+  const approvedList = document.getElementById('approvedList');
+  if (users.approved.length === 0) {
+    approvedList.innerHTML = '<div class="empty">暂无用户</div>';
+  } else {
+    approvedList.innerHTML = users.approved.map((user, index) => `
+      <div class="user-item">
+        <div class="user-info">
+          <div class="name">
+            ${user.name}
+            <span class="badge badge-${user.role}">${getRoleName(user.role)}</span>
+          </div>
+          <div class="email">${user.email}</div>
+          <div class="dept">${user.dept || '未填写部门'}</div>
+        </div>
+        <div class="user-actions">
+          <button class="btn btn-secondary" onclick="changeRole(${index})">修改权限</button>
+          <button class="btn btn-danger" onclick="deleteUser(${index})">删除</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// 获取权限名称
+function getRoleName(role) {
+  const names = {
+    'admin': '管理员',
+    'internal': '小米内部人',
+    'external': '外部同学'
+  };
+  return names[role] || role;
+}
+
+// 查看截图
+function viewScreenshot(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html>
+      <head><title>邮箱截图 - ${user.name}</title></head>
+      <body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f5f5f5;">
+        <div style="text-align: center;">
+          <h2>${user.name} 的邮箱截图</h2>
+          <p style="color: #666; margin-bottom: 20px;">${user.email}</p>
+          <img src="${user.screenshot}" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        </div>
+      </body>
+    </html>
+  `);
+}
+
+// 显示审核弹窗
+function showReviewModal(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+
+  document.getElementById('reviewContent').innerHTML = `
+    <div style="margin-bottom: 20px;">
+      <p><strong>姓名：</strong>${user.name}</p>
+      <p><strong>邮箱：</strong>${user.email}</p>
+      <p><strong>部门：</strong>${user.dept || '未填写'}</p>
+      <p><strong>申请时间：</strong>${new Date(user.requestTime).toLocaleString()}</p>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 8px; font-weight: 500;">分配权限：</label>
+      <select id="reviewRole" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        <option value="internal">小米内部人（只读，可看所有看板）</option>
+        <option value="external">外部同学（仅知识库搜索）</option>
+        <option value="admin">管理员（所有权限）</option>
+      </select>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn btn-primary" style="flex: 1; padding: 12px;" onclick="approveUser(${index})">✓ 批准</button>
+      <button class="btn btn-danger" style="flex: 1; padding: 12px;" onclick="rejectUser(${index})">✗ 拒绝</button>
+    </div>
+  `;
+
+  document.getElementById('reviewModal').style.display = 'block';
+}
+
+// 关闭弹窗
+function closeModal() {
+  document.getElementById('reviewModal').style.display = 'none';
+}
+
+// 批准用户
+function approveUser(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+  const role = document.getElementById('reviewRole').value;
+
+  users.approved.push({
+    ...user,
+    role,
+    approvedTime: new Date().toISOString()
+  });
+
+  users.pending.splice(index, 1);
+  saveUsers(users);
+  closeModal();
+  render();
+  alert(`已批准 ${user.name} 的申请，权限：${getRoleName(role)}`);
+}
+
+// 拒绝用户
+function rejectUser(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+
+  if (confirm(`确定拒绝 ${user.name} 的申请吗？`)) {
+    users.pending.splice(index, 1);
+    saveUsers(users);
+    render();
+    alert(`已拒绝 ${user.name} 的申请`);
+  }
+}
+
+// 修改权限
+function changeRole(index) {
+  const users = getUsers();
+  const user = users.approved[index];
+
+  const newRole = prompt(`当前权限：${getRoleName(user.role)}\n\n请输入新权限（admin/internal/external）：`, user.role);
+  if (newRole && ['admin', 'internal', 'external'].includes(newRole)) {
+    users.approved[index].role = newRole;
+    saveUsers(users);
+    render();
+    alert(`已将 ${user.name} 的权限修改为：${getRoleName(newRole)}`);
+  }
+}
+
+// 删除用户
+function deleteUser(index) {
+  const users = getUsers();
+  const user = users.approved[index];
+
+  if (confirm(`确定删除用户 ${user.name} 吗？`)) {
+    users.approved.splice(index, 1);
+    saveUsers(users);
+    render();
+    alert(`已删除用户 ${user.name}`);
+  }
+}
+
+// 导出用户数据
+function exportUsers() {
+  const users = getUsers();
+  const data = JSON.stringify(users, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workbench_users.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// 退出登录
+function logoutUser() {
+  localStorage.removeItem(CURRENT_USER_KEY);
+  window.location.href = 'auth-system.html';
+}
+
+// 初始化
+if (checkAdmin()) {
+  render();
+}
+</script>
+</body>
+</html>

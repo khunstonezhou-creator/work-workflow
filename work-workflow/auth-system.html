@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人工作台 - 权限管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+.container { max-width: 400px; margin: 100px auto; padding: 20px; }
+.card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+h1 { text-align: center; margin-bottom: 30px; color: #333; font-size: 24px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+.form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+.form-group input:focus, .form-group select:focus { outline: none; border-color: #667eea; }
+.upload-area { border: 2px dashed #ddd; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.upload-area:hover { border-color: #667eea; background: #f8f9ff; }
+.upload-area.has-file { border-color: #22c55e; background: #f0fdf4; }
+.btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+.btn:hover { transform: translateY(-2px); }
+.btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+.message { padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; }
+.message.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.message.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.message.info { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+.preview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 8px; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>🔐 个人工作台</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 30px;">请登录或申请访问权限</p>
+
+    <!-- 登录表单 -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="email" id="loginEmail" placeholder="请输入您的邮箱">
+      </div>
+      <button class="btn" onclick="login()">登录</button>
+      <p style="text-align: center; margin-top: 20px; color: #666;">
+        没有账号？<a href="#" onclick="showRegister()" style="color: #667eea;">申请访问</a>
+      </p>
+    </div>
+
+    <!-- 注册表单 -->
+    <div id="registerForm" class="hidden">
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="email" id="regEmail" placeholder="请输入您的邮箱">
+      </div>
+      <div class="form-group">
+        <label>姓名</label>
+        <input type="text" id="regName" placeholder="请输入您的姓名">
+      </div>
+      <div class="form-group">
+        <label>部门/团队</label>
+        <input type="text" id="regDept" placeholder="请输入您的部门或团队">
+      </div>
+      <div class="form-group">
+        <label>邮箱截图证明</label>
+        <div class="upload-area" onclick="document.getElementById('screenshot').click()">
+          <input type="file" id="screenshot" accept="image/*" style="display: none;" onchange="previewScreenshot(this)">
+          <p>📷 点击上传邮箱截图</p>
+          <p style="font-size: 12px; color: #999; margin-top: 8px;">请截图显示您的邮箱地址</p>
+        </div>
+        <img id="preview" class="preview hidden">
+      </div>
+      <button class="btn" onclick="submitRequest()">提交申请</button>
+      <p style="text-align: center; margin-top: 20px; color: #666;">
+        已有账号？<a href="#" onclick="showLogin()" style="color: #667eea;">返回登录</a>
+      </p>
+    </div>
+
+    <!-- 审核页面（仅管理员可见） -->
+    <div id="adminPanel" class="hidden">
+      <h2 style="margin-bottom: 20px; color: #333;">📋 待审核申请</h2>
+      <div id="pendingRequests"></div>
+      <button class="btn" onclick="logout()" style="background: #6b7280; margin-top: 20px;">退出登录</button>
+    </div>
+
+    <!-- 用户面板 -->
+    <div id="userPanel" class="hidden">
+      <h2 style="margin-bottom: 20px; color: #333;">👤 用户信息</h2>
+      <div id="userInfo"></div>
+      <button class="btn" onclick="logout()" style="background: #6b7280; margin-top: 20px;">退出登录</button>
+    </div>
+
+    <!-- 消息提示 -->
+    <div id="message" class="message hidden"></div>
+  </div>
+</div>
+
+<script>
+// 用户数据存储
+const STORAGE_KEY = 'workbench_users';
+const CURRENT_USER_KEY = 'workbench_current_user';
+
+// 初始化数据
+function getUsers() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : { approved: [], pending: [] };
+}
+
+function saveUsers(users) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+function getCurrentUser() {
+  const data = localStorage.getItem(CURRENT_USER_KEY);
+  return data ? JSON.parse(data) : null;
+}
+
+function setCurrentUser(user) {
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+}
+
+// 预览截图
+function previewScreenshot(input) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById('preview');
+      preview.src = e.target.result;
+      preview.classList.remove('hidden');
+      document.querySelector('.upload-area').classList.add('has-file');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// 显示登录表单
+function showLogin() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('userPanel').classList.add('hidden');
+  hideMessage();
+}
+
+// 显示注册表单
+function showRegister() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.remove('hidden');
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('userPanel').classList.add('hidden');
+  hideMessage();
+}
+
+// 登录
+function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  if (!email) {
+    showMessage('请输入邮箱', 'error');
+    return;
+  }
+
+  const users = getUsers();
+  const user = users.approved.find(u => u.email === email);
+
+  if (user) {
+    setCurrentUser(user);
+    if (user.role === 'admin') {
+      showAdminPanel();
+    } else {
+      showUserPanel();
+    }
+  } else {
+    // 检查是否在待审核列表
+    const pending = users.pending.find(u => u.email === email);
+    if (pending) {
+      showMessage('您的申请正在审核中，请等待管理员审批', 'info');
+    } else {
+      showMessage('账号不存在，请先申请访问权限', 'error');
+    }
+  }
+}
+
+// 提交注册申请
+function submitRequest() {
+  const email = document.getElementById('regEmail').value.trim();
+  const name = document.getElementById('regName').value.trim();
+  const dept = document.getElementById('regDept').value.trim();
+  const screenshot = document.getElementById('screenshot').files[0];
+
+  if (!email || !name || !screenshot) {
+    showMessage('请填写完整信息并上传邮箱截图', 'error');
+    return;
+  }
+
+  // 读取截图
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const users = getUsers();
+
+    // 检查是否已申请
+    if (users.pending.find(u => u.email === email)) {
+      showMessage('您已经提交过申请，请等待审核', 'info');
+      return;
+    }
+
+    if (users.approved.find(u => u.email === email)) {
+      showMessage('该邮箱已有账号，请直接登录', 'info');
+      return;
+    }
+
+    // 添加到待审核列表
+    users.pending.push({
+      email,
+      name,
+      dept,
+      screenshot: e.target.result,
+      requestTime: new Date().toISOString()
+    });
+
+    saveUsers(users);
+    showMessage('申请已提交，请等待管理员审核', 'success');
+
+    // 清空表单
+    document.getElementById('regEmail').value = '';
+    document.getElementById('regName').value = '';
+    document.getElementById('regDept').value = '';
+    document.getElementById('screenshot').value = '';
+    document.getElementById('preview').classList.add('hidden');
+    document.querySelector('.upload-area').classList.remove('has-file');
+
+    // 显示登录表单
+    setTimeout(showLogin, 2000);
+  };
+  reader.readAsDataURL(screenshot);
+}
+
+// 显示管理员面板
+function showAdminPanel() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('adminPanel').classList.remove('hidden');
+  document.getElementById('userPanel').classList.add('hidden');
+  hideMessage();
+  renderPendingRequests();
+}
+
+// 显示用户面板
+function showUserPanel() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('userPanel').classList.remove('hidden');
+  hideMessage();
+  renderUserInfo();
+}
+
+// 渲染待审核请求
+function renderPendingRequests() {
+  const users = getUsers();
+  const container = document.getElementById('pendingRequests');
+
+  if (users.pending.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">暂无待审核申请</p>';
+    return;
+  }
+
+  container.innerHTML = users.pending.map((user, index) => `
+    <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <p style="font-weight: 600; color: #333;">${user.name}</p>
+          <p style="font-size: 12px; color: #666; margin-top: 4px;">${user.email}</p>
+          <p style="font-size: 12px; color: #666;">${user.dept || '未填写部门'}</p>
+          <p style="font-size: 11px; color: #999; margin-top: 4px;">申请时间: ${new Date(user.requestTime).toLocaleString()}</p>
+        </div>
+        <div>
+          <button onclick="viewScreenshot(${index})" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">查看截图</button>
+        </div>
+      </div>
+      <div style="margin-top: 12px; display: flex; gap: 8px;">
+        <select id="role-${index}" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
+          <option value="internal">小米内部人</option>
+          <option value="external">外部同学</option>
+          <option value="admin">管理员</option>
+        </select>
+        <button onclick="approveUser(${index})" style="padding: 8px 16px; background: #22c55e; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">批准</button>
+        <button onclick="rejectUser(${index})" style="padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">拒绝</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 查看截图
+function viewScreenshot(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html>
+      <head><title>邮箱截图 - ${user.name}</title></head>
+      <body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f5f5f5;">
+        <div style="text-align: center;">
+          <h2>${user.name} 的邮箱截图</h2>
+          <p style="color: #666; margin-bottom: 20px;">${user.email}</p>
+          <img src="${user.screenshot}" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        </div>
+      </body>
+    </html>
+  `);
+}
+
+// 批准用户
+function approveUser(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+  const role = document.getElementById(`role-${index}`).value;
+
+  // 添加到已批准列表
+  users.approved.push({
+    ...user,
+    role,
+    approvedTime: new Date().toISOString()
+  });
+
+  // 从待审核列表移除
+  users.pending.splice(index, 1);
+
+  saveUsers(users);
+  showMessage(`已批准 ${user.name} 的申请，权限：${getRoleName(role)}`, 'success');
+  renderPendingRequests();
+}
+
+// 拒绝用户
+function rejectUser(index) {
+  const users = getUsers();
+  const user = users.pending[index];
+
+  users.pending.splice(index, 1);
+  saveUsers(users);
+  showMessage(`已拒绝 ${user.name} 的申请`, 'info');
+  renderPendingRequests();
+}
+
+// 渲染用户信息
+function renderUserInfo() {
+  const user = getCurrentUser();
+  const container = document.getElementById('userInfo');
+
+  container.innerHTML = `
+    <div style="background: #f9fafb; border-radius: 8px; padding: 20px;">
+      <p style="font-weight: 600; color: #333; font-size: 18px;">${user.name}</p>
+      <p style="color: #666; margin-top: 8px;">${user.email}</p>
+      <p style="color: #666;">${user.dept || '未填写部门'}</p>
+      <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 6px;">
+        <p style="font-size: 12px; color: #999;">权限等级</p>
+        <p style="font-weight: 600; color: #667eea; margin-top: 4px;">${getRoleName(user.role)}</p>
+      </div>
+      <div style="margin-top: 16px;">
+        <button onclick="goToWorkbench()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer;">
+          进入工作台 →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// 进入工作台
+function goToWorkbench() {
+  window.location.href = 'index.html';
+}
+
+// 退出登录
+function logout() {
+  localStorage.removeItem(CURRENT_USER_KEY);
+  showLogin();
+}
+
+// 获取权限名称
+function getRoleName(role) {
+  const names = {
+    'admin': '管理员（所有权限）',
+    'internal': '小米内部人（只读）',
+    'external': '外部同学（仅知识库）'
+  };
+  return names[role] || role;
+}
+
+// 显示消息
+function showMessage(text, type) {
+  const el = document.getElementById('message');
+  el.textContent = text;
+  el.className = `message ${type}`;
+  el.classList.remove('hidden');
+}
+
+// 隐藏消息
+function hideMessage() {
+  document.getElementById('message').classList.add('hidden');
+}
+
+// 初始化
+function init() {
+  const currentUser = getCurrentUser();
+  if (currentUser) {
+    if (currentUser.role === 'admin') {
+      showAdminPanel();
+    } else {
+      showUserPanel();
+    }
+  } else {
+    showLogin();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>个人工作台</title>
+<script src="auth-check.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#333;display:flex;min-height:100vh}
@@ -140,15 +141,15 @@ a:hover{text-decoration:underline}
     <h1>🚀 个人工作台</h1>
     <p>摄像机接入团队</p>
   </div>
-  <div class="nav on" onclick="go('kb',this)">📚 知识库</div>
-  <div class="nav" onclick="go('jira',this)">📋 Jira 处理</div>
-<div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px">　└ 产品遗留问题</div>
-<div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px">　└ 全部问题</div>
-<div class="nav sub" onclick="go('jira-mon',this)" style="padding-left:40px;font-size:12px">　└ 月度发版</div>
-  <div class="nav" onclick="go('access',this)">🔌 接入问题处理</div>
-  <div class="nav" onclick="go('docs',this)">📝 产品文档产出</div>
-  <div class="nav" onclick="go('req',this)">📊 需求管理</div>
-  <div class="nav" onclick="go('other',this)">⚙️ 其他业务</div>
+  <div class="nav on" onclick="go('kb',this)" id="nav-kb">📚 知识库</div>
+  <div class="nav" onclick="go('jira',this)" data-permission="internal">📋 Jira 处理</div>
+<div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 产品遗留问题</div>
+<div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 全部问题</div>
+<div class="nav sub" onclick="go('jira-mon',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 月度发版</div>
+  <div class="nav" onclick="go('access',this)" data-permission="internal">🔌 接入问题处理</div>
+  <div class="nav" onclick="go('docs',this)" data-permission="internal">📝 产品文档产出</div>
+  <div class="nav" onclick="go('req',this)" data-permission="internal">📊 需求管理</div>
+  <div class="nav" onclick="go('other',this)" data-permission="internal">⚙️ 其他业务</div>
   <div class="sb-ft">
     <div id="user-info" style="margin-bottom:8px"></div>
     数据来源: Jira Filter<br>更新: <span id="upd2">--</span>
@@ -159,8 +160,8 @@ a:hover{text-decoration:underline}
     <h2 id="title">📚 知识库</h2>
     <div class="meta">
       <span id="upd">--</span>
-      <span id="admin-link" style="display:none"> | <a href="/admin" style="color:#667eea">👥 管理后台</a></span>
-      <span> | <a href="/logout" style="color:#999">退出</a></span>
+      <span id="admin-link" style="display:none"> | <a href="admin.html" style="color:#667eea">👥 管理后台</a></span>
+      <span> | <a href="#" onclick="logoutUser()" style="color:#999">退出</a></span>
     </div>
   </div>
   <div class="content">
@@ -244,7 +245,7 @@ a:hover{text-decoration:underline}
     </div>
 
     <!-- ==================== 2. Jira 处理 ==================== -->
-    <div class="tab" id="t-jira">
+    <div class="tab" id="t-jira" data-permission="internal">
       <div class="section-hd">
         <h3>📋 Jira 处理</h3>
         <p>产品遗留问题分类、全部问题列表、月度发版跟踪</p>
@@ -292,7 +293,7 @@ a:hover{text-decoration:underline}
     </div>
 
     <!-- ==================== 3. 接入问题处理 ==================== -->
-    <div class="tab" id="t-access">
+    <div class="tab" id="t-access" data-permission="internal">
       <div class="section-hd">
         <h3>🔌 接入问题处理</h3>
         <p>设备接入相关问题的处理和跟踪</p>
@@ -320,7 +321,7 @@ a:hover{text-decoration:underline}
     </div>
 
     <!-- ==================== 4. 产品文档产出 ==================== -->
-    <div class="tab" id="t-docs">
+    <div class="tab" id="t-docs" data-permission="internal">
       <div class="section-hd">
         <h3>📝 产品文档产出</h3>
         <p>PRD 产出、数据分析、设计方案</p>
@@ -352,7 +353,7 @@ a:hover{text-decoration:underline}
     </div>
 
     <!-- ==================== 5. 需求管理 ==================== -->
-    <div class="tab" id="t-req">
+    <div class="tab" id="t-req" data-permission="internal">
       <div class="section-hd">
         <h3>📊 需求管理</h3>
         <p>总需求管理、摄像机插件需求跟踪</p>
@@ -374,7 +375,7 @@ a:hover{text-decoration:underline}
     </div>
 
     <!-- ==================== 6. 其他业务 ==================== -->
-    <div class="tab" id="t-other">
+    <div class="tab" id="t-other" data-permission="internal">
       <div class="section-hd">
         <h3>⚙️ 其他业务</h3>
         <p>周报自动生成、常用工具</p>
