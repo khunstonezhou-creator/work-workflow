@@ -1,0 +1,47 @@
+{
+  "lastUpdate": "2026-06-14 20:00:00",
+  "repo": "https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot.git",
+  "totalFiles": 5,
+  "files": [
+    {
+      "path": "README.md",
+      "name": "README.md",
+      "type": "markdown",
+      "size": 2048,
+      "keywords": ["摄像机", "spec", "bot", "接入", "厂商", "iot", "xiaomi"],
+      "summary": "摄像机 Spec Bot - 用于管理摄像机设备接入的自动化工具"
+    },
+    {
+      "path": "docs/接入流程.md",
+      "name": "接入流程.md",
+      "type": "markdown",
+      "size": 4096,
+      "keywords": ["接入", "流程", "厂商", "步骤", "规范", "设备", "测试"],
+      "summary": "厂商接入摄像机设备的完整流程说明，包含前置条件、接入步骤、测试验证等"
+    },
+    {
+      "path": "src/camera_spec.py",
+      "name": "camera_spec.py",
+      "type": "python",
+      "size": 8192,
+      "keywords": ["spec", "camera", "设备", "配置", "解析", "yaml"],
+      "summary": "摄像机 Spec 配置解析和管理模块"
+    },
+    {
+      "path": "config/device_types.yaml",
+      "name": "device_types.yaml",
+      "type": "yaml",
+      "size": 1024,
+      "keywords": ["设备", "类型", "常电", "低功耗", "4g", "wifi"],
+      "summary": "设备类型配置，包含常电摄像机、低功耗摄像机、4G摄像机等"
+    },
+    {
+      "path": "scripts/onboard_vendor.sh",
+      "name": "onboard_vendor.sh",
+      "type": "shell",
+      "size": 2048,
+      "keywords": ["厂商", "接入", "onboard", "初始化", "配置"],
+      "summary": "厂商接入初始化脚本，自动化配置新厂商的接入环境"
+    }
+  ]
+}
