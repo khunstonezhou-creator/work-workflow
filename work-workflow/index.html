@@ -720,16 +720,42 @@ function qaGenerateJiraAnswer(jiraKey, similarJiras, code, docs, projects) {
     });
   }
 
-  // 竞品建议
+  // 竞品建议 - 基于问题类型给出具体竞品参考
   answer += '<br><br><b>🔍 竞品参考建议</b>';
-  answer += '<br>• 调研萤石、海康、Ring 等竞品的类似功能实现';
-  answer += '<br>• 参考行业最佳实践进行改进';
+  const qLower = (localIssue?.summary || '').toLowerCase() + ' ' + (projectInfo.commonIssues || '').toLowerCase();
+  if (/看家|事件|报警|侦测/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：看家助手支持人形侦测、车辆侦测、宠物侦测，事件分类清晰';
+    answer += '<br>• <b>海康</b>：支持区域入侵、越界侦测等智能分析，事件联动报警';
+    answer += '<br>• <b>Ring</b>：Motion Zones 自定义侦测区域，Rich Notifications 富通知';
+  } else if (/推送|通知|消息/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：支持消息分级（重要/普通），可按时间段免打扰';
+    answer += '<br>• <b>Ring</b>：Rich Notifications 支持通知内预览截图和短视频';
+    answer += '<br>• <b>Google Nest</b>：Activity Zones 自定义通知区域，减少误报';
+  } else if (/直播|视频|播放|黑屏/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：支持多清晰度切换，直播延迟低至 1 秒';
+    answer += '<br>• <b>海康</b>：支持 H.265 编码，带宽占用降低 50%';
+    answer += '<br>• <b>Arlo</b>：支持 4K 直播，自动根据网络调整清晰度';
+  } else if (/存储|回看|sd卡|云存/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：支持云存储+SD卡双备份，时间轴回看体验好';
+    answer += '<br>• <b>Ring</b>：Ring Protect Plan 云存储订阅，支持 60 天回看';
+    answer += '<br>• <b>Google Nest</b>：Nest Aware 云存储，支持 24/7 连续录像';
+  } else if (/人脸|识别|ReID/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：支持人脸识别，可区分家庭成员和陌生人';
+    answer += '<br>• <b>Google Nest</b>：Face Recognition 支持熟悉面孔提醒';
+    answer += '<br>• <b>Arlo</b>：Person Detection 人形检测，支持包过滤';
+  } else if (/云台|PTZ|转动|巡航/.test(qLower)) {
+    answer += '<br>• <b>萤石</b>：支持 360° 全景巡航，自动追踪移动目标';
+    answer += '<br>• <b>海康</b>：支持预设点巡航，最多 256 个预设点';
+    answer += '<br>• <b>Reolink</b>：支持自动追踪，检测到移动自动转动跟随';
+  } else {
+    answer += '<br>• <b>萤石</b>：功能全面，App 体验好，云服务稳定';
+    answer += '<br>• <b>海康</b>：专业安防背景，算法能力强';
+    answer += '<br>• <b>Ring</b>：用户体验优先，通知和社区功能突出';
+  }
 
   // 快捷操作
   answer += '<br><br><b>🔗 快捷操作</b>';
   answer += '<br>• <a href="' + JIRA_BASE + jiraKey + '" target="_blank" style="color:#4f46e5">查看 Jira 详情</a>';
-  answer += '<br>• <a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22' + encodeURIComponent(jiraKey) + '%22" target="_blank" style="color:#4f46e5">Jira 搜索相似问题</a>';
-  answer += '<br>• <a href="https://mi.feishu.cn/search?q=' + encodeURIComponent(jiraKey) + '" target="_blank" style="color:#4f46e5">飞书文档搜索</a>';
 
   return answer;
 }
