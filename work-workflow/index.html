@@ -1558,28 +1558,161 @@ function analyzeQuestion(q){
 // 生成智能回答
 function generateSmartAnswer(q,analysis,sol,jira,docs,code){
   let answer='';
-  if(analysis.intent==='how'||analysis.intent==='fix'){
-    if(sol.length){answer='根据知识库记录，这个问题有<b>已验证的解决方案</b>。';if(sol[0].solution)answer+='<br><br><strong>核心方案：</strong>'+esc(sol[0].solution).substring(0,120);if(sol[0].location)answer+='<br><strong>操作位置：</strong>'+esc(sol[0].location);}
-    else if(code.length){answer='代码仓库中找到相关实现，当前代码状态为<b>最新</b>。';answer+='<br><br>💡 <strong>建议：</strong>参考代码实现了解当前功能状态。';}
-    else if(jira.length){answer='找到 <b>'+jira.length+'</b> 个相关问题，建议参考这些问题的处理方式。';}
-  }else if(analysis.intent==='what'){
-    if(code.length)answer='代码仓库中找到相关文件，展示<b>当前实现状态</b>。';
-    else if(docs.length)answer='找到 <b>'+docs.length+'</b> 篇相关文档，可以了解详细信息。';
-  }else{
-    const total=sol.length+jira.length+docs.length+code.length;
-    answer='基于知识库分析，找到 <b>'+total+'</b> 条相关信息。';
-    if(code.length)answer+='其中代码仓库有 <b>'+code.length+'</b> 条实时数据。';
+
+  // 分析问题意图并生成自然语言回答
+  const qLower=q.toLowerCase();
+
+  // 埋点/点位相关问题
+  if(/埋点|点位|expose|track|统计|数据上报/.test(qLower)){
+    if(code.length){
+      answer='<b>结论</b>：根据代码分析，找到了相关的埋点实现。';
+      answer+='<br><br><b>📋 埋点信息</b>';
+      answer+='<br>• 代码仓库中包含埋点相关的实现文件';
+      answer+='<br>• 建议查看代码中的 TrackUtil 或 useTrack 相关文件';
+      answer+='<br><br><b>💡 数据平台查询建议</b>';
+      answer+='<br>在数据平台中可按事件名、ref、card_id 等条件筛选统计';
+    }else{
+      answer='<b>结论</b>：知识库中暂未找到该埋点点位的直接信息。';
+      answer+='<br><br><b>📋 建议操作</b>';
+      answer+='<br>1. 查看代码仓库中的埋点实现文件';
+      answer+='<br>2. 咨询数据产品获取埋点文档';
+      answer+='<br>3. 联系 <b>周睿卿</b> 或 <b>赵容慧</b> 获取技术支持';
+    }
+    return answer;
   }
+
+  // 接入/厂商相关问题
+  if(/接入|厂商|对接|合作|onboard/.test(qLower)){
+    if(sol.length||code.length){
+      answer='<b>结论</b>：找到了厂商接入的相关资料。';
+      if(code.length){
+        answer+='<br><br><b>💻 代码仓库（实时状态）</b>';
+        answer+='<br>• 当前接入流程已实现自动化';
+        answer+='<br>• 可参考接入脚本和流程文档';
+      }
+      if(sol.length){
+        answer+='<br><br><b>📚 知识库记录</b>';
+        answer+='<br>• 存在已验证的接入方案';
+      }
+      answer+='<br><br><b>📋 接入步骤</b>';
+      answer+='<br>1. 确认设备类型（常电/低功耗/4G）';
+      answer+='<br>2. 准备设备 Spec 配置';
+      answer+='<br>3. 运行接入初始化脚本';
+      answer+='<br>4. 完成功能测试和验证';
+    }else{
+      answer='<b>结论</b>：知识库中暂未找到详细的接入文档。';
+      answer+='<br><br><b>📋 建议操作</b>';
+      answer+='<br>1. 联系 <b>周睿卿</b> 或 <b>赵容慧</b> 获取接入指引';
+      answer+='<br>2. 参考代码仓库中的接入流程实现';
+      answer+='<br>3. 查看飞书文档「小米IoT平台摄像机品类接入流程」';
+    }
+    return answer;
+  }
+
+  // 功能/实现相关问题
+  if(/功能|实现|代码|逻辑|流程|机制/.test(qLower)){
+    if(code.length){
+      answer='<b>结论</b>：根据代码仓库分析，找到了相关功能的实现。';
+      answer+='<br><br><b>💻 代码实现（实时状态）</b>';
+      code.slice(0,2).forEach(r=>{
+        answer+='<br>• <b>'+esc(r.title)+'</b>：'+esc(r.summary).substring(0,60);
+      });
+      answer+='<br><br><b>💡 建议</b>';
+      answer+='<br>代码仓库显示的是当前最新实现，可直接参考。';
+    }else if(sol.length){
+      answer='<b>结论</b>：知识库中有相关功能的历史记录。';
+      answer+='<br><br><b>📚 历史方案</b>';
+      answer+='<br>• '+esc(sol[0].summary);
+      if(sol[0].solution)answer+='<br>• 解决方案：'+esc(sol[0].solution).substring(0,80);
+    }
+    return answer;
+  }
+
+  // 问题/bug 相关
+  if(/问题|bug|报错|异常|失败|不能|无法/.test(qLower)){
+    if(sol.length){
+      answer='<b>结论</b>：找到已解决的类似问题，可参考解决方案。';
+      answer+='<br><br><b>✅ 最佳方案</b>';
+      answer+='<br>• <b>'+esc(sol[0].key)+'</b>：'+esc(sol[0].summary);
+      if(sol[0].solution)answer+='<br>• <b>解决方案</b>：'+esc(sol[0].solution);
+      if(sol[0].location)answer+='<br>• <b>操作位置</b>：'+esc(sol[0].location);
+    }else if(jira.length){
+      const open=jira.filter(r=>r.status==='OPEN').length;
+      const prog=jira.filter(r=>r.status==='In Progress').length;
+      answer='<b>结论</b>：找到 '+jira.length+' 个相关问题，其中 '+open+' 个待处理，'+prog+' 个处理中。';
+      answer+='<br><br><b>📋 相关问题</b>';
+      jira.slice(0,2).forEach(r=>{
+        answer+='<br>• <b>'+esc(r.key)+'</b> ['+esc(r.status)+'] '+esc(r.summary).substring(0,50);
+      });
+      answer+='<br><br><b>💡 建议</b>';
+      answer+='<br>参考已解决的问题方案，或联系负责人获取支持。';
+    }
+    return answer;
+  }
+
+  // 通用回答
+  const total=sol.length+jira.length+docs.length+code.length;
+  if(total>0){
+    answer='<b>结论</b>：基于知识库分析，找到 <b>'+total+'</b> 条相关信息。';
+    if(code.length)answer+='<br><br><b>💻 代码仓库</b>：'+code.length+' 条实时数据（高置信度）';
+    if(sol.length)answer+='<br><b>✅ 解决方案</b>：'+sol.length+' 条已验证方案';
+    if(jira.length)answer+='<br><b>📋 Jira 问题</b>：'+jira.length+' 条相关问题';
+    if(docs.length)answer+='<br><b>📚 参考文档</b>：'+docs.length+' 篇相关文档';
+  }
+
   if(analysis.category)answer+='<br><br>🏷️ <b>问题分类：</b>'+analysis.category;
   return answer||'正在分析问题，请稍候...';
 }
 
 // 生成分析回答（无结果时）
 function generateAnalysisAnswer(q,analysis){
+  const qLower=q.toLowerCase();
   let answer='';
-  if(analysis.intent==='how'||analysis.intent==='fix'){answer='这是一个<b>'+(analysis.category||'技术问题')+'</b>相关的咨询。<br><br>建议从以下几个方向入手：<br>1. 查看是否有类似的历史问题和解决方案<br>2. 分析问题的根本原因<br>3. 参考竞品（萤石、海康、Ring）的实现方案';}
-  else if(analysis.intent==='what'){answer='这是一个关于<b>'+(analysis.category||'功能特性')+'</b>的查询。<br><br>建议查阅相关的产品文档和技术规格说明。';}
-  else{answer='根据问题关键词「'+esc(q)+'」分析，'+(analysis.category?'这属于<b>'+analysis.category+'</b>类型的问题。':'请尝试更具体的描述或关键词。');}
+
+  // 埋点相关
+  if(/埋点|点位|expose|track|统计/.test(qLower)){
+    answer='<b>结论</b>：知识库中暂未找到该埋点点位的直接信息。';
+    answer+='<br><br><b>📋 建议操作</b>';
+    answer+='<br>1. 查看代码仓库中的埋点实现（useTrack.js、TrackUtil 等）';
+    answer+='<br>2. 咨询数据产品获取埋点文档';
+    answer+='<br>3. 联系 <b>周睿卿</b> 或 <b>赵容慧</b> 获取技术支持';
+    answer+='<br><br><b>💡 提示</b>：代码仓库中的埋点信息是实时更新的，置信度更高。';
+    return answer;
+  }
+
+  // 接入相关
+  if(/接入|厂商|对接|合作/.test(qLower)){
+    answer='<b>结论</b>：知识库中暂未找到详细的接入文档。';
+    answer+='<br><br><b>📋 建议操作</b>';
+    answer+='<br>1. 联系 <b>周睿卿</b> 或 <b>赵容慧</b> 获取接入指引';
+    answer+='<br>2. 参考代码仓库中的接入流程实现';
+    answer+='<br>3. 查看飞书文档「小米IoT平台摄像机品类接入流程」';
+    answer+='<br><br><b>👥 负责人</b>';
+    answer+='<br>• 周睿卿：摄像机接入开发';
+    answer+='<br>• 赵容慧：摄像机接入开发';
+    return answer;
+  }
+
+  // 通用回答
+  if(analysis.intent==='how'||analysis.intent==='fix'){
+    answer='这是一个<b>'+(analysis.category||'技术问题')+'</b>相关的咨询。';
+    answer+='<br><br><b>📋 建议操作</b>';
+    answer+='<br>1. 查看代码仓库了解当前实现状态';
+    answer+='<br>2. 检索知识库中的历史解决方案';
+    answer+='<br>3. 参考相关文档和规范';
+    answer+='<br><br><b>👥 如需帮助</b>：联系 <b>周睿卿</b> 或 <b>赵容慧</b>';
+  }else if(analysis.intent==='what'){
+    answer='这是一个关于<b>'+(analysis.category||'功能特性')+'</b>的查询。';
+    answer+='<br><br><b>📋 建议</b>';
+    answer+='<br>1. 查阅相关的产品文档和技术规格';
+    answer+='<br>2. 查看代码仓库中的实现';
+    answer+='<br>3. 联系产品负责人获取详细信息';
+  }else{
+    answer='根据问题关键词「'+esc(q)+'」分析，'+(analysis.category?'这属于<b>'+analysis.category+'</b>类型的问题。':'请尝试更具体的描述或关键词。');
+    answer+='<br><br><b>💡 提示</b>：如果知识库没有找到答案，可以：';
+    answer+='<br>1. 查看代码仓库（实时更新，置信度更高）';
+    answer+='<br>2. 联系负责人：<b>周睿卿</b>、<b>赵容慧</b>';
+  }
   return answer;
 }
 
