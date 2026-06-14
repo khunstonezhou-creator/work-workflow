@@ -590,6 +590,22 @@ function qaRemoveLoading(id) {
 
 function qaGenerateAnswer(q) {
   const qLower = q.toLowerCase();
+  const JIRA_BASE = 'https://jira.n.xiaomi.com/browse/';
+
+  // 检测是否是 Jira 编号
+  const jiraKeyMatch = q.match(/([A-Z][A-Z0-9]+-\d+)/i);
+  const isJiraKey = !!jiraKeyMatch;
+  const jiraKey = isJiraKey ? jiraKeyMatch[1].toUpperCase() : '';
+
+  // Jira 项目信息
+  const jiraProjects = {
+    'MICAM': { name: '小米摄像机', commonIssues: 'UI适配、功能bug、性能优化' },
+    'MIECOCM': { name: '米家摄像机插件', commonIssues: '插件兼容性、UI适配、功能需求' },
+    'MIECOMX': { name: '米家摄像机MX', commonIssues: '看家助手、事件检测、推送通知' },
+    'MIIO': { name: '米家IoT平台', commonIssues: '设备接入、协议适配、平台功能' },
+    'MOXIANG': { name: '摩象摄像机', commonIssues: '硬件适配、固件升级、功能开发' },
+    'MIOTITR': { name: 'IoT迭代', commonIssues: '需求迭代、功能优化、bug修复' }
+  };
 
   // 检测问题类型
   const isFeatureListQuestion = /有哪些功能|功能有哪些|支持哪些|功能列表|功能清单|有什么功能/.test(qLower);
@@ -597,9 +613,17 @@ function qaGenerateAnswer(q) {
   const isTechnicalQuestion = /功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|埋点|点位|统计|接口|api|播放器|云台|看家|推送|存储|ai|算法|围栏|人脸|宠物|通话|夜视|录制|回看|sd卡|黑屏|卡顿|双摄/.test(qLower);
   const isNonTechnicalQuestion = /接入流程|怎么接入|如何接入|厂商接入|找谁|联系谁|负责人|文档在哪/.test(qLower);
 
-  // 搜索代码
+  // 搜索代码和文档
   const codeResults = qaSearchCode(q);
   const docResults = qaSearchDocs(q);
+
+  // 搜索相似 Jira 问题
+  const similarJiras = qaSearchSimilarJiras(q, jiraKey);
+
+  // Jira 编号搜索
+  if (isJiraKey) {
+    return qaGenerateJiraAnswer(jiraKey, similarJiras, codeResults, docResults, jiraProjects);
+  }
 
   // 功能清单类问题
   if (isFeatureListQuestion || isAIFeatureQuestion) {
@@ -618,6 +642,96 @@ function qaGenerateAnswer(q) {
 
   // 通用回答
   return qaGenerateGeneralAnswer(q, codeResults, docResults);
+}
+
+// 搜索相似 Jira 问题
+function qaSearchSimilarJiras(q, excludeKey) {
+  if (!ALL_ISSUES || !ALL_ISSUES.issues) return [];
+  const qLower = q.toLowerCase();
+
+  return ALL_ISSUES.issues
+    .filter(issue => issue.key !== excludeKey)
+    .map(issue => {
+      let score = 0;
+      const searchText = (issue.key + ' ' + issue.summary + ' ' + (issue.category || '')).toLowerCase();
+
+      // 关键词匹配
+      qLower.split(/\s+/).forEach(w => {
+        if (w.length >= 2 && searchText.includes(w)) score += 5;
+      });
+
+      // 分类匹配
+      if (issue.category && qLower.includes(issue.category.toLowerCase())) score += 10;
+
+      return { ...issue, score };
+    })
+    .filter(issue => issue.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
+}
+
+// 生成 Jira 问题回答
+function qaGenerateJiraAnswer(jiraKey, similarJiras, code, docs, projects) {
+  const JIRA_BASE = 'https://jira.n.xiaomi.com/browse/';
+  const project = jiraKey.split('-')[0];
+  const projectInfo = projects[project] || { name: '未知项目', commonIssues: '请查看 Jira 详情' };
+
+  // 查找本地数据中的 Jira
+  const localIssue = ALL_ISSUES?.issues?.find(i => i.key === jiraKey);
+
+  let answer = '<b>📋 结论</b>：';
+
+  if (localIssue) {
+    answer += '找到该问题的详细信息。';
+    answer += '<br><br><b>📄 问题信息</b>';
+    answer += '<br>• <b>编号</b>：<a href="' + JIRA_BASE + jiraKey + '" target="_blank" style="color:#4f46e5">' + jiraKey + '</a>';
+    answer += '<br>• <b>标题</b>：' + esc(localIssue.summary);
+    answer += '<br>• <b>状态</b>：<span style="color:' + (localIssue.status === 'OPEN' ? '#dc2626' : localIssue.status === 'In Progress' ? '#2563eb' : '#16a34a') + '">' + esc(localIssue.status) + '</span>';
+    answer += '<br>• <b>负责人</b>：' + esc(localIssue.assignee);
+    answer += '<br>• <b>分类</b>：' + esc(localIssue.category || '未分类');
+  } else {
+    answer += '该问题不在本地数据中，以下为分析和建议。';
+    answer += '<br><br><b>📋 问题分析</b>';
+    answer += '<br>• <b>项目</b>：' + esc(projectInfo.name) + ' (' + project + ')';
+    answer += '<br>• <b>常见问题类型</b>：' + esc(projectInfo.commonIssues);
+  }
+
+  // 相似问题
+  if (similarJiras.length > 0) {
+    answer += '<br><br><b>🔗 相似问题</b>';
+    similarJiras.slice(0, 4).forEach(r => {
+      answer += '<br>• <a href="' + JIRA_BASE + r.key + '" target="_blank" style="color:#4f46e5">' + r.key + '</a> ' + esc(r.summary).substring(0, 40) + ' [' + esc(r.status) + ']';
+    });
+  }
+
+  // 技术问题给代码建议
+  if (code.length > 0) {
+    answer += '<br><br><b>💻 代码改进建议（高置信度）</b>';
+    code.slice(0, 2).forEach(r => {
+      answer += '<br>• 参考 <a href="' + esc(r.url) + '" target="_blank" style="color:#4f46e5">' + esc(r.name) + '</a>：' + esc(r.summary).substring(0, 60);
+    });
+  }
+
+  // 文档引用
+  if (docs.length > 0) {
+    answer += '<br><br><b>📖 参考文档</b>';
+    docs.slice(0, 2).forEach(r => {
+      answer += '<br>• <a href="' + esc(r.url) + '" target="_blank" style="color:#4f46e5">' + esc(r.title) + '</a>';
+    });
+  }
+
+  // 竞品建议
+  answer += '<br><br><b>🔍 竞品参考建议</b>';
+  answer += '<br>• 调研萤石、海康、Ring 等竞品的类似功能实现';
+  answer += '<br>• 参考行业最佳实践进行改进';
+
+  // 快捷操作
+  answer += '<br><br><b>🔗 快捷操作</b>';
+  answer += '<br>• <a href="' + JIRA_BASE + jiraKey + '" target="_blank" style="color:#4f46e5">查看 Jira 详情</a>';
+  answer += '<br>• <a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22' + encodeURIComponent(jiraKey) + '%22" target="_blank" style="color:#4f46e5">Jira 搜索相似问题</a>';
+  answer += '<br>• <a href="https://mi.feishu.cn/search?q=' + encodeURIComponent(jiraKey) + '" target="_blank" style="color:#4f46e5">飞书文档搜索</a>';
+
+  return answer;
 }
 
 function qaSearchCode(q) {
@@ -1889,6 +2003,7 @@ function showSug(key){
 let KB_DATA=null;
 let DOCS_DATA=null;
 let CODE_DATA=null; // 代码仓库索引
+let ALL_ISSUES=null; // 所有 Jira 问题
 let SOLUTIONS_RAW=''; // solutions.md 原始内容
 
 // Jira 项目分析
@@ -2354,6 +2469,8 @@ fetch('knowledge-base/docs-index.json').then(r=>r.json()).then(d=>{DOCS_DATA=d})
 fetch('knowledge-base/solutions.md').then(r=>r.text()).then(d=>{SOLUTIONS_RAW=d}).catch(()=>{});
 // 加载代码仓库索引
 fetch('knowledge-base/code-index.json').then(r=>r.json()).then(d=>{CODE_DATA=d}).catch(()=>{});
+// 加载 Jira 问题数据
+fetch('boards/all-issues-data.json').then(r=>r.json()).then(d=>{ALL_ISSUES=d}).catch(()=>{});
 
 function kbSearch(query){
   const results=[];
