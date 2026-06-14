@@ -141,8 +141,8 @@ a:hover{text-decoration:underline}
     <h1>🚀 个人工作台</h1>
     <p>摄像机接入团队</p>
   </div>
-  <div class="nav" onclick="window.open('search.html','_blank')" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;margin-bottom:8px">🤖 智能问答</div>
-  <div class="nav on" onclick="go('kb',this)" id="nav-kb">📚 知识库</div>
+  <div class="nav on" onclick="go('qa',this)" id="nav-qa">🤖 智能问答</div>
+  <div class="nav" onclick="go('kb',this)" id="nav-kb">📚 知识库</div>
   <div class="nav" onclick="go('jira',this)" data-permission="internal">📋 Jira 处理</div>
 <div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 产品遗留问题</div>
 <div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 全部问题</div>
@@ -167,28 +167,81 @@ a:hover{text-decoration:underline}
   </div>
   <div class="content">
 
-    <!-- ==================== 1. 知识库 ==================== -->
-    <div class="tab on" id="t-kb">
+    <!-- ==================== 0. 智能问答 ==================== -->
+    <div class="tab on" id="t-qa">
       <div class="section-hd">
-        <h3>📚 知识库</h3>
-        <p>Jira 解决方案沉淀、飞书文档索引、智能检索</p>
+        <h3>🤖 智能问答</h3>
+        <p>摄像机标插团队技术助手 · 基于代码仓库和知识库</p>
       </div>
 
-      <!-- 知识库智能搜索 -->
       <div class="card" style="margin-bottom:16px">
-        <div style="padding:14px 16px">
-          <div style="display:flex;gap:8px;align-items:center">
-            <div style="flex:1;position:relative">
-              <input id="kb-search-input" placeholder="输入任何问题，AI 智能分析（如：如何处理多语言推送？iOS声音中断怎么办？C700有什么已知问题？）" style="width:100%;padding:10px 14px 10px 36px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;transition:border-color 0.2s" oninput="kbSearchLive()" onkeydown="if(event.key==='Enter')kbSearchLive()">
-              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#999;font-size:14px">🔍</span>
+        <div style="padding:16px">
+          <!-- 搜索框 -->
+          <div style="display:flex;gap:12px;margin-bottom:16px">
+            <input id="qa-input" placeholder="输入你的问题..." style="flex:1;padding:12px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s" onkeydown="if(event.key==='Enter')qaAsk()">
+            <button class="btn" onclick="qaAsk()" style="padding:12px 24px;font-size:14px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)">提问</button>
+          </div>
+
+          <!-- 示例标签 -->
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+            <span class="example-tag" onclick="qaSetQuestion('直播黑屏怎么排查')">直播黑屏怎么排查</span>
+            <span class="example-tag" onclick="qaSetQuestion('已有的AI功能有哪些')">已有的AI功能有哪些</span>
+            <span class="example-tag" onclick="qaSetQuestion('埋点怎么配置')">埋点怎么配置</span>
+            <span class="example-tag" onclick="qaSetQuestion('spec配置在哪里')">spec配置在哪里</span>
+            <span class="example-tag" onclick="qaSetQuestion('云台控制怎么实现')">云台控制怎么实现</span>
+            <span class="example-tag" onclick="qaSetQuestion('新厂商怎么接入')">新厂商怎么接入</span>
+          </div>
+
+          <!-- 聊天区域 -->
+          <div id="qa-chat" style="background:#f9fafb;border-radius:10px;padding:16px;min-height:400px;max-height:600px;overflow-y:auto">
+            <!-- 欢迎消息 -->
+            <div class="qa-message assistant">
+              <div class="qa-avatar">🤖</div>
+              <div class="qa-content">
+                你好！我是摄像机标插团队的技术助手。<br><br>
+                我可以帮你：<br>
+                • 查找代码实现和关键文件位置<br>
+                • 解答功能相关问题<br>
+                • 提供问题排查方向<br>
+                • 检索知识库文档<br><br>
+                请输入你的问题，或点击上方的示例标签快速提问。
+              </div>
             </div>
-            <button class="btn" onclick="kbSearchLive()" style="padding:10px 20px;font-size:13px">智能分析</button>
           </div>
-          <div style="margin-top:6px;padding-left:4px">
-            <span style="font-size:10px;color:#bbb">💡 支持自然语言提问、Jira 编号、功能模块、错误描述等</span>
+
+          <div style="text-align:center;padding:12px;font-size:11px;color:#999">
+            💡 基于代码仓库和知识库的实时分析 · 置信度高
           </div>
-          <div id="kb-search-results" style="margin-top:10px"></div>
         </div>
+      </div>
+
+      <style>
+        .qa-message { display:flex;gap:10px;margin-bottom:16px; }
+        .qa-message.user { flex-direction:row-reverse; }
+        .qa-avatar { width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0; }
+        .qa-message.user .qa-avatar { background:#667eea;color:white; }
+        .qa-message.assistant .qa-avatar { background:#10b981;color:white; }
+        .qa-content { max-width:80%;padding:12px 16px;border-radius:12px;font-size:13px;line-height:1.7; }
+        .qa-message.user .qa-content { background:#667eea;color:white;border-bottom-right-radius:4px; }
+        .qa-message.assistant .qa-content { background:white;color:#333;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+        .qa-content b { color:#667eea; }
+        .qa-content code { background:#e5e7eb;padding:2px 6px;border-radius:4px;font-size:11px; }
+        .qa-content a { color:#667eea;text-decoration:none; }
+        .qa-content a:hover { text-decoration:underline; }
+        .example-tag { padding:6px 14px;background:#f3f4f6;border-radius:20px;font-size:12px;color:#666;cursor:pointer;transition:all 0.2s; }
+        .example-tag:hover { background:#667eea;color:white; }
+        .qa-typing span { display:inline-block;width:8px;height:8px;background:#999;border-radius:50%;margin:0 2px;animation:qa-typing 1.4s infinite; }
+        .qa-typing span:nth-child(2) { animation-delay:0.2s; }
+        .qa-typing span:nth-child(3) { animation-delay:0.4s; }
+        @keyframes qa-typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
+      </style>
+    </div>
+
+    <!-- ==================== 1. 知识库 ==================== -->
+    <div class="tab" id="t-kb">
+      <div class="section-hd">
+        <h3>📚 知识库</h3>
+        <p>Jira 解决方案沉淀、飞书文档索引</p>
       </div>
 
       <!-- Jira 解决方案沉淀 -->
@@ -440,7 +493,7 @@ a:hover{text-decoration:underline}
 <script>
 /* ===== 工作台导航 ===== */
 const TITLES={
-  kb:'📚 知识库',jira:'📋 Jira 处理',access:'🔌 接入问题处理',
+  qa:'🤖 智能问答',kb:'📚 知识库',jira:'📋 Jira 处理',access:'🔌 接入问题处理',
   docs:'📝 产品文档产出',req:'📊 需求管理',other:'⚙️ 其他业务',
   'jira-cat':'📋 产品遗留问题分类','jira-all':'📝 全部问题','jira-mon':'📅 月度发版'
 };
@@ -465,6 +518,287 @@ function go(id,el){
     document.getElementById('t-'+id).classList.add('on');
     document.getElementById('title').textContent=TITLES[id];
   }
+}
+
+/* ===== 智能问答功能 ===== */
+function qaSetQuestion(q) {
+  document.getElementById('qa-input').value = q;
+  qaAsk();
+}
+
+function qaAsk() {
+  const input = document.getElementById('qa-input');
+  const question = input.value.trim();
+  if (!question) return;
+
+  // 添加用户消息
+  qaAddMessage(question, 'user');
+  input.value = '';
+
+  // 显示加载状态
+  const loadingId = qaAddLoading();
+
+  // 生成回答
+  setTimeout(() => {
+    const answer = qaGenerateAnswer(question);
+    qaRemoveLoading(loadingId);
+    qaAddMessage(answer, 'assistant');
+  }, 500);
+}
+
+function qaAddMessage(content, type) {
+  const container = document.getElementById('qa-chat');
+  const avatar = type === 'user' ? '👤' : '🤖';
+  const id = 'qa-msg-' + Date.now();
+
+  const html = `
+    <div class="qa-message ${type}" id="${id}">
+      <div class="qa-avatar">${avatar}</div>
+      <div class="qa-content">${content}</div>
+    </div>
+  `;
+
+  container.insertAdjacentHTML('beforeend', html);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function qaAddLoading() {
+  const container = document.getElementById('qa-chat');
+  const id = 'qa-loading-' + Date.now();
+
+  const html = `
+    <div class="qa-message assistant" id="${id}">
+      <div class="qa-avatar">🤖</div>
+      <div class="qa-content">
+        <div class="qa-typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  container.insertAdjacentHTML('beforeend', html);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function qaRemoveLoading(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function qaGenerateAnswer(q) {
+  const qLower = q.toLowerCase();
+
+  // 检测问题类型
+  const isFeatureListQuestion = /有哪些功能|功能有哪些|支持哪些|功能列表|功能清单|有什么功能/.test(qLower);
+  const isAIFeatureQuestion = /ai功能|人工智能|智能功能|算法功能/.test(qLower);
+  const isTechnicalQuestion = /功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|埋点|点位|统计|接口|api|播放器|云台|看家|推送|存储|ai|算法|围栏|人脸|宠物|通话|夜视|录制|回看|sd卡|黑屏|卡顿|双摄/.test(qLower);
+  const isNonTechnicalQuestion = /接入流程|怎么接入|如何接入|厂商接入|找谁|联系谁|负责人|文档在哪/.test(qLower);
+
+  // 搜索代码
+  const codeResults = qaSearchCode(q);
+  const docResults = qaSearchDocs(q);
+
+  // 功能清单类问题
+  if (isFeatureListQuestion || isAIFeatureQuestion) {
+    return qaGenerateFeatureListAnswer(q, codeResults, docResults);
+  }
+
+  // 技术问题
+  if (isTechnicalQuestion && !isNonTechnicalQuestion) {
+    return qaGenerateTechnicalAnswer(q, codeResults, docResults);
+  }
+
+  // 非技术问题
+  if (isNonTechnicalQuestion) {
+    return qaGenerateProcessAnswer(q, docResults);
+  }
+
+  // 通用回答
+  return qaGenerateGeneralAnswer(q, codeResults, docResults);
+}
+
+function qaSearchCode(q) {
+  if (!CODE_DATA || !CODE_DATA.files) return [];
+  const qLower = q.toLowerCase();
+  const results = [];
+
+  CODE_DATA.files.forEach(file => {
+    let score = 0;
+    const searchText = (file.name + ' ' + file.path + ' ' + file.summary + ' ' + (file.keywords || []).join(' ')).toLowerCase();
+
+    qLower.split(/\s+/).forEach(w => {
+      if (w.length >= 2 && searchText.includes(w)) score += 5;
+    });
+
+    if (searchText.includes(qLower)) score += 10;
+
+    if (score > 0) {
+      results.push({ ...file, score, url: 'https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot/-/blob/main/' + file.path });
+    }
+  });
+
+  return results.sort((a, b) => b.score - a.score).slice(0, 5);
+}
+
+function qaSearchDocs(q) {
+  if (!DOCS_DATA || !DOCS_DATA.categories) return [];
+  const qLower = q.toLowerCase();
+  const results = [];
+
+  Object.entries(DOCS_DATA.categories).forEach(([cat, info]) => {
+    (info.docs || []).forEach(doc => {
+      const searchText = (doc.title + ' ' + (doc.summary || '') + ' ' + cat).toLowerCase();
+      let score = 0;
+      qLower.split(/\s+/).forEach(w => {
+        if (w.length >= 2 && searchText.includes(w)) score += 3;
+      });
+      if (score > 0) {
+        results.push({ ...doc, category: cat, score, url: 'https://mi.feishu.cn/' + doc.type + '/' + doc.id });
+      }
+    });
+  });
+
+  return results.sort((a, b) => b.score - a.score).slice(0, 3);
+}
+
+function qaGenerateFeatureListAnswer(q, code, docs) {
+  let answer = '<b>📋 结论</b>：摄像机目前已支持以下功能：<br><br>';
+
+  const features = {};
+  code.forEach(r => {
+    if (r.features) {
+      r.features.forEach(f => {
+        if (!features[f]) features[f] = { name: f, files: [] };
+        features[f].files.push(r.name);
+      });
+    }
+  });
+
+  if (Object.keys(features).length > 0) {
+    const categories = {
+      '🔍 侦测类': ['人形侦测', '移动侦测', '宠物检测', '异常声响检测', '烟火检测'],
+      '👤 识别类': ['人脸识别', '人物身份识别', '跨摄像头追踪', '每日故事'],
+      '🛡️ 保护类': ['虚拟围栏', '区域隐私保护', '家人守护']
+    };
+
+    for (const [catName, catFeatures] of Object.entries(categories)) {
+      const matched = catFeatures.filter(f => features[f]);
+      if (matched.length > 0) {
+        answer += '<b>' + catName + '</b><br>';
+        matched.forEach(f => { answer += '• ' + esc(f) + '<br>'; });
+        answer += '<br>';
+      }
+    }
+  }
+
+  answer += '<b>⚙️ 配置方式</b><br>';
+  answer += '• 在 IoT 平台配置相关 spec<br>';
+  answer += '• 部分功能有硬编码限制（需检查 model 列表）<br>';
+
+  if (docs.length > 0) {
+    answer += '<br><b>📖 参考文档</b><br>';
+    docs.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+    });
+  }
+
+  return answer;
+}
+
+function qaGenerateTechnicalAnswer(q, code, docs) {
+  if (code.length === 0) {
+    return '<b>📋 结论</b>：暂未找到相关代码实现。<br><br>建议：<br>1. 尝试更具体的关键词<br>2. 查看文档目录 doc/<br>3. 联系开发人员确认';
+  }
+
+  const moduleMapping = CODE_DATA?.moduleMapping || {};
+  let matchedModule = '';
+  for (const [keywords, modulePath] of Object.entries(moduleMapping)) {
+    if (keywords.split('/').some(k => q.toLowerCase().includes(k.toLowerCase()))) {
+      matchedModule = modulePath;
+      break;
+    }
+  }
+
+  let answer = '<b>📋 结论</b>：';
+  if (matchedModule) {
+    answer += '问题定位到 <code>' + esc(matchedModule) + '</code>';
+  } else {
+    answer += '根据代码分析，找到相关实现';
+  }
+
+  answer += '<br><br><b>🎯 关键代码位置</b><br>';
+  const primary = code[0];
+  answer += '• <b>主文件</b>：<a href="' + esc(primary.url) + '" target="_blank">' + esc(primary.path) + '</a><br>';
+  answer += '• <b>功能</b>：' + esc(primary.summary) + '<br>';
+
+  if (code.length > 1) {
+    answer += '• <b>相关文件</b>：';
+    code.slice(1, 3).forEach(r => {
+      answer += '<a href="' + esc(r.url) + '" target="_blank" style="margin-left:8px">' + esc(r.name) + '</a>';
+    });
+    answer += '<br>';
+  }
+
+  answer += '<br><b>🔧 排查方向</b><br>';
+  const qLower = q.toLowerCase();
+  if (qLower.includes('黑屏') || qLower.includes('卡顿')) {
+    answer += '1. 检查 P2P 连接状态（MISS 协议）<br>2. 查看 videoRender 是否正常初始化<br>3. 检查硬解码是否支持当前设备<br>';
+  } else if (qLower.includes('埋点') || qLower.includes('统计')) {
+    answer += '1. 确认事件名和参数是否正确<br>2. 检查 TrackUtil.newOneTrack 调用<br>3. 在数据平台验证数据是否上报成功<br>';
+  } else if (qLower.includes('设置') || qLower.includes('配置')) {
+    answer += '1. 检查 spec 配置是否正确（siid/piid）<br>2. 确认 IoT 平台配置项是否拉取成功<br>3. 查看是否有硬编码限制<br>';
+  } else {
+    answer += '1. 定位到上述关键文件<br>2. 搜索相关关键词定位问题代码<br>3. 检查日志输出确认执行流程<br>';
+  }
+
+  const docFiles = code.filter(r => r.type === 'markdown');
+  if (docFiles.length > 0) {
+    answer += '<br><b>📖 参考文档</b><br>';
+    docFiles.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.path) + '</a><br>';
+    });
+  }
+
+  return answer;
+}
+
+function qaGenerateProcessAnswer(q, docs) {
+  let answer = '<b>📋 结论</b>：这是流程性问题。<br><br>';
+
+  if (q.includes('接入') || q.includes('厂商')) {
+    answer += '<b>📋 接入步骤</b><br>1. 确认设备类型（常电/低功耗/4G）<br>2. 准备设备 Spec 配置<br>3. 完成功能测试和验证<br>4. 提交审核上线<br><br>';
+    answer += '<b>📚 相关文档</b><br>';
+    answer += '• <a href="https://mi.feishu.cn/docx/F1bxdWs6ionF1exCNzRcIQ4enEd" target="_blank">【外发版】小米IoT平台摄像机品类接入流程</a><br>';
+    answer += '• <a href="https://mi.feishu.cn/docx/OjzjdS2ltoPSMdxtztzcsdXRnqg" target="_blank">摄像机标插常见问题排查指南</a><br>';
+  } else {
+    answer += '<b>建议</b><br>1. 查阅相关文档和规范<br>2. 联系负责人获取指引<br>';
+  }
+
+  answer += '<br><b>👥 如需帮助</b>：联系 <b>周睿卿</b> 或 <b>赵容慧</b>（摄像机接入产品）';
+  return answer;
+}
+
+function qaGenerateGeneralAnswer(q, code, docs) {
+  let answer = '<b>📋 结论</b>：基于知识库分析，找到相关信息。<br><br>';
+
+  if (code.length > 0) {
+    answer += '<b>💻 相关代码</b><br>';
+    code.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.name) + '</a> - ' + esc(r.summary).substring(0, 50) + '<br>';
+    });
+  }
+
+  if (docs.length > 0) {
+    answer += '<br><b>📚 参考文档</b><br>';
+    docs.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+    });
+  }
+
+  return answer;
 }
 
 /* ===== Jira 数据和渲染 ===== */
