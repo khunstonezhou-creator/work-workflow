@@ -1,0 +1,31 @@
+# 数据文件（可重新生成）
+boards/*.json
+!boards/.gitkeep
+
+# 知识库数据（可重新生成）
+knowledge-base/docs-index.json
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Node
+node_modules/
+package-lock.json
+
+# 环境变量
+.env
+*.env
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+
+# 临时文件
+tmp/
+temp/

@@ -1,0 +1,14 @@
+[Unit]
+Description=Work Workflow Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/work-workflow
+ExecStart=/usr/bin/python3 -m http.server 9000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

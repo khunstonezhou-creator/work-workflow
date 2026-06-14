@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#333;display:flex;min-height:100vh}
+
+/* ===== sidebar ===== */
+.sidebar{width:220px;background:linear-gradient(180deg,#1a1a2e,#16213e);color:#fff;padding:0;flex-shrink:0;display:flex;flex-direction:column}
+.sb-hd{padding:20px 15px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-hd h1{font-size:16px;font-weight:600}
+.sb-hd p{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px}
+.nav{padding:12px 15px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;transition:all .2s;border-left:3px solid transparent}
+.nav:hover{background:rgba(255,255,255,.08)}
+.nav.on{background:rgba(102,126,234,.3);border-left-color:#667eea}
+.nav.sub{padding:8px 15px;font-size:12px;color:rgba(255,255,255,.6)}
+.nav.sub:hover{background:rgba(255,255,255,.05)}
+.nav.sub.on{background:rgba(102,126,234,.2);border-left-color:rgba(102,126,234,.5)}
+.sb-ft{margin-top:auto;padding:15px;border-top:1px solid rgba(255,255,255,.1);font-size:10px;color:rgba(255,255,255,.3)}
+
+/* ===== main ===== */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{background:#fff;padding:14px 24px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.topbar h2{font-size:16px;font-weight:600}
+.topbar .meta{font-size:12px;color:#999}
+.content{padding:20px 24px;flex:1}
+
+/* ===== tabs ===== */
+.tab{display:none}.tab.on{display:block}
+.jtab{display:none}.jtab.on{display:block}
+
+/* ===== placeholder cards ===== */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px}
+.ph-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:box-shadow .2s}
+.ph-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ph-icon{font-size:32px;margin-bottom:12px}
+.ph-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.ph-desc{font-size:12px;color:#888;line-height:1.6;margin-bottom:12px}
+.ph-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.ph-tag.building{background:#fff3e0;color:#e65100}
+.ph-tag.ready{background:#e8f5e9;color:#2e7d32}
+.ph-tag.soon{background:#e3f2fd;color:#1565c0}
+.ph-links{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.ph-link{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#f8f9fa;border-radius:6px;font-size:12px;color:#667eea;text-decoration:none;transition:background .15s}
+.ph-link:hover{background:#e8eaf6;text-decoration:none}
+.section-hd{margin-bottom:16px}
+.section-hd h3{font-size:18px;font-weight:600;margin-bottom:4px}
+.section-hd p{font-size:13px;color:#888}
+
+/* ===== filter bar ===== */
+.filter{background:#fff;padding:12px 16px;border-radius:8px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.filter label{font-size:12px;color:#666}
+.filter select,.filter input{padding:5px 10px;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;outline:none}
+.filter select:focus,.filter input:focus{border-color:#667eea}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:4px 12px;background:#e8eaf6;border-radius:16px;font-size:12px;cursor:pointer;transition:all .2s;user-select:none}
+.chip:hover{background:#c5cae9}
+.chip.sel{background:#667eea;color:#fff}
+
+/* ===== stats ===== */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.stat{background:#fff;padding:14px;border-radius:8px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.stat .n{font-size:24px;font-weight:700}
+.stat .l{font-size:11px;color:#999;margin-top:2px}
+
+/* ===== cards ===== */
+.card{background:#fff;border-radius:8px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card-hd{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;transition:background .15s}
+.card-hd:hover{background:#fafafa}
+.card-hd .left{display:flex;align-items:center;gap:10px}
+.badge{background:#667eea;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.pri{padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.pri-高{background:#ffebee;color:#c62828}
+.pri-中{background:#fff3e0;color:#e65100}
+.pri-低{background:#e8f5e9;color:#2e7d32}
+.card-bd{display:none;padding:0 16px 16px}
+.card-bd.show{display:block}
+.info{background:#f8f9fa;padding:10px 12px;border-radius:6px;margin-bottom:10px;font-size:12px;line-height:1.6}
+.info.green{background:#e8f5e9;border-left:3px solid #4caf50}
+.info.orange{background:#fff3e0;border-left:3px solid #ff9800}
+.info .lb{font-weight:600;color:#667eea;margin-bottom:4px;font-size:11px}
+.info.green .lb{color:#2e7d32}
+.info.orange .lb{color:#e65100}
+.ref{padding:8px;background:#fff;border-radius:4px;margin-top:6px;border:1px solid #ffe0b2;font-size:11px}
+.ref a{color:#e65100;font-weight:600;text-decoration:none}
+.ref .sol{color:#2e7d32;background:#e8f5e9;padding:2px 6px;border-radius:3px;display:inline-block;margin-top:4px;font-size:11px}
+
+/* ===== table ===== */
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+th{background:#f5f5f5;padding:8px 10px;text-align:left;font-weight:600;color:#666;font-size:11px;border-bottom:2px solid #eee}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0}
+tr:hover td{background:#f8f9fa}
+a{color:#667eea;text-decoration:none}
+a:hover{text-decoration:underline}
+.p{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.p-Blocker{background:#ffebee;color:#c62828}
+.p-Critical{background:#fff3e0;color:#e65100}
+.p-Major{background:#fff8e1;color:#f57f17}
+.p-Minor{background:#e8f5e9;color:#2e7d32}
+.s{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.s-OPEN{background:#ffebee;color:#c62828}
+.s-InProgress{background:#fff3e0;color:#e65100}
+.s-Verify{background:#e8f5e9;color:#2e7d32}
+.at{display:inline-block;padding:2px 8px;background:#ede7f6;color:#4527a0;border-radius:10px;font-size:11px}
+.ct{display:inline-block;padding:2px 8px;background:#e3f2fd;color:#1565c0;border-radius:10px;font-size:11px}
+.btn{background:#667eea;color:#fff;border:none;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;transition:background .15s}
+.btn:hover{background:#5a6fd6}
+
+/* ===== month ===== */
+.month-sec{margin-bottom:16px}
+.month-hd{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 16px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600}
+.month-bd{background:#fff;border-radius:0 0 8px 8px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.month-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.month-stat{padding:10px;background:#f8f9fa;border-radius:6px;text-align:center}
+.month-stat .n{font-size:18px;font-weight:700;color:#667eea}
+.month-stat .l{font-size:10px;color:#999}
+
+/* ===== modal ===== */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:12px;width:90%;max-width:640px;max-height:80vh;overflow-y:auto;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:12px}
+.modal-top h3{font-size:15px}
+.modal-x{background:none;border:none;font-size:24px;cursor:pointer;color:#999;padding:0 4px}
+.modal-x:hover{color:#333}
+.sg{margin-bottom:16px}
+.sg h4{font-size:13px;color:#667eea;border-bottom:2px solid #667eea;padding-bottom:6px;margin-bottom:10px}
+.sg-item{padding:10px;background:#f8f9fa;border-radius:6px;margin-bottom:8px;font-size:12px;line-height:1.5}
+.sg-sol{color:#2e7d32;background:#e8f5e9;padding:4px 8px;border-radius:4px;font-size:11px;display:inline-block;margin-top:4px}
+.empty{text-align:center;padding:40px;color:#999;font-size:14px}
+.empty .ic{font-size:40px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sb-hd">
+    <h1>🚀 个人工作台</h1>
+    <p>摄像机接入团队</p>
+  </div>
+  <div class="nav on" onclick="go('kb',this)">📚 知识库</div>
+  <div class="nav" onclick="go('jira',this)">📋 Jira 处理</div>
+<div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px">　└ 产品遗留问题</div>
+<div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px">　└ 全部问题</div>
+<div class="nav sub" onclick="go('jira-mon',this)" style="padding-left:40px;font-size:12px">　└ 月度发版</div>
+  <div class="nav" onclick="go('access',this)">🔌 接入问题处理</div>
+  <div class="nav" onclick="go('docs',this)">📝 产品文档产出</div>
+  <div class="nav" onclick="go('req',this)">📊 需求管理</div>
+  <div class="nav" onclick="go('other',this)">⚙️ 其他业务</div>
+  <div class="sb-ft">
+    <div id="user-info" style="margin-bottom:8px"></div>
+    数据来源: Jira Filter<br>更新: <span id="upd2">--</span>
+  </div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <h2 id="title">📚 知识库</h2>
+    <div class="meta">
+      <span id="upd">--</span>
+      <span id="admin-link" style="display:none"> | <a href="/admin" style="color:#667eea">👥 管理后台</a></span>
+      <span> | <a href="/logout" style="color:#999">退出</a></span>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- ==================== 1. 知识库 ==================== -->
+    <div class="tab on" id="t-kb">
+      <div class="section-hd">
+        <h3>📚 知识库</h3>
+        <p>Jira 解决方案沉淀、飞书文档索引、智能检索</p>
+      </div>
+
+      <!-- 知识库搜索 -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="padding:12px 16px">
+          <div style="display:flex;gap:8px">
+            <input id="kb-search-input" placeholder="搜索知识库（Jira编号、关键词、分类...）" style="flex:1;padding:8px 12px;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;outline:none" oninput="kbSearchLive()">
+            <button class="btn" onclick="kbSearchLive()" style="padding:8px 16px">🔍 搜索</button>
+          </div>
+          <div id="kb-search-results" style="margin-top:8px"></div>
+        </div>
+      </div>
+
+      <!-- Jira 解决方案沉淀 -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd" onclick="this.nextElementSibling.classList.toggle('show')">
+          <div class="left"><span>💡 Jira 解决方案沉淀</span><span class="badge" id="kb-sol-count">-</span></div>
+          <span style="color:#999;font-size:11px">▼</span>
+        </div>
+        <div class="card-bd show">
+          <div class="ph-grid" style="margin:0">
+            <div class="ph-card" style="padding:14px">
+              <div class="ph-title" style="font-size:13px">解决方案沉淀库</div>
+              <div class="ph-desc">技术问题的解决方案，每次收到 Jira 时检索</div>
+              <a class="ph-link" href="knowledge-base/solutions.md" target="_blank">📄 solutions.md</a>
+            </div>
+            <div class="ph-card" style="padding:14px">
+              <div class="ph-title" style="font-size:13px">产品方案决策记录</div>
+              <div class="ph-desc">产品方案的决策过程和结论</div>
+              <a class="ph-link" href="knowledge-base/product-decisions.md" target="_blank">📄 product-decisions.md</a>
+            </div>
+            <div class="ph-card" style="padding:14px">
+              <div class="ph-title" style="font-size:13px">重复 Jira 合并记录</div>
+              <div class="ph-desc">重复问题的合并和关联</div>
+              <a class="ph-link" href="knowledge-base/duplicates.md" target="_blank">📄 duplicates.md</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 飞书文档索引 -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd" onclick="this.nextElementSibling.classList.toggle('show')">
+          <div class="left"><span>📚 飞书文档索引</span><span class="badge" id="kb-doc-count">-</span></div>
+          <span style="color:#999;font-size:11px">▼</span>
+        </div>
+        <div class="card-bd show">
+          <div id="kb-docs-list" style="font-size:12px">
+            <div style="text-align:center;padding:16px;color:#999">加载中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 知识库同步（管理员可见） -->
+      <div class="card admin-only">
+        <div class="card-hd" onclick="this.nextElementSibling.classList.toggle('show')">
+          <div class="left"><span>🔄 知识库同步</span><span class="badge" id="kb-sync-badge">0</span></div>
+          <span style="color:#999;font-size:11px">▼</span>
+        </div>
+        <div class="card-bd">
+          <div id="kb-sync-area" style="font-size:12px;color:#666">
+            <div style="text-align:center;padding:16px;color:#999">加载中...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 2. Jira 处理 ==================== -->
+    <div class="tab" id="t-jira">
+      <div class="section-hd">
+        <h3>📋 Jira 处理</h3>
+        <p>产品遗留问题分类、全部问题列表、月度发版跟踪</p>
+      </div>
+
+      <!-- Jira - 产品遗留问题分类 -->
+      <div class="jtab" id="j-cat">
+        <div class="stats" id="c-stats"></div>
+        <div id="c-list"></div>
+      </div>
+
+      <!-- Jira - 全部问题 -->
+      <div class="jtab" id="j-all">
+        <div class="filter">
+          <label>类型</label><select id="f-cat" onchange="renderAll()"><option>全部</option></select>
+          <label>优先级</label><select id="f-pri" onchange="renderAll()"><option>全部</option><option>Blocker</option><option>Critical</option><option>Major</option><option>Minor</option></select>
+          <label>状态</label><select id="f-sta" onchange="renderAll()"><option>全部</option><option>OPEN</option><option>In Progress</option><option>Verify</option></select>
+          <label>搜索</label><input id="f-q" placeholder="搜索 Jira 编号或标题..." oninput="renderAll()" style="min-width:200px">
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="n" id="s-tot" style="color:#667eea">0</div><div class="l">总数</div></div>
+          <div class="stat"><div class="n" id="s-open" style="color:#c62828">0</div><div class="l">OPEN</div></div>
+          <div class="stat"><div class="n" id="s-prog" style="color:#e65100">0</div><div class="l">进行中</div></div>
+          <div class="stat"><div class="n" id="s-ver" style="color:#2e7d32">0</div><div class="l">验证</div></div>
+          <div class="stat"><div class="n" id="s-crit" style="color:#e65100">0</div><div class="l">Critical+</div></div>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>Jira</th><th>标题</th><th>处理人</th><th>优先级</th><th>状态</th><th>类型</th><th>操作</th></tr></thead>
+          <tbody id="a-tbody"></tbody>
+        </table></div>
+      </div>
+
+      <!-- Jira - 月度发版 -->
+      <div class="jtab" id="j-mon">
+        <div class="filter"><label>👥 关注人员:</label><div class="chips" id="m-chips"></div></div>
+        <div class="filter">
+          <label>月份</label><select id="m-mon" onchange="renderMon()"><option>全部</option></select>
+          <label>类型</label><select id="m-cat" onchange="renderMon()"><option>全部</option></select>
+          <label>优先级</label><select id="m-pri" onchange="renderMon()"><option>全部</option><option>Blocker</option><option>Critical</option><option>Major</option><option>Minor</option></select>
+          <label>状态</label><select id="m-sta" onchange="renderMon()"><option>全部</option><option>OPEN</option><option>In Progress</option><option>Verify</option></select>
+          <label>搜索</label><input id="m-q" placeholder="搜索..." oninput="renderMon()" style="min-width:200px">
+        </div>
+        <div id="m-list"></div>
+      </div>
+    </div>
+
+    <!-- ==================== 3. 接入问题处理 ==================== -->
+    <div class="tab" id="t-access">
+      <div class="section-hd">
+        <h3>🔌 接入问题处理</h3>
+        <p>设备接入相关问题的处理和跟踪</p>
+      </div>
+      <div class="ph-grid">
+        <div class="ph-card">
+          <div class="ph-icon">📱</div>
+          <div class="ph-title">设备接入问题库</div>
+          <div class="ph-desc">记录和跟踪设备接入过程中遇到的技术问题</div>
+          <span class="ph-tag building">搭建中</span>
+        </div>
+        <div class="ph-card">
+          <div class="ph-icon">🔧</div>
+          <div class="ph-title">接入流程文档</div>
+          <div class="ph-desc">标准化设备接入流程和规范文档</div>
+          <span class="ph-tag building">搭建中</span>
+        </div>
+        <div class="ph-card">
+          <div class="ph-icon">📊</div>
+          <div class="ph-title">接入进度看板</div>
+          <div class="ph-desc">可视化展示各设备的接入进度和状态</div>
+          <span class="ph-tag building">搭建中</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 4. 产品文档产出 ==================== -->
+    <div class="tab" id="t-docs">
+      <div class="section-hd">
+        <h3>📝 产品文档产出</h3>
+        <p>PRD 产出、数据分析、设计方案</p>
+      </div>
+      <div class="ph-grid">
+        <div class="ph-card">
+          <div class="ph-icon">📄</div>
+          <div class="ph-title">PRD 产出</div>
+          <div class="ph-desc">产品需求文档的撰写、评审和归档</div>
+          <span class="ph-tag soon">即将上线</span>
+        </div>
+        <div class="ph-card">
+          <div class="ph-icon">📊</div>
+          <div class="ph-title">数据分析</div>
+          <div class="ph-desc">激活活跃、埋点查询、复杂分析</div>
+          <div class="ph-links" style="margin-top:12px">
+            <a class="ph-link" href="https://data.mioffice.cn/whale/?pid=6#/data-bi/dashboard/9295?GFLT=~(48025~(175596~(~'xiaomi.sensor_smoke.yg2)~1454742~11))&theme=default&projectId=6&appId=2882303761517233197" target="_blank">📈 激活活跃基础数据</a>
+            <a class="ph-link" href="https://data.mioffice.cn/whale/?pid=6#/data-analysis/event-analysis?projectId=6&appId=2882303761517233197&ubasSearch=%3FubasId%3D132%26datasetId%3D1978" target="_blank">🔍 已知点位埋点查询</a>
+            <a class="ph-link" href="https://mijiadataflow.mioffice.cn/home" target="_blank">🧭 复杂分析 / 数据探索</a>
+          </div>
+        </div>
+        <a class="ph-card" href="https://sdk-build-demo.jst.xiaomi.net/#gallery" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="ph-icon">📐</div>
+          <div class="ph-title">设计方案</div>
+          <div class="ph-desc">UI/UX 设计方案、组件库与交互规范</div>
+          <span class="ph-tag ready">打开平台</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ==================== 5. 需求管理 ==================== -->
+    <div class="tab" id="t-req">
+      <div class="section-hd">
+        <h3>📊 需求管理</h3>
+        <p>总需求管理、摄像机插件需求跟踪</p>
+      </div>
+      <div class="ph-grid">
+        <a class="ph-card" href="https://project.f.mioffice.cn/" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="ph-icon">📋</div>
+          <div class="ph-title">总需求</div>
+          <div class="ph-desc">项目需求管理平台，查看和跟踪所有需求</div>
+          <span class="ph-tag ready">打开平台</span>
+        </a>
+        <a class="ph-card" href="https://mi.feishu.cn/wiki/Od03wEYcoiA2L6k5OfbcHK2bnBg?302from=wiki&table=tblaSJtQvcGF0fLN&view=vewE5im63s" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="ph-icon">📷</div>
+          <div class="ph-title">摄像机插件</div>
+          <div class="ph-desc">摄像机插件需求管理，飞书多维表格</div>
+          <span class="ph-tag ready">打开飞书</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ==================== 6. 其他业务 ==================== -->
+    <div class="tab" id="t-other">
+      <div class="section-hd">
+        <h3>⚙️ 其他业务</h3>
+        <p>周报自动生成、常用工具</p>
+      </div>
+
+      <!-- 周报 -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd" style="cursor:default">
+          <div class="left"><span>📅 自动生成周报</span></div>
+          <button class="btn" onclick="renderReport()" style="padding:4px 12px;font-size:11px;background:#e0e0e0;color:#333">🔄 刷新</button>
+        </div>
+        <div style="padding:0 16px 16px">
+          <div id="report-content" style="font-size:12px;line-height:1.8;min-height:60px">
+            <div style="color:#999;padding:20px;text-align:center">加载中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作记录统计 -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd" onclick="this.nextElementSibling.classList.toggle('show')">
+          <div class="left"><span>📊 本周操作统计</span></div>
+          <span style="color:#999;font-size:11px">▼</span>
+        </div>
+        <div class="card-bd">
+          <div id="act-stats" style="font-size:12px;color:#666">加载中...</div>
+        </div>
+      </div>
+
+      <!-- 其他入口 -->
+      <div class="ph-grid">
+        <div class="ph-card">
+          <div class="ph-icon">🤝</div>
+          <div class="ph-title">跨团队协作</div>
+          <div class="ph-desc">与米家App、固件、云端等团队的协作记录</div>
+          <span class="ph-tag soon">即将上线</span>
+        </div>
+        <div class="ph-card">
+          <div class="ph-icon">🛠️</div>
+          <div class="ph-title">常用工具</div>
+          <div class="ph-desc">日常使用的工具链接和快捷入口</div>
+          <span class="ph-tag soon">即将上线</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Jira 建议弹窗 -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-top">
+      <h3 id="modal-t">建议</h3>
+      <button class="modal-x" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="modal-bd"></div>
+  </div>
+</div>
+
+<script>
+/* ===== 工作台导航 ===== */
+const TITLES={
+  kb:'📚 知识库',jira:'📋 Jira 处理',access:'🔌 接入问题处理',
+  docs:'📝 产品文档产出',req:'📊 需求管理',other:'⚙️ 其他业务',
+  'jira-cat':'📋 产品遗留问题分类','jira-all':'📝 全部问题','jira-mon':'📅 月度发版'
+};
+function go(id,el){
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  // 处理 Jira 子页面
+  if(id==='jira'){
+    document.getElementById('t-jira').classList.add('on');
+    document.querySelectorAll('.jtab').forEach(t=>t.classList.remove('on'));
+    document.getElementById('j-cat').classList.add('on');
+    document.querySelector('.nav.sub').classList.add('on');
+    document.getElementById('title').textContent=TITLES['jira-cat'];
+  } else if(id.startsWith('jira-')){
+    document.getElementById('t-jira').classList.add('on');
+    document.querySelectorAll('.jtab').forEach(t=>t.classList.remove('on'));
+    const subId = id.replace('jira-','');
+    document.getElementById('j-'+subId).classList.add('on');
+    document.getElementById('title').textContent=TITLES[id];
+  } else {
+    document.getElementById('t-'+id).classList.add('on');
+    document.getElementById('title').textContent=TITLES[id];
+  }
+}
+
+/* ===== Jira 数据和渲染 ===== */
+const JIRA='https://jira.n.xiaomi.com/browse/';
+const FIXED_PEOPLE = new Set(['周睿卿', '赵容慧']); // 问题分类和全部问题只显示这两人
+let CAT,ALL,MON;
+let sel=new Set(); // 月度发版使用的选择，初始为空表示显示全部
+let people=new Set();
+
+const SUGGEST={
+  '多语言/翻译类':'1. 补充缺失翻译\n2. 检查 UI 布局适配\n3. 建立翻译检查清单',
+  'iOS音频会话类':'1. 统一 AVAudioSession 管理\n2. 处理前后台切换\n3. 参考 Apple 音频指南',
+  'UI适配类':'1. 使用 SafeAreaView 适配刘海屏\n2. 测试多设备尺寸\n3. 检查深色模式',
+  '096AC1设备专属':'1. 检查固件接口兼容性\n2. 参考设备设计文档\n3. 与固件团队确认',
+  '人脸识别/管理':'1. 检查上传接口\n2. 验证同步逻辑\n3. 测试多人脸场景',
+  '隐私权限类':'1. 检查权限申请时机\n2. 参考隐私最佳实践\n3. 确保合规',
+  '存储/回看类':'1. 检查 P2P 连接状态\n2. 优化下载队列\n3. 处理网络切换场景',
+  '直播/视频类':'1. 检查视频流初始化\n2. 优化内存管理\n3. 增加重连机制',
+  '看家助手/事件类':'1. 检查事件上报逻辑\n2. 优化事件过滤\n3. 确保消息模板完整',
+  '视频通话类':'1. 检查通话连接逻辑\n2. 优化音频路由\n3. 处理异常断开',
+  '云台/PTZ类':'1. 检查云台控制指令\n2. 优化响应速度\n3. 处理边界位置',
+  '推送消息类':'1. 检查推送开关逻辑\n2. 确保消息类型一致\n3. 优化本地通知',
+  '车机/多路同屏类':'1. 适配车机 UI\n2. 优化多路流管理\n3. 处理画面切换',
+  '深色模式':'1. 检查颜色适配\n2. 测试主题切换\n3. 确保对比度',
+  '首页/卡片类':'1. 优化卡片布局\n2. 检查数据加载\n3. 适配不同屏幕',
+  '产品百科/设备信息类':'1. 确保信息准确\n2. 优化展示布局\n3. 支持多语言',
+  '语控/小爱类':'1. 检查语音指令映射\n2. 优化响应流程\n3. 处理边界情况',
+  '绑定/配网类':'1. 优化配网流程\n2. 处理超时重试\n3. 提供清晰引导',
+  '连接/配网类':'1. 检查连接状态管理\n2. 优化重连逻辑\n3. 处理弱网场景'
+};
+
+const COMP={
+  '多语言/翻译类':'萤石云支持 20+ 语言，建议接入专业翻译服务',
+  'iOS音频会话类':'Ring 使用 AVAudioSession，参考 Apple 音频指南',
+  'UI适配类':'萤石云适配刘海屏，海康支持多端自适应',
+  '人脸识别/管理':'萤石云支持人脸库管理，TP-Link 检测准确率高',
+  '隐私权限类':'Ring 权限申请合理，参考 GDPR 合规要求',
+  '存储/回看类':'萤石云支持双存储，TP-Link 断点续传体验好',
+  '直播/视频类':'萤石云直播延迟低，海康支持多码率自适应',
+  '看家助手/事件类':'萤石云事件分类清晰，海康 AI 检测准确',
+  '推送消息类':'Ring 推送及时，支持富媒体通知',
+  '车机/多路同屏类':'海康支持多路同屏，萤石云有车载方案'
+};
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+/* ===== 周报生成（基于 Jira 操作数据） ===== */
+const TYPE_NAMES={
+  comment:'评论',resolve:'解决',status_change:'状态变更',assign:'指派变更',
+  reproduce:'复现验证',analyze:'问题分析',transfer:'转交',field_change:'字段变更'
+};
+const TYPE_ICONS={
+  comment:'💬',resolve:'✅',status_change:'🔄',assign:'👤',
+  reproduce:'🔬',analyze:'🔍',transfer:'↗️',field_change:'✏️'
+};
+
+async function generateReport(){
+  // 加载 Jira 操作数据
+  let acts=[];
+  try{
+    const d=await fetch('boards/activity-data.json').then(r=>r.json());
+    acts=d.activities||[];
+    window._actData=d;
+  }catch(e){}
+
+  if(!ALL)return '<div style="padding:20px;color:#999">数据加载失败</div>';
+  const now=new Date();
+  const weekStart=new Date(now.getTime()-7*24*60*60*1000);
+  const dateRange=weekStart.toLocaleDateString('zh-CN')+' ~ '+now.toLocaleDateString('zh-CN');
+
+  // 本周 Jira 概况
+  const myIssues=ALL.issues.filter(i=>FIXED_PEOPLE.has(i.assignee));
+
+  // 按操作类型分组
+  const byType={};
+  acts.forEach(a=>{if(!byType[a.type])byType[a.type]=[];byType[a.type].push(a);});
+
+  // 按 Jira 分组
+  const byKey={};
+  acts.forEach(a=>{if(!byKey[a.key])byKey[a.key]=[];byKey[a.key].push(a);});
+
+  // 极简版：分「已解决」和「其他操作」
+  let mini=[];
+  if(acts.length===0){
+    mini.push('（本周暂无操作记录）');
+  }else{
+    const resolved=[], other=[];
+    Object.keys(byKey).forEach(key=>{
+      const items=byKey[key];
+      const summary=items[0].summary;
+      const isResolved=items.some(a=>a.type==='resolve'||a.type==='status_change'&&a.detail&&a.detail.includes('Resolved'));
+      const types=[...new Set(items.map(a=>TYPE_NAMES[a.type]||a.type))].join('+');
+      const line=key+' '+summary+' ['+types+']';
+      (isResolved?resolved:other).push(line);
+    });
+    if(resolved.length){mini.push('✅ 已解决');resolved.forEach(l=>mini.push('  '+l));}
+    if(other.length){if(resolved.length)mini.push('');mini.push('🔄 其他操作');other.forEach(l=>mini.push('  '+l));}
+  }
+  const miniText=mini.join('\n');
+
+  // 详细版：按 Jira 展开每条操作
+  let detail=[];
+  if(acts.length===0){
+    detail.push('（本周暂无操作记录）');
+  }else{
+    Object.keys(byKey).forEach(key=>{
+      const items=byKey[key];
+      const summary=items[0].summary;
+      detail.push('【'+key+'】'+summary);
+      items.forEach(a=>{
+        const t=new Date(a.time).toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});
+        const typeName=TYPE_NAMES[a.type]||a.type;
+        detail.push('  '+t+' '+typeName+(a.detail?': '+a.detail:''));
+      });
+    });
+  }
+  const detailText=detail.join('\n');
+
+  return {miniText,detailText,dateRange,count:acts.length,byType,byKey,acts};
+}
+
+async function renderReport(){
+  const result=await generateReport();
+  if(typeof result==='string'){
+    document.getElementById('report-content').innerHTML=result;
+    return;
+  }
+  const {miniText,detailText,dateRange,count,byType,byKey,acts}=result;
+  window._miniText=miniText;
+  window._detailText=detailText;
+
+  let html='';
+  // 顶部信息栏
+  html+='<div style="margin-bottom:12px;padding:10px 14px;background:#f8f9fa;border-radius:6px;font-size:12px;color:#666;display:flex;gap:16px">';
+  html+='<span>📅 '+esc(dateRange)+'</span>';
+  html+='<span>📝 本周操作: '+count+' 次</span>';
+  html+='</div>';
+
+  if(acts.length===0){
+    html+='<div style="text-align:center;padding:30px;color:#999">本周暂无操作记录</div>';
+    document.getElementById('report-content').innerHTML=html;
+    return;
+  }
+
+  // 操作类型统计
+  html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">';
+  Object.keys(byType).sort((a,b)=>byType[b].length-byType[a].length).forEach(type=>{
+    const icon=TYPE_ICONS[type]||'📌';
+    const name=TYPE_NAMES[type]||type;
+    html+='<div style="padding:6px 12px;background:#f0f4ff;border-radius:8px;font-size:11px">'+icon+' '+name+': <strong>'+byType[type].length+'</strong>次</div>';
+  });
+  html+='</div>';
+
+  // 极简版
+  html+='<div style="margin-bottom:14px;padding:12px;background:#fff;border:1px solid #e0e0e0;border-radius:8px">';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+  html+='<span style="font-size:13px;font-weight:600;color:#667eea">极简版（复制到周报）</span>';
+  html+='<button class="btn" onclick="copyText(\'mini\')" id="btn-mini" style="padding:3px 10px;font-size:10px">📋 复制</button>';
+  html+='</div>';
+  miniText.split('\n').forEach(line=>{
+    if(line.startsWith('✅')||line.startsWith('🔄')){
+      html+='<div style="padding:4px 0 2px;font-size:12px;font-weight:600;color:#667eea">'+esc(line)+'</div>';
+    }else{
+      html+='<div style="padding:2px 0;font-size:12px;color:#333;padding-left:4px">'+esc(line)+'</div>';
+    }
+  });
+  html+='</div>';
+
+  // 详细版
+  html+='<div style="margin-bottom:14px;padding:12px;background:#fff;border:1px solid #e0e0e0;border-radius:8px">';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+  html+='<span style="font-size:13px;font-weight:600;color:#667eea">详细版</span>';
+  html+='<button class="btn" onclick="copyText(\'detail\')" id="btn-detail" style="padding:3px 10px;font-size:10px">📋 复制</button>';
+  html+='</div>';
+  Object.keys(byKey).forEach(key=>{
+    const items=byKey[key];
+    const summary=items[0].summary;
+    html+='<div style="margin-bottom:8px;padding:8px 10px;background:#f8f9fa;border-radius:6px">';
+    html+='<div style="font-size:12px;font-weight:600;margin-bottom:4px"><a href="'+JIRA+esc(key)+'" target="_blank">'+esc(key)+'</a> '+esc(summary)+'</div>';
+    items.forEach(a=>{
+      const d=new Date(a.time);
+      const dateStr=(d.getMonth()+1)+'/'+d.getDate();
+      const icon=TYPE_ICONS[a.type]||'📌';
+      const name=TYPE_NAMES[a.type]||a.type;
+      const detail=a.detail?': '+esc(a.detail):'';
+      html+='<div style="padding:1px 0;font-size:11px;color:#666;padding-left:8px">'+dateStr+' '+icon+' '+name+detail+'</div>';
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+
+  document.getElementById('report-content').innerHTML=html;
+}
+
+function copyText(ver){
+  const text=ver==='mini'?(window._miniText||''):(window._detailText||'');
+  if(!text)return;
+  const btn=document.getElementById(ver==='mini'?'btn-mini':'btn-detail');
+  const doBtn=()=>{if(btn){btn.textContent='✅ 已复制';setTimeout(()=>{btn.textContent='📋 复制'},1500);}};
+  navigator.clipboard.writeText(text).then(doBtn).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);doBtn();
+  });
+}
+
+function renderKbSync(){
+  // 渲染知识库同步区域
+  const syncEl=document.getElementById('kb-sync-area');
+  const syncBadge=document.getElementById('kb-sync-badge');
+  if(syncEl&&KB_DATA){
+    const pending=(KB_DATA.pending||[]).filter(p=>!p.done);
+    syncBadge.textContent=pending.length;
+    let html='';
+    if(pending.length===0){
+      html='<div style="text-align:center;padding:12px;color:#2e7d32">✅ 知识库无需更新，所有 Jira 操作已同步</div>';
+    }else{
+      const TYPE_INFO={
+        new_resolution:{icon:'📝',label:'新解决',color:'#e65100'},
+        status_update:{icon:'🔄',label:'状态变更',color:'#1565c0'},
+        solution_in_comment:{icon:'💬',label:'评论含方案',color:'#7b1fa2'},
+        stale_kb_entry:{icon:'⚠️',label:'知识库过时',color:'#c62828'},
+      };
+      pending.forEach((p,i)=>{
+        const info=TYPE_INFO[p.type]||{icon:'📌',label:p.type,color:'#666'};
+        html+='<div style="padding:8px 10px;background:#fff;border:1px solid #eee;border-left:3px solid '+info.color+';border-radius:4px;margin-bottom:6px">';
+        html+='<div style="display:flex;justify-content:space-between;align-items:center">';
+        html+='<div><span style="font-size:10px;padding:2px 5px;background:'+info.color+'22;color:'+info.color+';border-radius:3px;margin-right:4px">'+info.icon+' '+info.label+'</span>';
+        html+='<a href="'+JIRA+esc(p.key)+'" target="_blank" style="font-weight:600;font-size:11px">'+esc(p.key)+'</a> '+esc(p.summary||'').substring(0,40)+'</div>';
+        html+='<button class="btn" onclick="markKbDone('+i+')" style="padding:2px 8px;font-size:10px;background:#e0e0e0;color:#333">✅</button>';
+        html+='</div></div>';
+      });
+    }
+    syncEl.innerHTML=html;
+  }
+
+  // 渲染解决方案数量
+  const solCountEl=document.getElementById('kb-sol-count');
+  if(solCountEl&&KB_DATA&&KB_DATA.kb_index){
+    solCountEl.textContent=KB_DATA.kb_index.total||0;
+  }
+
+  // 渲染飞书文档索引
+  const docCountEl=document.getElementById('kb-doc-count');
+  const docListEl=document.getElementById('kb-docs-list');
+  if(DOCS_DATA&&DOCS_DATA.categories){
+    if(docCountEl)docCountEl.textContent=DOCS_DATA.total;
+    if(docListEl){
+      let html='';
+      Object.entries(DOCS_DATA.categories).forEach(([cat,info])=>{
+        const icon=info.icon||'📄';
+        const desc=info.description||'';
+        const docs=info.docs||[];
+        html+='<div style="margin-bottom:10px;background:#fff;border:1px solid #eee;border-radius:8px;overflow:hidden">';
+        html+='<div style="padding:8px 12px;background:#f8f9fa;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'">';
+        html+='<div><span style="margin-right:6px">'+icon+'</span><span style="font-size:12px;font-weight:600;color:#333">'+esc(cat)+'</span><span style="font-size:11px;color:#999;margin-left:6px">('+docs.length+')</span></div>';
+        html+='<span style="font-size:10px;color:#999">▼</span></div>';
+        html+='<div style="display:block">';
+        if(desc)html+='<div style="padding:5px 12px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">'+esc(desc)+'</div>';
+        docs.forEach(doc=>{
+          html+='<div style="padding:6px 12px;border-bottom:1px solid #f0f0f0">';
+          html+='<a href="https://mi.feishu.cn/'+esc(doc.type)+'/'+esc(doc.id)+'" target="_blank" style="font-size:12px;color:#333;text-decoration:none">'+esc(doc.title)+'</a>';
+          if(doc.summary)html+='<div style="font-size:10px;color:#999;margin-top:1px">'+esc(doc.summary).substring(0,60)+'</div>';
+          html+='</div>';
+        });
+        html+='</div></div>';
+      });
+      docListEl.innerHTML=html;
+    }
+  }
+}
+
+// 知识库实时搜索
+function kbSearchLive(){
+  const q=document.getElementById('kb-search-input').value.trim();
+  const el=document.getElementById('kb-search-results');
+  if(!q){el.innerHTML='';return;}
+  const results=kbSearch(q);
+  if(!results.length){
+    el.innerHTML='<div style="padding:8px;color:#999;font-size:11px">未找到相关内容</div>';
+    return;
+  }
+  let html='';
+  results.forEach(r=>{
+    if(r.source==='feishu'){
+      html+='<div style="padding:6px 10px;background:#f8f9fa;border-radius:4px;margin-bottom:4px;font-size:11px">';
+      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#667eea;font-weight:500">📄 '+esc(r.title)+'</a>';
+      html+='<span style="color:#999;margin-left:6px">'+esc(r.category)+'</span>';
+      html+='</div>';
+    }else{
+      html+='<div style="padding:6px 10px;background:#f8f9fa;border-radius:4px;margin-bottom:4px;font-size:11px">';
+      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#667eea;font-weight:500">'+esc(r.key)+'</a> '+esc(r.summary).substring(0,50);
+      if(r.solution)html+='<div style="color:#2e7d32;margin-top:2px">💡 '+esc(r.solution).substring(0,60)+'</div>';
+      html+='</div>';
+    }
+  });
+  el.innerHTML=html;
+}
+
+function markKbDone(idx){
+  if(!KB_DATA||!KB_DATA.pending)return;
+  KB_DATA.pending[idx].done=true;
+  // 保存到服务器（通过 POST 或直接更新 localStorage）
+  try{localStorage.setItem('kb_done_'+KB_DATA.pending[idx].key,'1');}catch(e){}
+  renderKbSync();
+}
+
+function renderActStats(){
+  const d=window._actData;
+  const el=document.getElementById('act-stats');
+  if(!el)return;
+  if(!d||!d.activities||!d.activities.length){
+    el.innerHTML='<div style="text-align:center;padding:16px;color:#999">本周暂无操作记录</div>';
+    return;
+  }
+  const acts=d.activities;
+  // 按类型统计
+  const byType={};
+  acts.forEach(a=>{byType[a.type]=(byType[a.type]||0)+1;});
+  // 按日期统计
+  const byDate={};
+  acts.forEach(a=>{
+    const dt=new Date(a.time).toLocaleDateString('zh-CN');
+    byDate[dt]=(byDate[dt]||0)+1;
+  });
+  let html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
+  html+='<div><div style="font-weight:600;margin-bottom:6px;color:#667eea">按操作类型</div>';
+  Object.keys(byType).sort((a,b)=>byType[b]-byType[a]).forEach(t=>{
+    const icon=TYPE_ICONS[t]||'📌';
+    const name=TYPE_NAMES[t]||t;
+    html+='<div style="display:flex;justify-content:space-between;padding:3px 0"><span>'+icon+' '+name+'</span><span style="font-weight:600">'+byType[t]+'次</span></div>';
+  });
+  html+='</div>';
+  html+='<div><div style="font-weight:600;margin-bottom:6px;color:#667eea">按日期</div>';
+  Object.keys(byDate).sort().forEach(dt=>{
+    html+='<div style="display:flex;justify-content:space-between;padding:3px 0"><span>'+dt+'</span><span style="font-weight:600">'+byDate[dt]+'次</span></div>';
+  });
+  html+='</div></div>';
+  el.innerHTML=html;
+}
+
+async function init(){
+  // 加载用户信息
+  try{
+    const me=await fetch('/api/me').then(r=>r.json());
+    window._user=me.user;
+    window._role=me.role;
+    const isAdmin=me.role==='admin';
+    document.getElementById('user-info').innerHTML=
+      '<div style="padding:8px;background:rgba(255,255,255,0.1);border-radius:6px;font-size:11px">'+
+        '<div style="margin-bottom:4px">👤 '+esc(me.user)+'</div>'+
+        '<div style="color:'+(isAdmin?'#4caf50':'#999')+'">'+(isAdmin?'管理员':'查看者')+'</div>'+
+      '</div>';
+    if(isAdmin)document.getElementById('admin-link').style.display='inline';
+    // 查看者隐藏管理功能
+    if(!isAdmin){
+      document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
+    }
+  }catch(e){}
+
+  try{
+    const[c,a,m]=await Promise.all([
+      fetch('boards/category-data.json').then(r=>r.json()),
+      fetch('boards/all-issues-data.json').then(r=>r.json()),
+      fetch('boards/monthly-data.json').then(r=>r.json())
+    ]);
+    CAT=c; ALL=a; MON={issues:[...a.issues,...m.issues]};
+    document.getElementById('upd').textContent=c.lastUpdate;
+    document.getElementById('upd2').textContent=c.lastUpdate;
+    ALL.issues.forEach(i=>people.add(i.assignee));
+    m.issues.forEach(i=>people.add(i.assignee));
+    mkChips(); renderCat(); renderAll(); renderMon(); renderReport(); renderActStats();
+  }catch(e){
+    console.error('Jira 数据加载失败:',e);
+    document.getElementById('c-list').innerHTML=
+      '<div class="empty"><div class="ic">⚠️</div><p>Jira 数据加载失败</p><p style="font-size:12px;color:#bbb;margin-top:8px">'+e.message+'</p></div>';
+  }
+  // 加载知识库数据（不阻塞）
+  fetch('boards/kb-pending.json').then(r=>r.json()).then(d=>{KB_DATA=d;renderKbSync()}).catch(()=>{});
+}
+
+function mkChips(){
+  // 只为月度发版创建 chips
+  document.getElementById('m-chips').innerHTML=[...people].sort().map(p=>
+    '<span class="chip'+(sel.has(p)?' sel':'')+'" onclick="tog(this,\''+esc(p)+'\')">'+esc(p)+'</span>'
+  ).join('');
+}
+function tog(el,p){sel.has(p)?sel.delete(p):sel.add(p);mkChips();renderMon()}
+
+// ---- 产品遗留问题分类 ----
+function renderCat(){
+  if(!CAT)return;
+  const cats=CAT.categories.map(c=>({...c,issues:c.issues.filter(i=>FIXED_PEOPLE.has(i.assignee))})).filter(c=>c.issues.length>0);
+  const total=cats.reduce((s,c)=>s+c.issues.length,0);
+  const hi=cats.filter(c=>c.priority==='高').reduce((s,c)=>s+c.issues.length,0);
+  const mid=cats.filter(c=>c.priority==='中').reduce((s,c)=>s+c.issues.length,0);
+  const lo=cats.filter(c=>c.priority==='低').reduce((s,c)=>s+c.issues.length,0);
+  document.getElementById('c-stats').innerHTML=
+    '<div class="stat"><div class="n" style="color:#667eea">'+total+'</div><div class="l">总数</div></div>'+
+    '<div class="stat"><div class="n" style="color:#c62828">'+hi+'</div><div class="l">高优先级</div></div>'+
+    '<div class="stat"><div class="n" style="color:#e65100">'+mid+'</div><div class="l">中优先级</div></div>'+
+    '<div class="stat"><div class="n" style="color:#2e7d32">'+lo+'</div><div class="l">低优先级</div></div>'+
+    '<div class="stat"><div class="n" style="color:#764ba2">'+cats.length+'</div><div class="l">分类数</div></div>';
+  document.getElementById('c-list').innerHTML=cats.map(c=>{
+    let refs='';
+    if(c.references&&c.references.length){
+      refs='<div class="info orange"><div class="lb">📚 参考案例</div>'+
+        c.references.map(r=>'<div class="ref"><a href="'+JIRA+esc(r.key)+'" target="_blank">'+esc(r.key)+'</a> '+esc(r.summary)+'<div class="sol">'+esc(r.solution)+'</div></div>').join('')+
+        '</div>';
+    }
+    return '<div class="card">'+
+      '<div class="card-hd" onclick="this.nextElementSibling.classList.toggle(\'show\')">'+
+        '<div class="left"><span>'+esc(c.name)+'</span><span class="badge">'+c.issues.length+'</span><span class="pri pri-'+esc(c.priority)+'">'+esc(c.priority)+'</span></div>'+
+        '<span style="color:#999;font-size:11px">▼</span></div>'+
+      '<div class="card-bd">'+
+        '<div class="info"><div class="lb">📋 描述</div>'+esc(c.description)+'</div>'+
+        '<div class="info green"><div class="lb">💡 建议</div>'+esc(c.suggestion)+'</div>'+
+        refs+
+        '<table><thead><tr><th>Jira</th><th>标题</th><th>处理人</th><th>优先级</th><th>状态</th><th>操作</th></tr></thead><tbody>'+
+        c.issues.map(j=>'<tr>'+
+          '<td><a href="'+JIRA+esc(j.key)+'" target="_blank">'+esc(j.key)+'</a></td>'+
+          '<td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(j.summary)+'">'+esc(j.summary)+'</td>'+
+          '<td><span class="at">'+esc(j.assignee)+'</span></td>'+
+          '<td><span class="p p-'+esc(j.priority)+'">'+esc(j.priority)+'</span></td>'+
+          '<td><span class="s s-'+esc(j.status.replace(/\s/g,''))+'">'+esc(j.status)+'</span></td>'+
+          '<td><button class="btn" onclick="showSug(\''+esc(j.key)+'\')">建议</button></td>'+
+        '</tr>').join('')+
+        '</tbody></table></div></div>';
+  }).join('');
+}
+
+// ---- 全部问题 ----
+function renderAll(){
+  if(!ALL)return;
+  const catV=document.getElementById('f-cat').value;
+  const priV=document.getElementById('f-pri').value;
+  const staV=document.getElementById('f-sta').value;
+  const q=document.getElementById('f-q').value.toLowerCase();
+  const data=ALL.issues.filter(i=>{
+    if(!FIXED_PEOPLE.has(i.assignee))return false;
+    if(catV!=='全部'&&i.category!==catV)return false;
+    if(priV!=='全部'&&i.priority!==priV)return false;
+    if(staV!=='全部'&&i.status!==staV)return false;
+    if(q&&!(i.key.toLowerCase().includes(q)||i.summary.toLowerCase().includes(q)))return false;
+    return true;
+  });
+  document.getElementById('s-tot').textContent=data.length;
+  document.getElementById('s-open').textContent=data.filter(i=>i.status==='OPEN').length;
+  document.getElementById('s-prog').textContent=data.filter(i=>i.status==='In Progress').length;
+  document.getElementById('s-ver').textContent=data.filter(i=>i.status==='Verify').length;
+  document.getElementById('s-crit').textContent=data.filter(i=>['Blocker','Critical'].includes(i.priority)).length;
+  document.getElementById('a-tbody').innerHTML=data.length?data.map(i=>'<tr>'+
+    '<td><a href="'+JIRA+esc(i.key)+'" target="_blank">'+esc(i.key)+'</a></td>'+
+    '<td style="max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(i.summary)+'">'+esc(i.summary)+'</td>'+
+    '<td><span class="at">'+esc(i.assignee)+'</span></td>'+
+    '<td><span class="p p-'+esc(i.priority)+'">'+esc(i.priority)+'</span></td>'+
+    '<td><span class="s s-'+esc(i.status.replace(/\s/g,''))+'">'+esc(i.status)+'</span></td>'+
+    '<td><span class="ct">'+esc(i.category)+'</span></td>'+
+    '<td><button class="btn" onclick="showSug(\''+esc(i.key)+'\')">建议</button></td>'+
+  '</tr>').join(''):'<tr><td colspan="7"><div class="empty"><div class="ic">📭</div><p>暂无匹配的问题</p></div></td></tr>';
+  const cats=[...new Set(ALL.issues.filter(i=>FIXED_PEOPLE.has(i.assignee)).map(i=>i.category))].sort();
+  const cs=document.getElementById('f-cat');const cv=cs.value;
+  cs.innerHTML='<option>全部</option>'+cats.map(c=>'<option>'+esc(c)+'</option>').join('');
+  if(cats.includes(cv))cs.value=cv;
+}
+
+// ---- 月度发版 ----
+function renderMon(){
+  if(!MON)return;
+  const re=/(\d+)月标插/;
+  const monV=document.getElementById('m-mon').value;
+  const catV=document.getElementById('m-cat').value;
+  const priV=document.getElementById('m-pri').value;
+  const staV=document.getElementById('m-sta').value;
+  const q=document.getElementById('m-q').value.toLowerCase();
+  let data=MON.issues.filter(i=>i.labels&&i.labels.some(l=>re.test(l)));
+  data=data.filter(i=>{
+    if(sel.size>0&&!sel.has(i.assignee))return false;
+    const ml=i.labels.find(l=>re.test(l));
+    const m=ml?ml.match(re)[1]+'月':'';
+    if(monV!=='全部'&&m!==monV)return false;
+    if(catV!=='全部'&&i.category!==catV)return false;
+    if(priV!=='全部'&&i.priority!==priV)return false;
+    if(staV!=='全部'&&i.status!==staV)return false;
+    if(q&&!(i.key.toLowerCase().includes(q)||i.summary.toLowerCase().includes(q)))return false;
+    return true;
+  });
+  const months=[...new Set(data.map(i=>{const m=i.labels.find(l=>re.test(l));return m?m.match(re)[1]+'月':''}).filter(Boolean))].sort((a,b)=>parseInt(b)-parseInt(a));
+  const ms=document.getElementById('m-mon');const mv=ms.value;
+  ms.innerHTML='<option>全部</option>'+months.map(m=>'<option>'+m+'</option>').join('');
+  if(months.includes(mv))ms.value=mv;
+  const cats=[...new Set(data.map(i=>i.category))].sort();
+  const cs=document.getElementById('m-cat');const cv=cs.value;
+  cs.innerHTML='<option>全部</option>'+cats.map(c=>'<option>'+esc(c)+'</option>').join('');
+  if(cats.includes(cv))cs.value=cv;
+  const grouped={};
+  data.forEach(i=>{const ml=i.labels.find(l=>re.test(l));if(ml){const m=ml.match(re)[1]+'月';(grouped[m]=grouped[m]||[]).push(i)}});
+  const sorted=Object.keys(grouped).sort((a,b)=>parseInt(b)-parseInt(a));
+  document.getElementById('m-list').innerHTML=sorted.length?sorted.map(m=>
+    '<div class="month-sec">'+
+      '<div class="month-hd"><span>📆 '+m+'标插</span><span>'+grouped[m].length+' 个问题</span></div>'+
+      '<div class="month-bd">'+
+        '<div class="month-stats">'+
+          '<div class="month-stat"><div class="n" style="color:#c62828">'+grouped[m].filter(i=>i.status==='OPEN').length+'</div><div class="l">OPEN</div></div>'+
+          '<div class="month-stat"><div class="n" style="color:#e65100">'+grouped[m].filter(i=>i.status==='In Progress').length+'</div><div class="l">进行中</div></div>'+
+          '<div class="month-stat"><div class="n" style="color:#2e7d32">'+grouped[m].filter(i=>i.status==='Verify').length+'</div><div class="l">验证</div></div>'+
+          '<div class="month-stat"><div class="n" style="color:#e65100">'+grouped[m].filter(i=>['Blocker','Critical'].includes(i.priority)).length+'</div><div class="l">Critical+</div></div>'+
+        '</div>'+
+        '<table><thead><tr><th>Jira</th><th>标题</th><th>处理人</th><th>优先级</th><th>状态</th><th>类型</th><th>操作</th></tr></thead><tbody>'+
+        grouped[m].map(i=>'<tr>'+
+          '<td><a href="'+JIRA+esc(i.key)+'" target="_blank">'+esc(i.key)+'</a></td>'+
+          '<td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(i.summary)+'">'+esc(i.summary)+'</td>'+
+          '<td><span class="at">'+esc(i.assignee)+'</span></td>'+
+          '<td><span class="p p-'+esc(i.priority)+'">'+esc(i.priority)+'</span></td>'+
+          '<td><span class="s s-'+esc(i.status.replace(/\s/g,''))+'">'+esc(i.status)+'</span></td>'+
+          '<td><span class="ct">'+esc(i.category)+'</span></td>'+
+          '<td><button class="btn" onclick="showSug(\''+esc(i.key)+'\')">建议</button></td>'+
+        '</tr>').join('')+
+        '</tbody></table></div></div>'
+  ).join(''):'<div class="empty"><div class="ic">📭</div><p>暂无月度发版数据</p></div>';
+}
+
+// ---- 建议弹窗 ----
+function showSug(key){
+  const issue=ALL.issues.find(i=>i.key===key);
+  if(!issue)return;
+  const cat=issue.category||'';
+  document.getElementById('modal-t').textContent='💡 '+key+' 处理建议';
+  const related=ALL.issues.filter(i=>i.key!==key&&(i.category===cat||issue.summary.split(/[\s，。、【】]/).filter(k=>k.length>2).some(k=>i.summary.includes(k)))).slice(0,5);
+  const sug=SUGGEST[cat]||'1. 分析根因\n2. 查找类似方案\n3. 记录解决方案';
+  const comp=COMP[cat]||'调研竞品实现方案';
+
+  // 知识库检索
+  const kbResults=kbSearch(key+' '+issue.summary+' '+cat);
+
+  let h='<div class="sg"><h4>📚 相关 Jira</h4>';
+  h+=related.length?related.map(i=>'<div class="sg-item"><a href="'+JIRA+esc(i.key)+'" target="_blank" style="color:#667eea;font-weight:600;margin-right:8px">'+esc(i.key)+'</a>'+esc(i.summary)+'<div style="margin-top:4px;font-size:11px;color:#999">'+esc(i.assignee)+' | '+esc(i.priority)+' | '+esc(i.status)+'</div></div>').join(''):'<div style="text-align:center;padding:16px;color:#999;font-size:12px">未找到相关 Jira</div>';
+  h+='</div>';
+
+  // 知识库相关文档
+  if(kbResults.length){
+    h+='<div class="sg"><h4>📖 知识库相关文档</h4>';
+    kbResults.forEach(r=>{
+      h+='<div class="sg-item" style="border-left:3px solid #667eea">';
+      if(r.source==='feishu'){
+        h+='<div style="font-weight:600;margin-bottom:4px"><a href="'+esc(r.url)+'" target="_blank" style="color:#667eea">📄 '+esc(r.title)+'</a></div>';
+        h+='<div style="font-size:11px;color:#888;margin-bottom:4px">'+esc(r.category)+'</div>';
+        h+='<div style="font-size:11px;color:#555">'+esc(r.summary).substring(0,100)+'</div>';
+      }else{
+        h+='<div style="font-weight:600;margin-bottom:4px"><a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#667eea">'+esc(r.key)+'</a> '+esc(r.summary)+'</div>';
+        if(r.solution)h+='<div style="font-size:11px;color:#2e7d32;background:#e8f5e9;padding:3px 6px;border-radius:3px;display:inline-block">💡 '+esc(r.solution)+'</div>';
+        if(r.location&&r.location!=='-')h+='<div style="font-size:11px;color:#888;margin-top:4px">📍 解决位置: '+esc(r.location)+'</div>';
+        if(r.related&&r.related!=='-')h+='<div style="font-size:11px;color:#888;margin-top:2px">🔗 关联: '+esc(r.related)+'</div>';
+      }
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+
+  h+='<div class="sg"><h4>💡 处理建议</h4><div class="sg-item"><div class="sg-sol">'+esc(sug).replace(/\n/g,'<br>')+'</div></div></div>';
+  h+='<div class="sg"><h4>🔍 竞品参考</h4><div class="sg-item"><div class="sg-sol">'+esc(comp)+'</div></div></div>';
+  document.getElementById('modal-bd').innerHTML=h;
+  document.getElementById('modal').classList.add('show');
+}
+
+// 知识库搜索
+let KB_DATA=null;
+let DOCS_DATA=null;
+
+// 加载知识库文档索引
+fetch('knowledge-base/docs-index.json').then(r=>r.json()).then(d=>{DOCS_DATA=d}).catch(()=>{});
+
+function kbSearch(query){
+  const results=[];
+  const q=query.toLowerCase();
+
+  // 搜索 solutions.md 条目
+  if(KB_DATA&&KB_DATA.kb_index&&KB_DATA.kb_index.entries){
+    KB_DATA.kb_index.entries.forEach(e=>{
+      let score=0;
+      if(q.includes(e.key.toLowerCase()))score+=10;
+      if(e.summary&&q.includes(e.summary.toLowerCase().substring(0,10)))score+=5;
+      if(e.category&&q.includes(e.category.toLowerCase()))score+=3;
+      if(e.solution&&q.split(' ').some(w=>w.length>=2&&e.solution.toLowerCase().includes(w)))score+=2;
+      if(score>0)results.push({...e,score,source:'solutions'});
+    });
+  }
+
+  // 搜索飞书文档索引
+  if(DOCS_DATA&&DOCS_DATA.categories){
+    Object.entries(DOCS_DATA.categories).forEach(([cat,info])=>{
+      const docs=info.docs||[];
+      docs.forEach(doc=>{
+        let score=0;
+        const searchText=(doc.title+' '+doc.summary+' '+cat).toLowerCase();
+        if(q.split(' ').some(w=>w.length>=2&&searchText.includes(w)))score+=3;
+        if(cat.includes('需求')&&(q.includes('需求')||q.includes('prd')))score+=2;
+        if(cat.includes('规范')&&(q.includes('规范')||q.includes('标准')))score+=2;
+        if(cat.includes('算法')&&(q.includes('算法')||q.includes('事件')))score+=2;
+        if(cat.includes('项目')&&(q.includes('周报')||q.includes('进展')))score+=2;
+        if(cat.includes('大模型')&&(q.includes('大模型')||q.includes('ai')))score+=2;
+        if(cat.includes('C700')&&(q.includes('c700')||q.includes('双目')))score+=2;
+        if(score>0)results.push({key:doc.id,title:doc.title,summary:doc.summary,category:cat,score,source:'feishu',url:'https://mi.feishu.cn/'+doc.type+'/'+doc.id});
+      });
+    });
+  }
+
+  return results.sort((a,b)=>b.score-a.score).slice(0,5);
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+init();
+</script>
+</body>
+</html>

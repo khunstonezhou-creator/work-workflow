@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "name": "个人工作台",
+  "description": "AI 辅助的 Jira 问题管理与知识库工作台",
+
+  "team": {
+    "name": "摄像机接入团队",
+    "members": ["周睿卿", "赵容慧"],
+    "defaultMembers": ["周睿卿", "赵容慧"]
+  },
+
+  "jira": {
+    "baseUrl": "https://jira.n.xiaomi.com/browse/",
+    "filterId": "-9",
+    "jql": "assignee in (周睿卿, 赵容慧) AND status in (OPEN, \"In Progress\", Verify) ORDER BY updated DESC",
+    "categories": [
+      {"name": "多语言/翻译类", "keywords": ["多语言", "翻译", "Localization", "i18n"]},
+      {"name": "iOS音频会话类", "keywords": ["音频", "声音", "对讲", "监听", "AVAudioSession"]},
+      {"name": "UI适配类", "keywords": ["UI", "适配", "显示", "文案", "布局", "刘海"]},
+      {"name": "人脸识别/管理", "keywords": ["人脸", "识别", "ReID"]},
+      {"name": "隐私权限类", "keywords": ["隐私", "权限"]},
+      {"name": "看家助手/事件类", "keywords": ["看家", "事件", "围栏", "报警"]},
+      {"name": "存储/回看类", "keywords": ["存储", "回看", "下载", "SD卡", "云存"]},
+      {"name": "直播/视频类", "keywords": ["直播", "视频", "画面"]},
+      {"name": "视频通话类", "keywords": ["通话", "手势"]},
+      {"name": "云台/PTZ类", "keywords": ["云台", "PTZ"]},
+      {"name": "推送消息类", "keywords": ["推送", "消息"]},
+      {"name": "车机/多路同屏类", "keywords": ["车机", "多路", "同屏"]},
+      {"name": "深色模式", "keywords": ["深色", "暗色"]},
+      {"name": "首页/卡片类", "keywords": ["首页", "卡片"]},
+      {"name": "产品百科/设备信息类", "keywords": ["产品百科", "设备信息"]},
+      {"name": "语控/小爱类", "keywords": ["语控", "小爱"]},
+      {"name": "绑定/配网类", "keywords": ["绑定", "配网"]},
+      {"name": "连接/配网类", "keywords": ["连接"]}
+    ]
+  },
+
+  "feishu": {
+    "mcpEndpoint": "https://mcp.feishu.cn/mcp/...",
+    "knowledgeBase": []
+  },
+
+  "dataAnalysis": {
+    "activationUrl": "",
+    "eventUrl": "",
+    "exploreUrl": ""
+  },
+
+  "productDocs": {
+    "prdUrl": "",
+    "designUrl": ""
+  },
+
+  "requirementManagement": {
+    "totalUrl": "",
+    "projectUrl": ""
+  }
+}

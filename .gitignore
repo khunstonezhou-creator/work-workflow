@@ -1,0 +1,16 @@
+node_modules/
+.DS_Store
+*.log
+venv/
+__pycache__/
+data-sql
+.env
+.last-jira-count
+data.json
+*.csv
+MCP配置导出/
+产品prd/
+知识库/
+竞品分析/
+data-sql/
+.claude/
