@@ -172,14 +172,20 @@ a:hover{text-decoration:underline}
         <p>Jira 解决方案沉淀、飞书文档索引、智能检索</p>
       </div>
 
-      <!-- 知识库搜索 -->
+      <!-- 知识库智能搜索 -->
       <div class="card" style="margin-bottom:16px">
-        <div style="padding:12px 16px">
-          <div style="display:flex;gap:8px">
-            <input id="kb-search-input" placeholder="搜索知识库（Jira编号、关键词、分类...）" style="flex:1;padding:8px 12px;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;outline:none" oninput="kbSearchLive()">
-            <button class="btn" onclick="kbSearchLive()" style="padding:8px 16px">🔍 搜索</button>
+        <div style="padding:14px 16px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div style="flex:1;position:relative">
+              <input id="kb-search-input" placeholder="输入问题，AI 智能分析（如：多语言推送未翻译、iOS声音中断、云台离线UI）" style="width:100%;padding:10px 14px 10px 36px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;transition:border-color 0.2s" oninput="kbSearchLive()" onkeydown="if(event.key==='Enter')kbSearchLive()">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#999;font-size:14px">🔍</span>
+            </div>
+            <button class="btn" onclick="kbSearchLive()" style="padding:10px 20px;font-size:13px">智能分析</button>
           </div>
-          <div id="kb-search-results" style="margin-top:8px"></div>
+          <div style="margin-top:6px;padding-left:4px">
+            <span style="font-size:10px;color:#bbb">💡 支持 Jira 编号、问题描述、功能模块、错误关键词</span>
+          </div>
+          <div id="kb-search-results" style="margin-top:10px"></div>
         </div>
       </div>
 
@@ -728,31 +734,184 @@ function renderKbSync(){
   }
 }
 
-// 知识库实时搜索
+// 知识库智能搜索
+let _searchTimer=null;
 function kbSearchLive(){
+  clearTimeout(_searchTimer);
   const q=document.getElementById('kb-search-input').value.trim();
   const el=document.getElementById('kb-search-results');
   if(!q){el.innerHTML='';return;}
-  const results=kbSearch(q);
-  if(!results.length){
-    el.innerHTML='<div style="padding:8px;color:#999;font-size:11px">未找到相关内容</div>';
+  // 防抖：300ms 后执行
+  _searchTimer=setTimeout(()=>kbSearchAnswer(q,el),300);
+}
+
+function kbSearchAnswer(q,el){
+  el.innerHTML='<div style="padding:12px;color:#999;font-size:12px;text-align:center">🔍 正在分析...</div>';
+  // 收集所有数据源的结果
+  const solResults=searchSolutions(q);
+  const jiraResults=searchJiraIssues(q);
+  const docResults=searchFeishuDocs(q);
+  const totalHits=solResults.length+jiraResults.length+docResults.length;
+  if(!totalHits){
+    el.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:24px;margin-bottom:8px">🤔</div><div style="color:#666;font-size:13px">未找到相关内容</div><div style="color:#999;font-size:11px;margin-top:4px">试试其他关键词，如 Jira 编号、功能模块、错误描述</div></div>';
     return;
   }
-  let html='';
-  results.forEach(r=>{
-    if(r.source==='feishu'){
-      html+='<div style="padding:6px 10px;background:#f8f9fa;border-radius:4px;margin-bottom:4px;font-size:11px">';
-      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#667eea;font-weight:500">📄 '+esc(r.title)+'</a>';
-      html+='<span style="color:#999;margin-left:6px">'+esc(r.category)+'</span>';
+  let html='<div style="background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden">';
+  // 头部：AI 回答摘要
+  html+='<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:14px 16px">';
+  html+='<div style="font-size:13px;font-weight:600;margin-bottom:6px">💡 智能分析结果</div>';
+  html+='<div style="font-size:12px;opacity:0.9">'+generateSummary(q,solResults,jiraResults,docResults)+'</div>';
+  html+='</div>';
+  // 解决方案
+  if(solResults.length){
+    html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
+    html+='<div style="font-size:11px;color:#2e7d32;font-weight:600;margin-bottom:8px">✅ 已有解决方案 ('+solResults.length+')</div>';
+    solResults.slice(0,3).forEach(r=>{
+      html+='<div style="padding:8px 10px;background:#f0fdf4;border-radius:6px;margin-bottom:6px">';
+      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#16a34a;font-weight:500;font-size:12px;text-decoration:none">'+esc(r.key)+'</a>';
+      html+='<span style="color:#666;font-size:11px;margin-left:6px">'+esc(r.summary||'').substring(0,40)+'</span>';
+      if(r.solution)html+='<div style="color:#15803d;font-size:11px;margin-top:4px;padding-left:4px">💡 '+esc(r.solution).substring(0,80)+'</div>';
       html+='</div>';
-    }else{
-      html+='<div style="padding:6px 10px;background:#f8f9fa;border-radius:4px;margin-bottom:4px;font-size:11px">';
-      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#667eea;font-weight:500">'+esc(r.key)+'</a> '+esc(r.summary).substring(0,50);
-      if(r.solution)html+='<div style="color:#2e7d32;margin-top:2px">💡 '+esc(r.solution).substring(0,60)+'</div>';
+    });
+    html+='</div>';
+  }
+  // 相关 Jira 问题
+  if(jiraResults.length){
+    html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
+    html+='<div style="font-size:11px;color:#d97706;font-weight:600;margin-bottom:8px">📋 相关 Jira 问题 ('+jiraResults.length+')</div>';
+    jiraResults.slice(0,4).forEach(r=>{
+      const statusColor=r.status==='OPEN'?'#dc2626':r.status==='In Progress'?'#2563eb':'#16a34a';
+      html+='<div style="padding:8px 10px;background:#fffbeb;border-radius:6px;margin-bottom:6px;display:flex;align-items:center;gap:8px">';
+      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#92400e;font-weight:500;font-size:12px;text-decoration:none;white-space:nowrap">'+esc(r.key)+'</a>';
+      html+='<span style="flex:1;color:#666;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(r.summary).substring(0,50)+'</span>';
+      html+='<span style="font-size:10px;color:'+statusColor+';background:'+statusColor+'15;padding:2px 6px;border-radius:4px;white-space:nowrap">'+esc(r.status)+'</span>';
       html+='</div>';
-    }
-  });
+    });
+    html+='</div>';
+  }
+  // 参考文档
+  if(docResults.length){
+    html+='<div style="padding:12px 16px">';
+    html+='<div style="font-size:11px;color:#667eea;font-weight:600;margin-bottom:8px">📚 参考文档 ('+docResults.length+')</div>';
+    docResults.slice(0,3).forEach(r=>{
+      html+='<div style="padding:8px 10px;background:#f0f4ff;border-radius:6px;margin-bottom:6px">';
+      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5;font-size:12px;text-decoration:none">📄 '+esc(r.title)+'</a>';
+      html+='<span style="color:#999;font-size:10px;margin-left:6px">'+esc(r.category)+'</span>';
+      if(r.summary)html+='<div style="color:#666;font-size:11px;margin-top:2px">'+esc(r.summary).substring(0,60)+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  html+='</div>';
   el.innerHTML=html;
+}
+
+// 生成智能摘要
+function generateSummary(q,sol,jira,docs){
+  const parts=[];
+  if(sol.length){
+    parts.push('找到 <b>'+sol.length+'</b> 个已解决的类似问题');
+  }
+  if(jira.length){
+    const open=jira.filter(i=>i.status==='OPEN').length;
+    const prog=jira.filter(i=>i.status==='In Progress').length;
+    if(open||prog){
+      const statusParts=[];
+      if(open)statusParts.push(open+' 个待处理');
+      if(prog)statusParts.push(prog+' 个处理中');
+      parts.push('发现 <b>'+statusParts.join('、')+'</b> 的相关问题');
+    }
+  }
+  if(docs.length){
+    parts.push('<b>'+docs.length+'</b> 篇相关参考文档');
+  }
+  if(sol.length&&sol[0].solution){
+    parts.push('建议参考 '+esc(sol[0].key)+' 的解决方案');
+  }
+  return parts.join('；')+'。';
+}
+
+// 搜索解决方案
+function searchSolutions(q){
+  const results=[];
+  const query=q.toLowerCase();
+  if(!KB_DATA||!KB_DATA.kb_index||!KB_DATA.kb_index.entries)return results;
+  KB_DATA.kb_index.entries.forEach(e=>{
+    let score=0;
+    const key=e.key||'';
+    const summary=e.summary||'';
+    const solution=e.solution||'';
+    const category=e.category||'';
+    // Jira 编号精确匹配
+    if(query.includes(key.toLowerCase()))score+=20;
+    // 关键词匹配
+    const words=query.split(/\s+/).filter(w=>w.length>=2);
+    words.forEach(w=>{
+      if(summary.toLowerCase().includes(w))score+=5;
+      if(solution.toLowerCase().includes(w))score+=4;
+      if(category.toLowerCase().includes(w))score+=3;
+    });
+    // 部分匹配
+    if(summary.toLowerCase().includes(query))score+=8;
+    if(solution.toLowerCase().includes(query))score+=6;
+    if(score>0)results.push({...e,score});
+  });
+  return results.sort((a,b)=>b.score-a.score).slice(0,5);
+}
+
+// 搜索 Jira 问题
+function searchJiraIssues(q){
+  const results=[];
+  const query=q.toLowerCase();
+  if(!ALL||!ALL.issues)return results;
+  ALL.issues.forEach(issue=>{
+    let score=0;
+    const key=issue.key||'';
+    const summary=issue.summary||'';
+    const category=issue.category||'';
+    const assignee=issue.assignee||'';
+    // Jira 编号精确匹配
+    if(query.includes(key.toLowerCase()))score+=25;
+    // 关键词匹配
+    const words=query.split(/\s+/).filter(w=>w.length>=2);
+    words.forEach(w=>{
+      if(summary.toLowerCase().includes(w))score+=5;
+      if(category.toLowerCase().includes(w))score+=4;
+      if(assignee.toLowerCase().includes(w))score+=2;
+    });
+    // 部分匹配
+    if(summary.toLowerCase().includes(query))score+=10;
+    if(category.toLowerCase().includes(query))score+=6;
+    if(score>0)results.push({...issue,score});
+  });
+  return results.sort((a,b)=>b.score-a.score).slice(0,6);
+}
+
+// 搜索飞书文档
+function searchFeishuDocs(q){
+  const results=[];
+  const query=q.toLowerCase();
+  if(!DOCS_DATA||!DOCS_DATA.categories)return results;
+  Object.entries(DOCS_DATA.categories).forEach(([cat,info])=>{
+    const docs=info.docs||[];
+    docs.forEach(doc=>{
+      let score=0;
+      const title=doc.title||'';
+      const summary=doc.summary||'';
+      const searchText=(title+' '+summary+' '+cat).toLowerCase();
+      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      words.forEach(w=>{
+        if(searchText.includes(w))score+=4;
+      });
+      if(searchText.includes(query))score+=8;
+      // 分类加分
+      if(cat.includes('需求')&&(query.includes('需求')||query.includes('prd')))score+=3;
+      if(cat.includes('规范')&&(query.includes('规范')||query.includes('标准')))score+=3;
+      if(cat.includes('算法')&&(query.includes('算法')||query.includes('事件')))score+=3;
+      if(score>0)results.push({key:doc.id,title,summary,category:cat,score,source:'feishu',url:'https://mi.feishu.cn/'+doc.type+'/'+doc.id});
+    });
+  });
+  return results.sort((a,b)=>b.score-a.score).slice(0,5);
 }
 
 function markKbDone(idx){
