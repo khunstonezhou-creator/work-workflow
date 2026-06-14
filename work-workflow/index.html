@@ -992,19 +992,22 @@ function searchSolutions(q){
   if(KB_DATA&&KB_DATA.kb_index&&KB_DATA.kb_index.entries){
     KB_DATA.kb_index.entries.forEach(e=>{
       let score=0;
-      const key=e.key||'';
-      const summary=e.summary||'';
-      const solution=e.solution||'';
-      const category=e.category||'';
-      if(query.includes(key.toLowerCase()))score+=20;
-      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      const key=(e.key||'').toLowerCase();
+      const summary=(e.summary||'').toLowerCase();
+      const solution=(e.solution||'').toLowerCase();
+      const category=(e.category||'').toLowerCase();
+
+      if(query.includes(key))score+=20;
+      const words=query.split(/\s+/).filter(w=>w.length>=1);
       words.forEach(w=>{
-        if(summary.toLowerCase().includes(w))score+=5;
-        if(solution.toLowerCase().includes(w))score+=4;
-        if(category.toLowerCase().includes(w))score+=3;
+        const wl=w.toLowerCase();
+        if(summary.includes(wl))score+=5;
+        if(solution.includes(wl))score+=4;
+        if(category.includes(wl))score+=3;
+        if(key.includes(wl))score+=6;
       });
-      if(summary.toLowerCase().includes(query))score+=8;
-      if(solution.toLowerCase().includes(query))score+=6;
+      if(summary.includes(query))score+=8;
+      if(solution.includes(query))score+=6;
       if(score>0)results.push({...e,score});
     });
   }
@@ -1020,18 +1023,24 @@ function searchSolutions(q){
       const category=cols[2]||'';
       const solution=cols[3]||'';
       const location=cols[4]||'';
-      // 避免重复
       if(results.some(r=>r.key===key))return;
       let score=0;
-      if(query.includes(key.toLowerCase()))score+=20;
-      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      const keyLower=key.toLowerCase();
+      const summaryLower=summary.toLowerCase();
+      const solutionLower=solution.toLowerCase();
+      const categoryLower=category.toLowerCase();
+
+      if(query.includes(keyLower))score+=20;
+      const words=query.split(/\s+/).filter(w=>w.length>=1);
       words.forEach(w=>{
-        if(summary.toLowerCase().includes(w))score+=5;
-        if(solution.toLowerCase().includes(w))score+=4;
-        if(category.toLowerCase().includes(w))score+=3;
+        const wl=w.toLowerCase();
+        if(summaryLower.includes(wl))score+=5;
+        if(solutionLower.includes(wl))score+=4;
+        if(categoryLower.includes(wl))score+=3;
+        if(keyLower.includes(wl))score+=6;
       });
-      if(summary.toLowerCase().includes(query))score+=8;
-      if(solution.toLowerCase().includes(query))score+=6;
+      if(summaryLower.includes(query))score+=8;
+      if(solutionLower.includes(query))score+=6;
       if(score>0)results.push({key,summary,category,solution,location,score});
     });
   }
@@ -1045,25 +1054,25 @@ function searchJiraIssues(q){
   if(!ALL||!ALL.issues)return results;
   ALL.issues.forEach(issue=>{
     let score=0;
-    const key=issue.key||'';
-    const summary=issue.summary||'';
-    const category=issue.category||'';
-    const assignee=issue.assignee||'';
-    // Jira 编号精确匹配
-    if(query.includes(key.toLowerCase()))score+=25;
-    // 关键词匹配
-    const words=query.split(/\s+/).filter(w=>w.length>=2);
+    const key=(issue.key||'').toLowerCase();
+    const summary=(issue.summary||'').toLowerCase();
+    const category=(issue.category||'').toLowerCase();
+    const assignee=(issue.assignee||'').toLowerCase();
+
+    if(query.includes(key))score+=25;
+    const words=query.split(/\s+/).filter(w=>w.length>=1);
     words.forEach(w=>{
-      if(summary.toLowerCase().includes(w))score+=5;
-      if(category.toLowerCase().includes(w))score+=4;
-      if(assignee.toLowerCase().includes(w))score+=2;
+      const wl=w.toLowerCase();
+      if(summary.includes(wl))score+=5;
+      if(category.includes(wl))score+=4;
+      if(assignee.includes(wl))score+=2;
+      if(key.includes(wl))score+=6;
     });
-    // 部分匹配
-    if(summary.toLowerCase().includes(query))score+=10;
-    if(category.toLowerCase().includes(query))score+=6;
+    if(summary.includes(query))score+=10;
+    if(category.includes(query))score+=6;
     if(score>0)results.push({...issue,score});
   });
-  return results.sort((a,b)=>b.score-a.score).slice(0,6);
+  return results.sort((a,b)=>b.score-a.score).slice(0,8);
 }
 
 // 搜索飞书文档
@@ -1075,22 +1084,47 @@ function searchFeishuDocs(q){
     const docs=info.docs||[];
     docs.forEach(doc=>{
       let score=0;
-      const title=doc.title||'';
-      const summary=doc.summary||'';
-      const searchText=(title+' '+summary+' '+cat).toLowerCase();
-      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      const title=(doc.title||'').toLowerCase();
+      const summary=(doc.summary||'').toLowerCase();
+      const catLower=cat.toLowerCase();
+      const searchText=title+' '+summary+' '+catLower;
+
+      // 关键词匹配
+      const words=query.split(/\s+/).filter(w=>w.length>=1);
       words.forEach(w=>{
-        if(searchText.includes(w))score+=4;
+        const wl=w.toLowerCase();
+        // 标题匹配权重最高
+        if(title.includes(wl))score+=8;
+        // 分类匹配
+        else if(catLower.includes(wl))score+=5;
+        // 摘要匹配
+        else if(summary.includes(wl))score+=3;
       });
-      if(searchText.includes(query))score+=8;
-      // 分类加分
-      if(cat.includes('需求')&&(query.includes('需求')||query.includes('prd')))score+=3;
-      if(cat.includes('规范')&&(query.includes('规范')||query.includes('标准')))score+=3;
-      if(cat.includes('算法')&&(query.includes('算法')||query.includes('事件')))score+=3;
-      if(score>0)results.push({key:doc.id,title,summary,category:cat,score,source:'feishu',url:'https://mi.feishu.cn/'+doc.type+'/'+doc.id});
+
+      // 完整查询匹配
+      if(searchText.includes(query))score+=12;
+
+      // 分类语义加分
+      const semanticMatches={
+        '接入':['接入','厂商','流程','规范','合作','对接','适配','集成'],
+        '需求':['需求','功能','特性','产品'],
+        '规范':['规范','标准','指南','模板'],
+        '模板':['模板','模版','格式'],
+        '说明书':['说明书','文档','规格'],
+      };
+      for(const [key,terms] of Object.entries(semanticMatches)){
+        if(catLower.includes(key)&&terms.some(t=>query.includes(t)))score+=5;
+      }
+
+      // 标题关键词加分
+      if(title.includes('接入')&&(query.includes('厂商')||query.includes('接入')||query.includes('合作')))score+=10;
+      if(title.includes('流程')&&(query.includes('怎么')||query.includes('如何')||query.includes('流程')))score+=8;
+      if(title.includes('规范')&&(query.includes('规范')||query.includes('标准')))score+=8;
+
+      if(score>0)results.push({key:doc.id,title:doc.title,summary:doc.summary,category:cat,score,source:'feishu',url:'https://mi.feishu.cn/'+doc.type+'/'+doc.id});
     });
   });
-  return results.sort((a,b)=>b.score-a.score).slice(0,5);
+  return results.sort((a,b)=>b.score-a.score).slice(0,8);
 }
 
 function markKbDone(idx){
@@ -1386,10 +1420,58 @@ function analyzeQuestion(q){
   else if(/为什么|原因是|原因是什么/.test(q)){result.intent='why';result.isQuestion=true;}
   else if(/修复|解决|处理|优化|改进/.test(q)){result.intent='fix';}
   else{result.intent='search';}
-  const stopWords=['的','了','吗','呢','啊','吧','是','在','有','和','与','或','怎么','如何','什么','为什么','请','帮','我','一下','看看','查看','查询','搜索','查找'];
-  const words=q.replace(/[,，。、！？\?\!]/g,' ').split(/\s+/).filter(w=>w.length>=2&&!stopWords.includes(w));
+  const stopWords=['的','了','吗','呢','啊','吧','是','在','有','和','与','或','怎么','如何','什么','为什么','请','帮','我','一下','看看','查看','查询','搜索','查找','新','旧','怎么'];
+  const words=q.replace(/[,，。、！？\?\!]/g,' ').split(/\s+/).filter(w=>w.length>=1&&!stopWords.includes(w));
   result.keywords=[...new Set(words)];
-  const categoryMap={'多语言':['多语言','翻译','i18n'],'iOS音频':['ios','音频','声音','对讲','监听','锁屏'],'UI适配':['ui','适配','显示','布局','深色','界面'],'存储回看':['存储','回看','下载','sd卡','云存'],'直播视频':['直播','视频','画面','清晰度','卡顿'],'云台PTZ':['云台','ptz','转动'],'推送消息':['推送','消息','通知','告警'],'看家助手':['看家','事件','围栏','警戒'],'配网绑定':['配网','绑定','连接','wifi'],'4G相关':['4g','流量','低功耗'],'C700双目':['c700','双目','宠物','大模型'],'门铃':['门铃','门口']};
+
+  // 语义扩展：为关键词添加同义词和相关词
+  const synonyms={
+    '接入':['厂商','合作','对接','适配','集成','开发','接入流程','接入规范'],
+    '厂商':['接入','合作','第三方','生态链','外部'],
+    '流程':['规范','步骤','指南','教程','说明'],
+    '接入流程':['厂商接入','设备接入','产品接入'],
+    '配网':['联网','连接','添加设备','绑定设备'],
+    '推送':['通知','消息','告警','提醒'],
+    '回看':['录像','视频回放','历史视频','云存回放'],
+    '直播':['实时画面','预览','实时视频'],
+    '云台':['转动','ptz','旋转','巡航'],
+    '固件':['升级','ota','版本更新','固件更新'],
+    '语控':['语音控制','小爱','智能音箱','语音助手'],
+    '看家':['事件','侦测','移动侦测','人形侦测','宠物侦测'],
+    '存储':['sd卡','云存','本地存储','云存储'],
+    'ui':['界面','显示','适配','布局','样式'],
+    '翻译':['多语言','国际化','i18n','语言配置'],
+  };
+
+  // 扩展关键词
+  const expandedKeywords=[...result.keywords];
+  result.keywords.forEach(kw=>{
+    const lowerKw=kw.toLowerCase();
+    for(const [key,syns] of Object.entries(synonyms)){
+      if(lowerKw.includes(key)||key.includes(lowerKw)){
+        expandedKeywords.push(...syns);
+      }
+    }
+  });
+  result.keywords=[...new Set(expandedKeywords)];
+
+  const categoryMap={
+    '多语言':['多语言','翻译','i18n','国际化','语言配置'],
+    'iOS音频':['ios','音频','声音','对讲','监听','锁屏','avaudiosession'],
+    'UI适配':['ui','适配','显示','布局','深色','界面','样式'],
+    '存储回看':['存储','回看','下载','sd卡','云存','录像','视频回放'],
+    '直播视频':['直播','视频','画面','清晰度','卡顿','实时画面','预览'],
+    '云台PTZ':['云台','ptz','转动','旋转','巡航'],
+    '推送消息':['推送','消息','通知','告警','提醒'],
+    '看家助手':['看家','事件','围栏','警戒','移动侦测','人形侦测','宠物侦测'],
+    '配网绑定':['配网','绑定','连接','wifi','蓝牙','添加设备'],
+    '4G相关':['4g','流量','低功耗','移动网络','sim'],
+    'C700双目':['c700','双目','双摄','宠物','大模型'],
+    '门铃':['门铃','门口','访客'],
+    '接入流程':['接入','厂商','流程','规范','接入流程','厂商接入','设备接入'],
+    '固件升级':['固件','升级','ota','版本更新'],
+    '语控小爱':['语控','小爱','语音控制','智能音箱'],
+  };
   const lowerQ=q.toLowerCase();
   for(const [cat,kws] of Object.entries(categoryMap)){
     if(kws.some(k=>lowerQ.includes(k))){result.category=cat;result.keywords.push(...kws.filter(k=>k.length>=2));result.keywords=[...new Set(result.keywords)];break;}
