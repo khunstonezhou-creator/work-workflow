@@ -757,37 +757,60 @@ function kbSearchAnswer(q,el){
     return;
   }
   let html='<div style="background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden">';
-  // 头部：AI 回答摘要
-  html+='<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:14px 16px">';
-  html+='<div style="font-size:13px;font-weight:600;margin-bottom:6px">💡 智能分析结果</div>';
-  html+='<div style="font-size:12px;opacity:0.9">'+generateSummary(q,solResults,jiraResults,docResults)+'</div>';
+  // 头部：AI 回答
+  html+='<div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:16px">';
+  html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">💡 智能回答</div>';
+  html+='<div style="font-size:13px;line-height:1.6">'+generateAIAnswer(q,solResults,jiraResults,docResults)+'</div>';
   html+='</div>';
-  // 解决方案
+  // 解决方案详情
   if(solResults.length){
-    html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
-    html+='<div style="font-size:11px;color:#2e7d32;font-weight:600;margin-bottom:8px">✅ 已有解决方案 ('+solResults.length+')</div>';
-    solResults.slice(0,3).forEach(r=>{
-      html+='<div style="padding:8px 10px;background:#f0fdf4;border-radius:6px;margin-bottom:6px">';
-      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#16a34a;font-weight:500;font-size:12px;text-decoration:none">'+esc(r.key)+'</a>';
-      html+='<span style="color:#666;font-size:11px;margin-left:6px">'+esc(r.summary||'').substring(0,40)+'</span>';
-      if(r.solution)html+='<div style="color:#15803d;font-size:11px;margin-top:4px;padding-left:4px">💡 '+esc(r.solution).substring(0,80)+'</div>';
+    const best=solResults[0];
+    const detail=extractSolutionDetail(best.key);
+    html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
+    html+='<div style="font-size:12px;color:#2e7d32;font-weight:600;margin-bottom:10px">✅ 最佳解决方案</div>';
+    html+='<div style="padding:12px;background:#f0fdf4;border-radius:8px;border-left:3px solid #22c55e">';
+    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+    html+='<a href="'+JIRA+esc(best.key)+'" target="_blank" style="color:#16a34a;font-weight:600;font-size:13px;text-decoration:none">'+esc(best.key)+'</a>';
+    html+='<span style="color:#666;font-size:12px">'+esc(best.summary||'')+'</span>';
+    html+='</div>';
+    if(detail){
+      html+='<div style="font-size:12px;color:#15803d;line-height:1.6">'+detail+'</div>';
+    }else if(best.solution){
+      html+='<div style="font-size:12px;color:#15803d"><strong>解决方案：</strong>'+esc(best.solution)+'</div>';
+    }
+    if(best.location)html+='<div style="font-size:11px;color:#16a34a;margin-top:6px">📍 解决位置：'+esc(best.location)+'</div>';
+    html+='</div>';
+    // 其他相关方案
+    if(solResults.length>1){
+      html+='<div style="margin-top:10px">';
+      html+='<div style="font-size:11px;color:#666;margin-bottom:6px">其他相关方案：</div>';
+      solResults.slice(1,3).forEach(r=>{
+        html+='<div style="padding:6px 8px;background:#f8f8f8;border-radius:4px;margin-bottom:4px;font-size:11px">';
+        html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#16a34a;text-decoration:none">'+esc(r.key)+'</a>';
+        html+='<span style="color:#666;margin-left:6px">'+esc(r.summary||'').substring(0,35)+'</span>';
+        if(r.solution)html+='<span style="color:#15803d;margin-left:6px">→ '+esc(r.solution).substring(0,40)+'</span>';
+        html+='</div>';
+      });
       html+='</div>';
-    });
+    }
     html+='</div>';
   }
-  // 相关 Jira 问题
+  // 相关进行中的 Jira
   if(jiraResults.length){
-    html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
-    html+='<div style="font-size:11px;color:#d97706;font-weight:600;margin-bottom:8px">📋 相关 Jira 问题 ('+jiraResults.length+')</div>';
-    jiraResults.slice(0,4).forEach(r=>{
-      const statusColor=r.status==='OPEN'?'#dc2626':r.status==='In Progress'?'#2563eb':'#16a34a';
-      html+='<div style="padding:8px 10px;background:#fffbeb;border-radius:6px;margin-bottom:6px;display:flex;align-items:center;gap:8px">';
-      html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#92400e;font-weight:500;font-size:12px;text-decoration:none;white-space:nowrap">'+esc(r.key)+'</a>';
-      html+='<span style="flex:1;color:#666;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(r.summary).substring(0,50)+'</span>';
-      html+='<span style="font-size:10px;color:'+statusColor+';background:'+statusColor+'15;padding:2px 6px;border-radius:4px;white-space:nowrap">'+esc(r.status)+'</span>';
+    const active=jiraResults.filter(r=>r.status==='OPEN'||r.status==='In Progress');
+    if(active.length){
+      html+='<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0">';
+      html+='<div style="font-size:11px;color:#d97706;font-weight:600;margin-bottom:8px">📋 相关待处理问题 ('+active.length+')</div>';
+      active.slice(0,3).forEach(r=>{
+        const statusColor=r.status==='OPEN'?'#dc2626':'#2563eb';
+        html+='<div style="padding:8px 10px;background:#fffbeb;border-radius:6px;margin-bottom:6px;display:flex;align-items:center;gap:8px">';
+        html+='<a href="'+JIRA+esc(r.key)+'" target="_blank" style="color:#92400e;font-weight:500;font-size:12px;text-decoration:none;white-space:nowrap">'+esc(r.key)+'</a>';
+        html+='<span style="flex:1;color:#666;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(r.summary).substring(0,45)+'</span>';
+        html+='<span style="font-size:10px;color:'+statusColor+';background:'+statusColor+'15;padding:2px 6px;border-radius:4px;white-space:nowrap">'+esc(r.status)+'</span>';
+        html+='</div>';
+      });
       html+='</div>';
-    });
-    html+='</div>';
+    }
   }
   // 参考文档
   if(docResults.length){
@@ -797,13 +820,65 @@ function kbSearchAnswer(q,el){
       html+='<div style="padding:8px 10px;background:#f0f4ff;border-radius:6px;margin-bottom:6px">';
       html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5;font-size:12px;text-decoration:none">📄 '+esc(r.title)+'</a>';
       html+='<span style="color:#999;font-size:10px;margin-left:6px">'+esc(r.category)+'</span>';
-      if(r.summary)html+='<div style="color:#666;font-size:11px;margin-top:2px">'+esc(r.summary).substring(0,60)+'</div>';
+      if(r.summary)html+='<div style="color:#666;font-size:11px;margin-top:2px">'+esc(r.summary).substring(0,50)+'</div>';
       html+='</div>';
     });
     html+='</div>';
   }
   html+='</div>';
   el.innerHTML=html;
+}
+
+// 生成 AI 风格的回答
+function generateAIAnswer(q,sol,jira,docs){
+  let answer='';
+  const hasSolution=sol.length>0;
+  const hasActiveIssue=jira.some(r=>r.status==='OPEN'||r.status==='In Progress');
+  // 根据问题类型生成回答
+  if(hasSolution){
+    const best=sol[0];
+    answer='根据知识库记录，这个问题有<b>已验证的解决方案</b>。';
+    if(best.solution){
+      answer+='<br><br><strong>核心方案：</strong>'+esc(best.solution).substring(0,100);
+    }
+    if(best.location){
+      answer+='<br><strong>操作位置：</strong>'+esc(best.location);
+    }
+    if(hasActiveIssue){
+      answer+='<br><br>⚠️ 目前有 <b>'+jira.filter(r=>r.status==='OPEN'||r.status==='In Progress').length+'</b> 个相关问题仍在处理中，建议参考已解决案例的方案。';
+    }
+  }else if(jira.length){
+    answer='知识库中暂无完全匹配的解决方案，但找到 <b>'+jira.length+'</b> 个相关问题。';
+    const open=jira.filter(r=>r.status==='OPEN').length;
+    const prog=jira.filter(r=>r.status==='In Progress').length;
+    if(open||prog){
+      answer+='<br><br>其中 '+open+' 个待处理，'+prog+' 个处理中。建议查看这些问题的进展和讨论。';
+    }
+  }else if(docs.length){
+    answer='找到 <b>'+docs.length+'</b> 篇相关文档，可能包含相关信息。';
+  }
+  return answer||'正在分析问题，请稍候...';
+}
+
+// 从 solutions.md 提取详细解决方案
+function extractSolutionDetail(jiraKey){
+  if(!SOLUTIONS_RAW)return null;
+  // 查找该 Jira 的详细描述部分
+  const regex=new RegExp('###\\s*'+jiraKey.replace(/[-\/\\^$*+?.()|[\]{}]/g,'\\$&')+'[\\s\\S]*?(?=###|$)','i');
+  const match=SOLUTIONS_RAW.match(regex);
+  if(match&&match[0]){
+    // 提取关键信息，去掉 markdown 格式
+    let detail=match[0]
+      .replace(/###\s*.*/,'')
+      .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+      .replace(/\|[^|]+\|/g,'') // 去掉表格行
+      .replace(/\n{3,}/g,'\n\n')
+      .trim();
+    // 截取前 300 字符
+    if(detail.length>300)detail=detail.substring(0,300)+'...';
+    return detail?detail.replace(/\n/g,'<br>'):'<br>';
+  }
+  return null;
 }
 
 // 生成智能摘要
@@ -835,27 +910,53 @@ function generateSummary(q,sol,jira,docs){
 function searchSolutions(q){
   const results=[];
   const query=q.toLowerCase();
-  if(!KB_DATA||!KB_DATA.kb_index||!KB_DATA.kb_index.entries)return results;
-  KB_DATA.kb_index.entries.forEach(e=>{
-    let score=0;
-    const key=e.key||'';
-    const summary=e.summary||'';
-    const solution=e.solution||'';
-    const category=e.category||'';
-    // Jira 编号精确匹配
-    if(query.includes(key.toLowerCase()))score+=20;
-    // 关键词匹配
-    const words=query.split(/\s+/).filter(w=>w.length>=2);
-    words.forEach(w=>{
-      if(summary.toLowerCase().includes(w))score+=5;
-      if(solution.toLowerCase().includes(w))score+=4;
-      if(category.toLowerCase().includes(w))score+=3;
+  // 从 KB_DATA 搜索
+  if(KB_DATA&&KB_DATA.kb_index&&KB_DATA.kb_index.entries){
+    KB_DATA.kb_index.entries.forEach(e=>{
+      let score=0;
+      const key=e.key||'';
+      const summary=e.summary||'';
+      const solution=e.solution||'';
+      const category=e.category||'';
+      if(query.includes(key.toLowerCase()))score+=20;
+      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      words.forEach(w=>{
+        if(summary.toLowerCase().includes(w))score+=5;
+        if(solution.toLowerCase().includes(w))score+=4;
+        if(category.toLowerCase().includes(w))score+=3;
+      });
+      if(summary.toLowerCase().includes(query))score+=8;
+      if(solution.toLowerCase().includes(query))score+=6;
+      if(score>0)results.push({...e,score});
     });
-    // 部分匹配
-    if(summary.toLowerCase().includes(query))score+=8;
-    if(solution.toLowerCase().includes(query))score+=6;
-    if(score>0)results.push({...e,score});
-  });
+  }
+  // 从 solutions.md 表格行搜索（补充）
+  if(SOLUTIONS_RAW){
+    const lines=SOLUTIONS_RAW.split('\n');
+    lines.forEach(line=>{
+      if(!line.startsWith('|')||line.includes('---'))return;
+      const cols=line.split('|').map(c=>c.trim()).filter(Boolean);
+      if(cols.length<5)return;
+      const key=cols[0]||'';
+      const summary=cols[1]||'';
+      const category=cols[2]||'';
+      const solution=cols[3]||'';
+      const location=cols[4]||'';
+      // 避免重复
+      if(results.some(r=>r.key===key))return;
+      let score=0;
+      if(query.includes(key.toLowerCase()))score+=20;
+      const words=query.split(/\s+/).filter(w=>w.length>=2);
+      words.forEach(w=>{
+        if(summary.toLowerCase().includes(w))score+=5;
+        if(solution.toLowerCase().includes(w))score+=4;
+        if(category.toLowerCase().includes(w))score+=3;
+      });
+      if(summary.toLowerCase().includes(query))score+=8;
+      if(solution.toLowerCase().includes(query))score+=6;
+      if(score>0)results.push({key,summary,category,solution,location,score});
+    });
+  }
   return results.sort((a,b)=>b.score-a.score).slice(0,5);
 }
 
@@ -1183,9 +1284,12 @@ function showSug(key){
 // 知识库搜索
 let KB_DATA=null;
 let DOCS_DATA=null;
+let SOLUTIONS_RAW=''; // solutions.md 原始内容
 
 // 加载知识库文档索引
 fetch('knowledge-base/docs-index.json').then(r=>r.json()).then(d=>{DOCS_DATA=d}).catch(()=>{});
+// 加载 solutions.md 原始内容用于深度分析
+fetch('knowledge-base/solutions.md').then(r=>r.text()).then(d=>{SOLUTIONS_RAW=d}).catch(()=>{});
 
 function kbSearch(query){
   const results=[];
