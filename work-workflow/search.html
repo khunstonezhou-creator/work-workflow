@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能问答 - 摄像机标插技术助手</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 16px; margin-bottom: 24px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 14px; }
+.search-box { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 24px; }
+.search-input-wrapper { display: flex; gap: 12px; }
+.search-input { flex: 1; padding: 14px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 15px; outline: none; transition: all 0.2s; }
+.search-input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+.search-btn { padding: 14px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.search-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+.search-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+.examples { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.example-tag { padding: 6px 12px; background: #f3f4f6; border-radius: 20px; font-size: 12px; color: #666; cursor: pointer; transition: all 0.2s; }
+.example-tag:hover { background: #667eea; color: white; }
+.chat-container { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+.chat-messages { padding: 20px; min-height: 400px; max-height: 600px; overflow-y: auto; }
+.message { margin-bottom: 20px; display: flex; gap: 12px; }
+.message.user { flex-direction: row-reverse; }
+.message-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.message.user .message-avatar { background: #667eea; color: white; }
+.message.assistant .message-avatar { background: #10b981; color: white; }
+.message-content { max-width: 75%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+.message.user .message-content { background: #667eea; color: white; border-bottom-right-radius: 4px; }
+.message.assistant .message-content { background: #f3f4f6; color: #333; border-bottom-left-radius: 4px; }
+.message.assistant .message-content b { color: #667eea; }
+.message.assistant .message-content code { background: #e5e7eb; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.message.assistant .message-content a { color: #667eea; text-decoration: none; }
+.message.assistant .message-content a:hover { text-decoration: underline; }
+.typing { display: inline-block; padding: 12px 16px; }
+.typing span { display: inline-block; width: 8px; height: 8px; background: #999; border-radius: 50%; margin: 0 2px; animation: typing 1.4s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-8px); }
+}
+.chat-footer { padding: 16px 20px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 12px; color: #999; text-align: center; }
+.back-link { display: inline-block; margin-bottom: 20px; color: #667eea; text-decoration: none; font-size: 14px; }
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← 返回工作台</a>
+
+  <div class="header">
+    <h1>🤖 智能问答</h1>
+    <p>摄像机标插团队技术助手 · 基于代码仓库和知识库</p>
+  </div>
+
+  <div class="search-box">
+    <div class="search-input-wrapper">
+      <input type="text" class="search-input" id="questionInput" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')askQuestion()">
+      <button class="search-btn" id="askBtn" onclick="askQuestion()">提问</button>
+    </div>
+    <div class="examples">
+      <span class="example-tag" onclick="setQuestion('直播黑屏怎么排查')">直播黑屏怎么排查</span>
+      <span class="example-tag" onclick="setQuestion('已有的AI功能有哪些')">已有的AI功能有哪些</span>
+      <span class="example-tag" onclick="setQuestion('埋点怎么配置')">埋点怎么配置</span>
+      <span class="example-tag" onclick="setQuestion('spec配置在哪里')">spec配置在哪里</span>
+      <span class="example-tag" onclick="setQuestion('云台控制怎么实现')">云台控制怎么实现</span>
+      <span class="example-tag" onclick="setQuestion('新厂商怎么接入')">新厂商怎么接入</span>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-messages" id="chatMessages">
+      <div class="message assistant">
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+          你好！我是摄像机标插团队的技术助手。<br><br>
+          我可以帮你：<br>
+          • 查找代码实现和关键文件位置<br>
+          • 解答功能相关问题<br>
+          • 提供问题排查方向<br>
+          • 检索知识库文档<br><br>
+          请输入你的问题，或点击上方的示例标签快速提问。
+        </div>
+      </div>
+    </div>
+    <div class="chat-footer">
+      💡 基于代码仓库和知识库的实时分析 · 置信度高
+    </div>
+  </div>
+</div>
+
+<script>
+// 数据源
+let CODE_DATA = null;
+let DOCS_DATA = null;
+let KB_DATA = null;
+let ALL_ISSUES = null;
+
+// 加载数据
+async function loadData() {
+  try {
+    const [codeRes, docsRes, kbRes, issuesRes] = await Promise.allSettled([
+      fetch('knowledge-base/code-index.json').then(r => r.json()),
+      fetch('knowledge-base/docs-index.json').then(r => r.json()),
+      fetch('boards/kb-pending.json').then(r => r.json()),
+      fetch('boards/all-issues-data.json').then(r => r.json())
+    ]);
+
+    if (codeRes.status === 'fulfilled') CODE_DATA = codeRes.value;
+    if (docsRes.status === 'fulfilled') DOCS_DATA = docsRes.value;
+    if (kbRes.status === 'fulfilled') KB_DATA = kbRes.value;
+    if (issuesRes.status === 'fulfilled') ALL_ISSUES = issuesRes.value;
+  } catch (e) {
+    console.error('数据加载失败:', e);
+  }
+}
+
+// 设置问题
+function setQuestion(q) {
+  document.getElementById('questionInput').value = q;
+  askQuestion();
+}
+
+// 提问
+async function askQuestion() {
+  const input = document.getElementById('questionInput');
+  const question = input.value.trim();
+  if (!question) return;
+
+  // 添加用户消息
+  addMessage(question, 'user');
+  input.value = '';
+
+  // 显示加载状态
+  const loadingId = addLoading();
+
+  // 等待数据加载
+  if (!CODE_DATA) await loadData();
+
+  // 生成回答
+  setTimeout(() => {
+    const answer = generateAnswer(question);
+    removeLoading(loadingId);
+    addMessage(answer, 'assistant');
+  }, 500);
+}
+
+// 添加消息
+function addMessage(content, type) {
+  const container = document.getElementById('chatMessages');
+  const avatar = type === 'user' ? '👤' : '🤖';
+  const id = 'msg-' + Date.now();
+
+  const html = `
+    <div class="message ${type}" id="${id}">
+      <div class="message-avatar">${avatar}</div>
+      <div class="message-content">${content}</div>
+    </div>
+  `;
+
+  container.insertAdjacentHTML('beforeend', html);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+// 添加加载状态
+function addLoading() {
+  const container = document.getElementById('chatMessages');
+  const id = 'loading-' + Date.now();
+
+  const html = `
+    <div class="message assistant" id="${id}">
+      <div class="message-avatar">🤖</div>
+      <div class="message-content">
+        <div class="typing">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  container.insertAdjacentHTML('beforeend', html);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+// 移除加载状态
+function removeLoading(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+// 转义 HTML
+function esc(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// 生成回答
+function generateAnswer(q) {
+  const qLower = q.toLowerCase();
+
+  // 检测问题类型
+  const isFeatureListQuestion = /有哪些功能|功能有哪些|支持哪些|功能列表|功能清单|有什么功能/.test(qLower);
+  const isAIFeatureQuestion = /ai功能|人工智能|智能功能|算法功能/.test(qLower);
+  const isTechnicalQuestion = /功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|埋点|点位|统计|接口|api|播放器|云台|看家|推送|存储|ai|算法|围栏|人脸|宠物|通话|夜视|录制|回看|sd卡|黑屏|卡顿|双摄/.test(qLower);
+  const isNonTechnicalQuestion = /接入流程|怎么接入|如何接入|厂商接入|找谁|联系谁|负责人|文档在哪/.test(qLower);
+
+  // 搜索代码
+  const codeResults = searchCode(q);
+  const docResults = searchDocs(q);
+  const solResults = searchSolutions(q);
+
+  // 功能清单类问题
+  if (isFeatureListQuestion || isAIFeatureQuestion) {
+    return generateFeatureListAnswer(q, codeResults, docResults);
+  }
+
+  // 技术问题
+  if (isTechnicalQuestion && !isNonTechnicalQuestion) {
+    return generateTechnicalAnswer(q, codeResults, docResults, solResults);
+  }
+
+  // 非技术问题
+  if (isNonTechnicalQuestion) {
+    return generateProcessAnswer(q, docResults, solResults);
+  }
+
+  // 通用回答
+  return generateGeneralAnswer(q, codeResults, docResults, solResults);
+}
+
+// 搜索代码
+function searchCode(q) {
+  if (!CODE_DATA || !CODE_DATA.files) return [];
+  const qLower = q.toLowerCase();
+  const results = [];
+
+  CODE_DATA.files.forEach(file => {
+    let score = 0;
+    const searchText = (file.name + ' ' + file.path + ' ' + file.summary + ' ' + (file.keywords || []).join(' ')).toLowerCase();
+
+    // 关键词匹配
+    qLower.split(/\s+/).forEach(w => {
+      if (w.length >= 2 && searchText.includes(w)) score += 5;
+    });
+
+    // 完整匹配
+    if (searchText.includes(qLower)) score += 10;
+
+    if (score > 0) {
+      results.push({ ...file, score, url: 'https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot/-/blob/main/' + file.path });
+    }
+  });
+
+  return results.sort((a, b) => b.score - a.score).slice(0, 5);
+}
+
+// 搜索文档
+function searchDocs(q) {
+  if (!DOCS_DATA || !DOCS_DATA.categories) return [];
+  const qLower = q.toLowerCase();
+  const results = [];
+
+  Object.entries(DOCS_DATA.categories).forEach(([cat, info]) => {
+    (info.docs || []).forEach(doc => {
+      const searchText = (doc.title + ' ' + (doc.summary || '') + ' ' + cat).toLowerCase();
+      let score = 0;
+      qLower.split(/\s+/).forEach(w => {
+        if (w.length >= 2 && searchText.includes(w)) score += 3;
+      });
+      if (score > 0) {
+        results.push({ ...doc, category: cat, score, url: 'https://mi.feishu.cn/' + doc.type + '/' + doc.id });
+      }
+    });
+  });
+
+  return results.sort((a, b) => b.score - a.score).slice(0, 3);
+}
+
+// 搜索解决方案
+function searchSolutions(q) {
+  // 简化版，从 KB_DATA 搜索
+  if (!KB_DATA || !KB_DATA.kb_index) return [];
+  return [];
+}
+
+// 生成功能清单回答
+function generateFeatureListAnswer(q, code, docs) {
+  let answer = '<b>📋 结论</b>：摄像机目前已支持以下功能：<br><br>';
+
+  // 从代码中提取功能
+  const features = {};
+  code.forEach(r => {
+    if (r.features) {
+      r.features.forEach(f => {
+        if (!features[f]) features[f] = { name: f, files: [] };
+        features[f].files.push(r.name);
+      });
+    }
+  });
+
+  if (Object.keys(features).length > 0) {
+    const categories = {
+      '🔍 侦测类': ['人形侦测', '移动侦测', '宠物检测', '异常声响检测', '烟火检测'],
+      '👤 识别类': ['人脸识别', '人物身份识别', '跨摄像头追踪', '每日故事'],
+      '🛡️ 保护类': ['虚拟围栏', '区域隐私保护', '家人守护']
+    };
+
+    for (const [catName, catFeatures] of Object.entries(categories)) {
+      const matched = catFeatures.filter(f => features[f]);
+      if (matched.length > 0) {
+        answer += '<b>' + catName + '</b><br>';
+        matched.forEach(f => {
+          answer += '• ' + esc(f) + '<br>';
+        });
+        answer += '<br>';
+      }
+    }
+  }
+
+  answer += '<b>⚙️ 配置方式</b><br>';
+  answer += '• 在 IoT 平台配置相关 spec<br>';
+  answer += '• 部分功能有硬编码限制（需检查 model 列表）<br>';
+
+  if (docs.length > 0) {
+    answer += '<br><b>📖 参考文档</b><br>';
+    docs.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+    });
+  }
+
+  return answer;
+}
+
+// 生成技术回答
+function generateTechnicalAnswer(q, code, docs, sol) {
+  if (code.length === 0) {
+    return '<b>📋 结论</b>：暂未找到相关代码实现。<br><br>建议：<br>1. 尝试更具体的关键词<br>2. 查看文档目录 doc/<br>3. 联系开发人员确认';
+  }
+
+  // 使用模块映射
+  const moduleMapping = CODE_DATA?.moduleMapping || {};
+  let matchedModule = '';
+  for (const [keywords, modulePath] of Object.entries(moduleMapping)) {
+    if (keywords.split('/').some(k => q.toLowerCase().includes(k.toLowerCase()))) {
+      matchedModule = modulePath;
+      break;
+    }
+  }
+
+  let answer = '<b>📋 结论</b>：';
+  if (matchedModule) {
+    answer += '问题定位到 <code>' + esc(matchedModule) + '</code>';
+  } else {
+    answer += '根据代码分析，找到相关实现';
+  }
+
+  answer += '<br><br><b>🎯 关键代码位置</b><br>';
+  const primary = code[0];
+  answer += '• <b>主文件</b>：<a href="' + esc(primary.url) + '" target="_blank">' + esc(primary.path) + '</a><br>';
+  answer += '• <b>功能</b>：' + esc(primary.summary) + '<br>';
+
+  if (code.length > 1) {
+    answer += '• <b>相关文件</b>：';
+    code.slice(1, 3).forEach(r => {
+      answer += '<a href="' + esc(r.url) + '" target="_blank" style="margin-left:8px">' + esc(r.name) + '</a>';
+    });
+    answer += '<br>';
+  }
+
+  // 修复方向
+  answer += '<br><b>🔧 排查方向</b><br>';
+  const qLower = q.toLowerCase();
+  if (qLower.includes('黑屏') || qLower.includes('卡顿')) {
+    answer += '1. 检查 P2P 连接状态（MISS 协议）<br>';
+    answer += '2. 查看 videoRender 是否正常初始化<br>';
+    answer += '3. 检查硬解码是否支持当前设备<br>';
+  } else if (qLower.includes('埋点') || qLower.includes('统计')) {
+    answer += '1. 确认事件名和参数是否正确<br>';
+    answer += '2. 检查 TrackUtil.newOneTrack 调用<br>';
+    answer += '3. 在数据平台验证数据是否上报成功<br>';
+  } else if (qLower.includes('设置') || qLower.includes('配置')) {
+    answer += '1. 检查 spec 配置是否正确（siid/piid）<br>';
+    answer += '2. 确认 IoT 平台配置项是否拉取成功<br>';
+    answer += '3. 查看是否有硬编码限制<br>';
+  } else {
+    answer += '1. 定位到上述关键文件<br>';
+    answer += '2. 搜索相关关键词定位问题代码<br>';
+    answer += '3. 检查日志输出确认执行流程<br>';
+  }
+
+  // 文档
+  const docFiles = code.filter(r => r.type === 'markdown');
+  if (docFiles.length > 0) {
+    answer += '<br><b>📖 参考文档</b><br>';
+    docFiles.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.path) + '</a><br>';
+    });
+  }
+
+  return answer;
+}
+
+// 生成流程回答
+function generateProcessAnswer(q, docs, sol) {
+  let answer = '<b>📋 结论</b>：这是流程性问题，代码仓库不参与回答。<br><br>';
+
+  if (q.includes('接入') || q.includes('厂商')) {
+    answer += '<b>📋 接入步骤</b><br>';
+    answer += '1. 确认设备类型（常电/低功耗/4G）<br>';
+    answer += '2. 准备设备 Spec 配置<br>';
+    answer += '3. 完成功能测试和验证<br>';
+    answer += '4. 提交审核上线<br><br>';
+    answer += '<b>📚 相关文档</b><br>';
+    answer += '• <a href="https://mi.feishu.cn/docx/F1bxdWs6ionF1exCNzRcIQ4enEd" target="_blank">【外发版】小米IoT平台摄像机品类接入流程</a><br>';
+    answer += '• <a href="https://mi.feishu.cn/docx/OjzjdS2ltoPSMdxtztzcsdXRnqg" target="_blank">摄像机标插常见问题排查指南</a><br>';
+  } else {
+    answer += '<b>建议</b><br>';
+    answer += '1. 查阅相关文档和规范<br>';
+    answer += '2. 联系负责人获取指引<br>';
+  }
+
+  answer += '<br><b>👥 如需帮助</b>：联系 <b>周睿卿</b> 或 <b>赵容慧</b>（摄像机接入产品）';
+  return answer;
+}
+
+// 生成通用回答
+function generateGeneralAnswer(q, code, docs, sol) {
+  let answer = '<b>📋 结论</b>：基于知识库分析，找到相关信息。<br><br>';
+
+  if (code.length > 0) {
+    answer += '<b>💻 相关代码</b><br>';
+    code.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.name) + '</a> - ' + esc(r.summary).substring(0, 50) + '<br>';
+    });
+  }
+
+  if (docs.length > 0) {
+    answer += '<br><b>📚 参考文档</b><br>';
+    docs.slice(0, 2).forEach(r => {
+      answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+    });
+  }
+
+  return answer;
+}
+
+// 初始化
+loadData();
+</script>
+</body>
+</html>
