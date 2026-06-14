@@ -61,9 +61,19 @@
       "name": "useTrack.js",
       "type": "javascript",
       "size": 8000,
-      "keywords": ["埋点", "track", "expose", "统计", "数据上报", "事件", "onetrack", "数据"],
-      "summary": "直播埋点 hook，定义直播相关埋点事件。cameraRenderView.expose(did) 触发曝光埋点。包含 expose、click、pageview 等事件类型",
-      "module": "埋点模块"
+      "keywords": ["埋点", "track", "expose", "统计", "数据上报", "事件", "onetrack", "数据", "直播", "曝光", "首页", "直播页"],
+      "summary": "直播埋点 hook，定义直播相关埋点事件。直播页曝光埋点：cameraRenderView.expose(did)，事件名 expose，ref camera_homepage，card_id 10026。包含 expose、click、pageview 等事件类型",
+      "module": "埋点模块",
+      "trackingDetails": {
+        "liveExpose": {
+          "event": "expose",
+          "ref": "camera_homepage",
+          "cardId": "10026",
+          "trigger": "cameraRenderView.expose(did)",
+          "location": "Main/live/LiveVideoPageV2.js:12803",
+          "note": "只打一次，直播画面展示时触发"
+        }
+      }
     },
     {
       "path": "util/TrackUtil.js",

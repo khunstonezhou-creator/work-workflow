@@ -978,12 +978,43 @@ function qaGenerateTechnicalAnswer(q, code, docs) {
     return '<b>📋 结论</b>：暂未找到相关代码实现。<br><br>建议：<br>1. 尝试更具体的关键词<br>2. 查看文档目录 doc/<br>3. 联系开发人员确认';
   }
 
+  const qLower = q.toLowerCase();
   const moduleMapping = CODE_DATA?.moduleMapping || {};
   let matchedModule = '';
   for (const [keywords, modulePath] of Object.entries(moduleMapping)) {
-    if (keywords.split('/').some(k => q.toLowerCase().includes(k.toLowerCase()))) {
+    if (keywords.split('/').some(k => qLower.includes(k.toLowerCase()))) {
       matchedModule = modulePath;
       break;
+    }
+  }
+
+  // 检测是否是埋点相关问题
+  const isTrackingQuestion = /埋点|点位|track|expose|统计|上报|数据/.test(qLower);
+  const isLiveTracking = /直播|首页|画面/.test(qLower) && isTrackingQuestion;
+
+  // 如果是直播埋点问题，给出精准回答
+  if (isLiveTracking && code.some(r => r.trackingDetails)) {
+    const trackingFile = code.find(r => r.trackingDetails);
+    if (trackingFile && trackingFile.trackingDetails.liveExpose) {
+      const detail = trackingFile.trackingDetails.liveExpose;
+      let answer = '<b>📋 结论</b>：是的，摄像机直播页有曝光埋点。';
+      answer += '<br><br><b>🎯 埋点详情</b>';
+      answer += '<br>• <b>事件名</b>：' + detail.event;
+      answer += '<br>• <b>触发时机</b>：' + detail.note;
+      answer += '<br>• <b>调用方式</b>：<code>' + detail.trigger + '</code>';
+      answer += '<br>• <b>ref</b>：' + detail.ref;
+      answer += '<br>• <b>card_id</b>：' + detail.cardId;
+      answer += '<br><br><b>📁 关键代码</b>';
+      answer += '<br>• <a href="' + esc(trackingFile.url) + '" target="_blank">' + esc(trackingFile.path) + '</a> — 埋点 hook 定义';
+      answer += '<br>• <code>' + detail.location + '</code> — expose 调用处（只打一次）';
+      answer += '<br><br><b>📊 数据平台查询</b>';
+      answer += '<br>在数据工场中按以下条件筛选：';
+      answer += '<br>• 事件: <code>' + detail.event + '</code>';
+      answer += '<br>• ref: <code>' + detail.ref + '</code>';
+      answer += '<br>• card_id: <code>' + detail.cardId + '</code>';
+      answer += '<br><br><b>📖 参考文档</b>';
+      answer += '<br>• docs/埋点规范.md';
+      return answer;
     }
   }
 
