@@ -1738,42 +1738,84 @@ function generateSmartAnswer(q,analysis,sol,jira,docs,code){
     }
   }
 
-  // 技术问题 - 代码仓库参与回答（高置信度）
+  // 技术问题 - 代码仓库参与回答（技术助手风格）
   if(isTechnicalQuestion&&!isNonTechnicalQuestion){
     if(code.length){
-      answer='<b>结论</b>：根据代码仓库分析，找到了相关功能的实现。';
-      answer+='<br><br><b>💻 代码实现详情（实时状态 - 高置信度）</b>';
-      code.slice(0,3).forEach(r=>{
-        answer+='<br><br><b>📄 '+esc(r.title)+'</b>';
-        answer+='<br>• <b>路径</b>：<a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5">'+esc(r.path)+'</a>';
-        answer+='<br>• <b>功能</b>：'+esc(r.summary);
-        if(r.keywords&&r.keywords.length){
-          answer+='<br>• <b>相关关键词</b>：'+r.keywords.slice(0,5).map(k=>'<code>'+esc(k)+'</code>').join('、');
+      // 使用模块映射提供精准定位
+      const moduleMapping=CODE_DATA?.moduleMapping||{};
+      let matchedModule='';
+      for(const [keywords,modulePath] of Object.entries(moduleMapping)){
+        if(keywords.split('/').some(k=>qLower.includes(k.toLowerCase()))){
+          matchedModule=modulePath;
+          break;
         }
-      });
-      answer+='<br><br><b>💡 实现说明</b>';
-      answer+='<br>• 代码仓库显示的是当前最新实现，可直接参考';
-      answer+='<br>• 点击文件路径可查看完整源代码';
-      answer+='<br>• 如需修改，请联系代码仓库负责人';
-      if(sol.length||docs.length){
-        answer+='<br><br><b>📚 知识库补充</b>';
-        if(sol.length){
-          answer+='<br>• <b>历史方案</b>：'+esc(sol[0].summary);
-          if(sol[0].solution)answer+='<br>• <b>解决方案</b>：'+esc(sol[0].solution).substring(0,80);
-        }
-        if(docs.length){
-          answer+='<br>• <b>参考文档</b>：<a href="'+esc(docs[0].url)+'" target="_blank" style="color:#4f46e5">'+esc(docs[0].title)+'</a>';
-        }
+      }
+
+      answer='<b>📋 结论</b>：';
+      if(matchedModule){
+        answer+='问题定位到 <code>'+esc(matchedModule)+'</code>';
+      }else{
+        answer+='根据代码分析，找到相关实现';
+      }
+
+      // 关键代码位置
+      answer+='<br><br><b>🎯 关键代码位置</b>';
+      const primaryFile=code[0];
+      answer+='<br>• <b>主文件</b>：<a href="'+esc(primaryFile.url)+'" target="_blank" style="color:#4f46e5;font-weight:600">'+esc(primaryFile.path)+'</a>';
+      answer+='<br>• <b>功能</b>：'+esc(primaryFile.summary);
+
+      // 相关文件
+      if(code.length>1){
+        answer+='<br>• <b>相关文件</b>：';
+        code.slice(1,3).forEach(r=>{
+          answer+='<a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5;margin-left:4px">'+esc(r.title)+'</a>';
+        });
+      }
+
+      // 修复方向
+      answer+='<br><br><b>🔧 修复方向</b>';
+      if(qLower.includes('黑屏')||qLower.includes('卡顿')){
+        answer+='<br>1. 检查 P2P 连接状态（MISS 协议）';
+        answer+='<br>2. 查看 videoRender 是否正常初始化';
+        answer+='<br>3. 检查硬解码是否支持当前设备';
+      }else if(qLower.includes('埋点')||qLower.includes('统计')){
+        answer+='<br>1. 确认事件名和参数是否正确';
+        answer+='<br>2. 检查 TrackUtil.newOneTrack 调用';
+        answer+='<br>3. 在数据平台验证数据是否上报成功';
+      }else if(qLower.includes('设置')||qLower.includes('配置')){
+        answer+='<br>1. 检查 spec 配置是否正确（siid/piid）';
+        answer+='<br>2. 确认 IoT 平台配置项是否拉取成功';
+        answer+='<br>3. 查看是否有硬编码限制';
+      }else{
+        answer+='<br>1. 定位到上述关键文件';
+        answer+='<br>2. 搜索相关关键词定位问题代码';
+        answer+='<br>3. 检查日志输出确认执行流程';
+      }
+
+      // 文档引用
+      const docFiles=code.filter(r=>r.type==='markdown');
+      if(docFiles.length){
+        answer+='<br><br><b>📖 参考文档</b>';
+        docFiles.slice(0,2).forEach(r=>{
+          answer+='<br>• <a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5">'+esc(r.path)+'</a>';
+        });
+      }
+
+      // 知识库补充
+      if(sol.length){
+        answer+='<br><br><b>💡 历史方案</b>';
+        answer+='<br>• '+esc(sol[0].summary);
+        if(sol[0].solution)answer+='<br>• <b>解决方案</b>：'+esc(sol[0].solution).substring(0,80);
       }
     }else if(sol.length||docs.length){
-      answer='<b>结论</b>：知识库中有相关功能的记录。';
+      answer='<b>📋 结论</b>：知识库中有相关记录。';
       if(sol.length){
-        answer+='<br><br><b>📚 历史方案</b>';
+        answer+='<br><br><b>💡 历史方案</b>';
         answer+='<br>• '+esc(sol[0].summary);
-        if(sol[0].solution)answer+='<br>• 解决方案：'+esc(sol[0].solution).substring(0,80);
+        if(sol[0].solution)answer+='<br>• <b>解决方案</b>：'+esc(sol[0].solution).substring(0,80);
       }
       if(docs.length){
-        answer+='<br><br><b>📄 参考文档</b>';
+        answer+='<br><br><b>📖 参考文档</b>';
         docs.slice(0,2).forEach(r=>{
           answer+='<br>• <a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5">'+esc(r.title)+'</a>';
         });

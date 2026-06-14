@@ -1,281 +1,276 @@
 {
-  "lastUpdate": "2026-06-14 22:00:00",
+  "lastUpdate": "2026-06-14 23:00:00",
   "repo": "https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot.git",
-  "totalFiles": 34,
+  "project": "com.xiaomi.stdcamera",
+  "description": "米家摄像机标准插件（React Native），核心代码在 Main/ 目录",
+  "totalFiles": 40,
+  "moduleMapping": {
+    "直播/黑屏/卡顿": "Main/live/ (LiveVideoPageV2.js 542KB)",
+    "双摄/双镜头": "Main/live/DualLayout.js",
+    "通话/一键呼叫": "Main/live/AudioVideoCallPage.js + Main/contact/",
+    "P2P/连接": "Main/live/ (MISS 协议)",
+    "云台/PTZ/巡航": "Main/live/ (PTZ 控制)",
+    "休眠/唤醒": "Main/live/ (电源管理)",
+    "回看/时间轴": "Main/sdcard/",
+    "云存/HLS": "Main/sdcard/ (CloudTimelinePlayerFragment)",
+    "SD卡": "Main/sdcard/ + Main/setting/StorageSetting",
+    "存储/相册/下载": "Main/allVideo/",
+    "AI/智能检测": "Main/aicamera/",
+    "慧眼/LLM": "Main/huiYan/",
+    "人脸/ReID": "Main/aicamera/ (FaceManager)",
+    "设置": "Main/setting/",
+    "夜视": "Main/setting/component_night_vision/",
+    "监控/通知": "Main/setting/survelillance/",
+    "声光报警": "Main/setting/ (AudibleAlarm)",
+    "NAS": "Main/setting/ (NAS 页面)",
+    "看家/报警": "Main/alarm/ + Main/alarmDetail/",
+    "看护": "Main/childCareCom/",
+    "配置/spec": "Main/stdConfig/",
+    "model/机型": "Main/config/SpecialModelConfig.js"
+  },
   "files": [
     {
       "path": "Main/live/LiveVideoPageV2.js",
       "name": "LiveVideoPageV2.js",
       "type": "javascript",
-      "size": 45000,
-      "keywords": ["直播", "视频", "播放器", "清晰度", "录制", "对讲", "云台", "截图"],
-      "summary": "直播页面主组件，包含视频播放、录制、清晰度切换、对讲、云台控制等功能。关键代码：cameraRenderView.expose(did) 触发埋点，recordingVideoParam 配置录制参数"
+      "size": 542000,
+      "keywords": ["直播", "黑屏", "卡顿", "视频", "播放器", "清晰度", "录制", "对讲", "云台"],
+      "summary": "直播页面主组件(542KB)，包含视频播放、录制、清晰度切换、对讲、云台控制、休眠唤醒等核心功能",
+      "module": "直播模块"
+    },
+    {
+      "path": "Main/live/DualLayout.js",
+      "name": "DualLayout.js",
+      "type": "javascript",
+      "size": 25000,
+      "keywords": ["双摄", "双镜头", "画中画", "分屏"],
+      "summary": "双摄布局组件，支持双镜头画面切换、画中画、分屏显示",
+      "module": "双摄模块"
+    },
+    {
+      "path": "Main/live/AudioVideoCallPage.js",
+      "name": "AudioVideoCallPage.js",
+      "type": "javascript",
+      "size": 35000,
+      "keywords": ["通话", "一键呼叫", "视频通话", "语音通话"],
+      "summary": "音视频通话页面，支持一键呼叫、双向语音/视频通话",
+      "module": "通话模块"
     },
     {
       "path": "Main/live/hooks/useTrack.js",
       "name": "useTrack.js",
       "type": "javascript",
       "size": 8000,
-      "keywords": ["埋点", "track", "expose", "统计", "数据上报", "事件"],
-      "summary": "直播相关埋点 hook，定义了所有直播相关的埋点事件。包含 expose、click、pageview 等事件类型，通过 TrackUtil.newOneTrack 上报"
+      "keywords": ["埋点", "track", "expose", "统计", "数据上报"],
+      "summary": "直播埋点 hook，定义直播相关埋点事件。cameraRenderView.expose(did) 触发曝光埋点",
+      "module": "埋点模块"
     },
     {
       "path": "Main/live/components/CameraRenderView.js",
       "name": "CameraRenderView.js",
       "type": "javascript",
-      "size": 25000,
-      "keywords": ["渲染", "视频流", "直播画面", "P2P", "硬解码"],
-      "summary": "摄像机渲染视图组件，负责视频流的渲染和显示。包含 P2P 连接、硬解码、画面旋转等功能"
+      "size": 45000,
+      "keywords": ["渲染", "视频流", "P2P", "MISS", "硬解码"],
+      "summary": "摄像机渲染视图，负责 P2P 连接(MISS协议)、视频流渲染、硬解码",
+      "module": "P2P/渲染模块"
     },
     {
-      "path": "Main/setting/Setting.js",
-      "name": "Setting.js",
+      "path": "Main/sdcard/SDCardPage.js",
+      "name": "SDCardPage.js",
       "type": "javascript",
-      "size": 18000,
-      "keywords": ["设置", "配置", "设备信息", "夜视", "画面", "存储"],
-      "summary": "设置页面主组件，包含摄像机设置、夜视模式、画面设置、存储设置等。DeviceModelList 控制新版本设备信息显示"
+      "size": 30000,
+      "keywords": ["回看", "时间轴", "SD卡", "录像", "回放"],
+      "summary": "SD卡回看页面，支持时间轴浏览、录像回放、倍速播放",
+      "module": "回看模块"
     },
     {
-      "path": "Main/setting/CameraSetting.js",
-      "name": "CameraSetting.js",
-      "type": "javascript",
-      "size": 12000,
-      "keywords": ["摄像机设置", "人形追踪", "抗频闪", "隐私"],
-      "summary": "摄像机设置详情页，包含人形追踪开关、抗频闪设置、隐私模式等配置"
-    },
-    {
-      "path": "Main/setting/StorageSetting.js",
-      "name": "StorageSetting.js",
-      "type": "javascript",
-      "size": 10000,
-      "keywords": ["存储", "SD卡", "NAS", "云存", "录像"],
-      "summary": "存储设置页面，包含 SD 卡管理、NAS 网络存储、云存储配置等功能"
-    },
-    {
-      "path": "Main/ai/AIFunction.js",
-      "name": "AIFunction.js",
-      "type": "javascript",
-      "size": 15000,
-      "keywords": ["AI", "算法", "人形侦测", "宠物检测", "人脸识别", "围栏", "区域"],
-      "summary": "AI 功能主模块，统一管理所有 AI 功能的开关、配置和状态。包含人形侦测、宠物检测、人脸识别、异常声响、烟火检测等功能的入口",
-      "features": ["人形侦测", "宠物检测", "人脸识别", "异常声响检测", "烟火检测"]
-    },
-    {
-      "path": "Main/ai/HumanDetection.js",
-      "name": "HumanDetection.js",
-      "type": "javascript",
-      "size": 8000,
-      "keywords": ["人形侦测", "人形", "检测", "移动侦测", "灵敏度"],
-      "summary": "人形侦测功能模块，检测画面中的人形目标，支持灵敏度配置、区域设置、联动报警等",
-      "features": ["人形侦测", "移动侦测"]
-    },
-    {
-      "path": "Main/ai/PetDetection.js",
-      "name": "PetDetection.js",
-      "type": "javascript",
-      "size": 6000,
-      "keywords": ["宠物", "猫", "狗", "宠物检测", "宠物识别"],
-      "summary": "宠物检测功能模块，检测画面中的猫狗等宠物。新版本使用宠物检测替代宠物识别",
-      "features": ["宠物检测", "宠物识别"]
-    },
-    {
-      "path": "Main/ai/FaceRecognition.js",
-      "name": "FaceRecognition.js",
-      "type": "javascript",
-      "size": 10000,
-      "keywords": ["人脸", "识别", "家庭成员", "陌生人", "云端"],
-      "summary": "人脸识别功能模块，识别家庭成员和陌生人。注意：人脸识别是云端算法，spec 中不要配置 face-detection-switch，否则会认为是本地算法",
-      "features": ["人脸识别", "陌生人检测"]
-    },
-    {
-      "path": "Main/ai/PersonReID.js",
-      "name": "PersonReID.js",
-      "type": "javascript",
-      "size": 7000,
-      "keywords": ["ReID", "人物身份", "追踪", "跨摄像头"],
-      "summary": "人物身份识别（ReID）模块，支持跨摄像头追踪同一人物。厂商需要配置 reid 的 spec",
-      "features": ["人物身份识别", "跨摄像头追踪"]
-    },
-    {
-      "path": "Main/ai/VirtualFence.js",
-      "name": "VirtualFence.js",
-      "type": "javascript",
-      "size": 8000,
-      "keywords": ["虚拟围栏", "区域隐私", "警戒区域", "绘图"],
-      "summary": "虚拟围栏组件，支持绘制和配置警戒区域、隐私保护区域。形状需按文档定义，不能按平台描述",
-      "features": ["虚拟围栏", "区域隐私保护"]
-    },
-    {
-      "path": "Main/ai/AbnormalSound.js",
-      "name": "AbnormalSound.js",
-      "type": "javascript",
-      "size": 5000,
-      "keywords": ["异常声响", "哭声", "玻璃破碎", "声响检测"],
-      "summary": "异常声响检测模块，检测哭声、玻璃破碎等异常声音。需配置 abnormal-sound-detection spec",
-      "features": ["异常声响检测", "哭声检测"]
-    },
-    {
-      "path": "Main/ai/SmokeDetection.js",
-      "name": "SmokeDetection.js",
-      "type": "javascript",
-      "size": 4000,
-      "keywords": ["烟火", "烟雾", "火焰", "消防"],
-      "summary": "烟火检测模块，检测画面中的烟雾和火焰。包含电话外呼功能，需要申请服务端配置",
-      "features": ["烟火检测", "电话外呼"]
-    },
-    {
-      "path": "Main/ai/DailyStory.js",
-      "name": "DailyStory.js",
-      "type": "javascript",
-      "size": 6000,
-      "keywords": ["每日故事", "精彩瞬间", "自动生成", "视频"],
-      "summary": "每日故事功能模块，自动生成每日精彩瞬间视频。需要在硬编码中配置 model",
-      "features": ["每日故事"]
-    },
-    {
-      "path": "Main/ai/FamilyGuard.js",
-      "name": "FamilyGuard.js",
-      "type": "javascript",
-      "size": 5000,
-      "keywords": ["家人守护", "家人看护", "老人", "关怀"],
-      "summary": "家人守护功能模块，监测家人活动情况。family-guard-config spec 需要给空字符串默认值",
-      "features": ["家人守护"]
-    },
-    {
-      "path": "Main/playback/PlaybackPage.js",
-      "name": "PlaybackPage.js",
+      "path": "Main/sdcard/CloudTimelinePlayerFragment.js",
+      "name": "CloudTimelinePlayerFragment.js",
       "type": "javascript",
       "size": 20000,
-      "keywords": ["回看", "录像", "SD卡", "时间轴", "下载"],
-      "summary": "回看页面，支持 SD 卡录像回看、时间轴浏览、视频下载等功能"
+      "keywords": ["云存", "HLS", "云端回看", "云录像"],
+      "summary": "云存回看播放器，支持 HLS 流播放、云端录像回看",
+      "module": "云存模块"
     },
     {
-      "path": "Main/playback/RecordInTime.js",
-      "name": "RecordInTime.js",
-      "type": "javascript",
-      "size": 3000,
-      "keywords": ["录制", "即时录制", "非即时", "计时器"],
-      "summary": "录制时间控制模块，DO_NOT_NEED_RECORD_IN_TIME_LIST 控制哪些设备不需要即时录制"
-    },
-    {
-      "path": "Main/home/HomePage.js",
-      "name": "HomePage.js",
-      "type": "javascript",
-      "size": 15000,
-      "keywords": ["首页", "卡片", "大卡", "设备列表", "预览"],
-      "summary": "首页组件，包含设备卡片展示、大卡预览、设备状态显示等"
-    },
-    {
-      "path": "Main/event/EventPage.js",
-      "name": "EventPage.js",
+      "path": "Main/allVideo/AllVideoPage.js",
+      "name": "AllVideoPage.js",
       "type": "javascript",
       "size": 18000,
-      "keywords": ["看家", "事件", "消息", "推送", "筛选", "时间线"],
-      "summary": "看家事件页面，包含事件列表、筛选、时间线展示、事件详情等功能"
+      "keywords": ["相册", "下载", "视频列表", "本地视频"],
+      "summary": "全部视频页面，管理本地视频、下载的录像文件",
+      "module": "存储/相册模块"
     },
     {
-      "path": "Main/event/EventFilter.js",
-      "name": "EventFilter.js",
+      "path": "Main/aicamera/AICameraPage.js",
+      "name": "AICameraPage.js",
       "type": "javascript",
-      "size": 5000,
-      "keywords": ["筛选", "过滤", "事件类型", "时间范围"],
-      "summary": "事件筛选组件，支持按事件类型、时间范围等条件筛选看家事件"
+      "size": 25000,
+      "keywords": ["AI", "智能检测", "人形侦测", "宠物检测", "车辆检测"],
+      "summary": "AI 功能主页面，管理人形侦测、宠物检测、车辆检测等智能功能",
+      "module": "AI模块"
     },
     {
-      "path": "Main/push/PushHandler.js",
-      "name": "PushHandler.js",
-      "type": "javascript",
-      "size": 6000,
-      "keywords": ["推送", "通知", "跳转", "消息"],
-      "summary": "推送处理模块，处理推送消息的接收、解析和页面跳转逻辑"
-    },
-    {
-      "path": "Main/call/VideoCall.js",
-      "name": "VideoCall.js",
-      "type": "javascript",
-      "size": 12000,
-      "keywords": ["视频通话", "语音通话", "手势", "双向语音"],
-      "summary": "视频通话模块，支持双向视频/语音通话、手势识别触发通话等功能"
-    },
-    {
-      "path": "Main/ptz/PTZControl.js",
-      "name": "PTZControl.js",
-      "type": "javascript",
-      "size": 8000,
-      "keywords": ["云台", "PTZ", "转动", "巡航", "预设点"],
-      "summary": "云台控制模块，支持云台转动、巡航、预设点设置等功能"
-    },
-    {
-      "path": "util/CameraConfig.js",
-      "name": "CameraConfig.js",
-      "type": "javascript",
-      "size": 10000,
-      "keywords": ["配置", "spec", "标插", "功能开关", "硬编码"],
-      "summary": "摄像机配置工具类，包含 spec 解析、标插配置项读取、功能开关判断等。isSupportVisitInfo 方法控制访问记录显示"
-    },
-    {
-      "path": "util/TrackUtil.js",
-      "name": "TrackUtil.js",
-      "type": "javascript",
-      "size": 5000,
-      "keywords": ["埋点", "统计", "上报", "事件", "onetrack"],
-      "summary": "埋点工具类，提供 newOneTrack 方法用于数据上报，支持 expose、click 等事件类型"
-    },
-    {
-      "path": "util/P2PManager.js",
-      "name": "P2PManager.js",
+      "path": "Main/aicamera/FaceManager.js",
+      "name": "FaceManager.js",
       "type": "javascript",
       "size": 15000,
-      "keywords": ["P2P", "连接", "流媒体", "重连", "TUTK"],
-      "summary": "P2P 连接管理器，负责设备 P2P 连接的建立、维护和重连。TUTK SDK 集成"
+      "keywords": ["人脸", "识别", "ReID", "人物身份", "家庭成员"],
+      "summary": "人脸管理模块，处理人脸识别、ReID 人物身份识别、家庭成员管理",
+      "module": "人脸/ReID模块"
     },
     {
-      "path": "util/SpecParser.js",
-      "name": "SpecParser.js",
+      "path": "Main/huiYan/HuiYanPage.js",
+      "name": "HuiYanPage.js",
+      "type": "javascript",
+      "size": 20000,
+      "keywords": ["慧眼", "LLM", "大模型", "AI助手", "智能问答"],
+      "summary": "慧眼(LLM)功能页面，集成大模型能力，支持智能问答、场景分析",
+      "module": "慧眼/LLM模块"
+    },
+    {
+      "path": "Main/setting/SettingPage.js",
+      "name": "SettingPage.js",
+      "type": "javascript",
+      "size": 35000,
+      "keywords": ["设置", "配置", "设备信息", "功能开关"],
+      "summary": "设置主页面，包含设备信息、功能开关、高级设置等",
+      "module": "设置模块"
+    },
+    {
+      "path": "Main/setting/component_night_vision/NightVision.js",
+      "name": "NightVision.js",
+      "type": "javascript",
+      "size": 12000,
+      "keywords": ["夜视", "红外", "全彩夜视", "微光全彩"],
+      "summary": "夜视功能组件，支持红外夜视、全彩夜视、微光全彩等模式切换",
+      "module": "夜视模块"
+    },
+    {
+      "path": "Main/setting/survelillance/SurveillancePage.js",
+      "name": "SurveillancePage.js",
+      "type": "javascript",
+      "size": 15000,
+      "keywords": ["监控", "通知", "看家设置", "报警设置"],
+      "summary": "监控/通知设置页面，配置看家助手、报警通知、推送设置",
+      "module": "监控/通知模块"
+    },
+    {
+      "path": "Main/setting/AudibleAlarm.js",
+      "name": "AudibleAlarm.js",
       "type": "javascript",
       "size": 8000,
-      "keywords": ["spec", "解析", "配置", "siid", "piid", "aiid"],
-      "summary": "Spec 解析工具，解析 IoT 平台的 spec 定义，提取 siid、piid、aiid 等配置信息"
+      "keywords": ["声光报警", "警笛", "闪光", "报警声音"],
+      "summary": "声光报警设置，配置报警声音、闪光灯联动",
+      "module": "声光报警模块"
     },
     {
-      "path": "config/device_types.yaml",
-      "name": "device_types.yaml",
-      "type": "yaml",
-      "size": 2000,
-      "keywords": ["设备类型", "常电", "低功耗", "4G", "WiFi", "门铃"],
-      "summary": "设备类型配置文件，定义了常电摄像机、低功耗摄像机、4G摄像机、门铃等设备类型及其特性"
+      "path": "Main/setting/NASSetting.js",
+      "name": "NASSetting.js",
+      "type": "javascript",
+      "size": 10000,
+      "keywords": ["NAS", "网络存储", "SMB", "存储路径"],
+      "summary": "NAS 网络存储设置，配置 SMB 连接、存储路径、自动备份",
+      "module": "NAS模块"
     },
     {
-      "path": "config/feature_flags.json",
-      "name": "feature_flags.json",
-      "type": "json",
-      "size": 3000,
-      "keywords": ["功能开关", "特性", "灰度", "AB测试"],
-      "summary": "功能开关配置，控制各功能的开启/关闭状态，支持按设备型号、用户群体灰度"
+      "path": "Main/alarm/AlarmPage.js",
+      "name": "AlarmPage.js",
+      "type": "javascript",
+      "size": 20000,
+      "keywords": ["看家", "报警", "事件列表", "报警记录"],
+      "summary": "看家报警页面，显示报警事件列表、事件详情、时间线",
+      "module": "看家/报警模块"
     },
     {
-      "path": "docs/接入流程.md",
-      "name": "接入流程.md",
+      "path": "Main/alarmDetail/AlarmDetailPage.js",
+      "name": "AlarmDetailPage.js",
+      "type": "javascript",
+      "size": 12000,
+      "keywords": ["报警详情", "事件详情", "截图", "录像"],
+      "summary": "报警详情页面，显示事件截图、录像回放、处理状态",
+      "module": "报警详情模块"
+    },
+    {
+      "path": "Main/childCareCom/ChildCarePage.js",
+      "name": "ChildCarePage.js",
+      "type": "javascript",
+      "size": 15000,
+      "keywords": ["看护", "婴儿看护", "老人看护", "哭声检测"],
+      "summary": "看护功能页面，支持婴儿看护、老人看护、哭声检测、活动监测",
+      "module": "看护模块"
+    },
+    {
+      "path": "Main/stdConfig/SpecConfig.js",
+      "name": "SpecConfig.js",
+      "type": "javascript",
+      "size": 18000,
+      "keywords": ["spec", "配置", "siid", "piid", "aiid", "属性"],
+      "summary": "Spec 配置解析模块，解析 IoT 平台的 spec 定义，管理 siid/piid/aiid 映射",
+      "module": "配置/spec模块"
+    },
+    {
+      "path": "Main/config/SpecialModelConfig.js",
+      "name": "SpecialModelConfig.js",
+      "type": "javascript",
+      "size": 12000,
+      "keywords": ["model", "机型", "设备型号", "特殊配置"],
+      "summary": "特殊机型配置，定义各设备型号的特殊功能开关和参数",
+      "module": "model/机型模块"
+    },
+    {
+      "path": "Main/contact/ContactPage.js",
+      "name": "ContactPage.js",
+      "type": "javascript",
+      "size": 10000,
+      "keywords": ["联系人", "通讯录", "一键呼叫"],
+      "summary": "联系人管理页面，管理一键呼叫的联系人列表",
+      "module": "通话模块"
+    },
+    {
+      "path": "doc/README.md",
+      "name": "README.md",
       "type": "markdown",
       "size": 5000,
-      "keywords": ["接入", "流程", "厂商", "步骤", "规范", "测试"],
-      "summary": "厂商接入摄像机设备的完整流程说明，包含前置条件、接入步骤、测试验证、上线流程等"
+      "keywords": ["文档", "说明", "架构", "目录"],
+      "summary": "项目文档入口，包含架构说明、模块介绍、开发指南",
+      "module": "文档"
     },
     {
-      "path": "docs/硬编码清单.md",
-      "name": "硬编码清单.md",
+      "path": "doc/modules/live.md",
+      "name": "live.md",
       "type": "markdown",
-      "size": 4000,
-      "keywords": ["硬编码", "model", "配置", "清单", "检查"],
-      "summary": "硬编码功能清单，列出所有需要在代码中配置设备 model 的功能点，新设备接入时必须检查"
+      "size": 8000,
+      "keywords": ["直播", "模块文档", "P2P", "播放器"],
+      "summary": "直播模块详细文档，包含 P2P 连接、播放器架构、常见问题",
+      "module": "文档"
     },
     {
-      "path": "docs/spec配置指南.md",
-      "name": "spec配置指南.md",
+      "path": "doc/modules/ai.md",
+      "name": "ai.md",
       "type": "markdown",
       "size": 6000,
-      "keywords": ["spec", "配置", "指南", "siid", "piid", "属性"],
-      "summary": "Spec 配置指南，详细说明如何在 IoT 平台配置设备 spec，包括 service、property、action 的定义"
+      "keywords": ["AI", "智能", "模块文档", "算法"],
+      "summary": "AI 模块详细文档，包含智能检测、人脸识别、慧眼等功能说明",
+      "module": "文档"
+    },
+    {
+      "path": "doc/modules/setting.md",
+      "name": "setting.md",
+      "type": "markdown",
+      "size": 7000,
+      "keywords": ["设置", "模块文档", "配置"],
+      "summary": "设置模块详细文档，包含各项设置的实现逻辑和配置方法",
+      "module": "文档"
+    },
+    {
+      "path": "doc/overview.md",
+      "name": "overview.md",
+      "type": "markdown",
+      "size": 4000,
+      "keywords": ["概览", "架构", "技术栈"],
+      "summary": "项目概览文档，包含技术栈、目录结构、核心流程",
+      "module": "文档"
     }
   ]
 }
