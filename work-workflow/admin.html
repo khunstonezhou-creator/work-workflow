@@ -18,7 +18,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .user-info { flex: 1; }
 .user-info .name { font-weight: 600; color: #333; }
 .user-info .email { font-size: 12px; color: #666; margin-top: 4px; }
-.user-info .dept { font-size: 12px; color: #999; }
+.user-info .company { font-size: 12px; color: #999; }
 .user-actions { display: flex; gap: 8px; }
 .btn { padding: 8px 16px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
 .btn-primary { background: #667eea; color: white; }
@@ -160,7 +160,7 @@ function render() {
         <div class="user-info">
           <div class="name">${user.name} <span class="badge badge-pending">待审核</span></div>
           <div class="email">${user.email}</div>
-          <div class="dept">${user.dept || '未填写部门'}</div>
+          <div class="company">${user.company || '未填写企业'}</div>
         </div>
         <div class="user-actions">
           <button class="btn btn-secondary" onclick="viewScreenshot(${index})">查看截图</button>
@@ -183,7 +183,7 @@ function render() {
             <span class="badge badge-${user.role}">${getRoleName(user.role)}</span>
           </div>
           <div class="email">${user.email}</div>
-          <div class="dept">${user.dept || '未填写部门'}</div>
+          <div class="company">${user.company || '未填写企业'}</div>
         </div>
         <div class="user-actions">
           <button class="btn btn-secondary" onclick="changeRole(${index})">修改权限</button>
@@ -232,7 +232,7 @@ function showReviewModal(index) {
     <div style="margin-bottom: 20px;">
       <p><strong>姓名：</strong>${user.name}</p>
       <p><strong>邮箱：</strong>${user.email}</p>
-      <p><strong>部门：</strong>${user.dept || '未填写'}</p>
+      <p><strong>企业：</strong>${user.company || '未填写'}</p>
       <p><strong>申请时间：</strong>${new Date(user.requestTime).toLocaleString()}</p>
     </div>
     <div style="margin-bottom: 20px;">

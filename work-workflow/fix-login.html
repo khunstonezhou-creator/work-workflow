@@ -50,7 +50,7 @@ const STORAGE_KEY = 'workbench_users';
 const CURRENT_USER_KEY = 'workbench_current_user';
 const ADMIN_EMAIL = 'zhouruiqing1@xiaomi.com';
 const ADMIN_NAME = '周睿卿';
-const ADMIN_DEPT = '摄像机接入';
+const ADMIN_COMPANY = '小米';
 
 function showMessage(text, type) {
   const el = document.getElementById('message');
@@ -69,7 +69,7 @@ function resetAndInit() {
     approved: [{
       email: ADMIN_EMAIL,
       name: ADMIN_NAME,
-      dept: ADMIN_DEPT,
+      company: ADMIN_COMPANY,
       role: 'admin',
       approvedTime: new Date().toISOString(),
       screenshot: null

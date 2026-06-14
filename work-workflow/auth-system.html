@@ -57,8 +57,8 @@ h1 { text-align: center; margin-bottom: 30px; color: #333; font-size: 24px; }
         <input type="text" id="regName" placeholder="请输入您的姓名">
       </div>
       <div class="form-group">
-        <label>部门/团队</label>
-        <input type="text" id="regDept" placeholder="请输入您的部门或团队">
+        <label>企业</label>
+        <input type="text" id="regCompany" placeholder="请输入您的企业名称">
       </div>
       <div class="form-group">
         <label>邮箱截图证明</label>
@@ -184,7 +184,7 @@ function login() {
 function submitRequest() {
   const email = document.getElementById('regEmail').value.trim();
   const name = document.getElementById('regName').value.trim();
-  const dept = document.getElementById('regDept').value.trim();
+  const company = document.getElementById('regCompany').value.trim();
   const screenshot = document.getElementById('screenshot').files[0];
 
   if (!email || !name || !screenshot) {
@@ -212,7 +212,7 @@ function submitRequest() {
     users.pending.push({
       email,
       name,
-      dept,
+      company,
       screenshot: e.target.result,
       requestTime: new Date().toISOString()
     });
@@ -223,7 +223,7 @@ function submitRequest() {
     // 清空表单
     document.getElementById('regEmail').value = '';
     document.getElementById('regName').value = '';
-    document.getElementById('regDept').value = '';
+    document.getElementById('regCompany').value = '';
     document.getElementById('screenshot').value = '';
     document.getElementById('preview').classList.add('hidden');
     document.querySelector('.upload-area').classList.remove('has-file');
@@ -270,7 +270,7 @@ function renderPendingRequests() {
         <div>
           <p style="font-weight: 600; color: #333;">${user.name}</p>
           <p style="font-size: 12px; color: #666; margin-top: 4px;">${user.email}</p>
-          <p style="font-size: 12px; color: #666;">${user.dept || '未填写部门'}</p>
+          <p style="font-size: 12px; color: #666;">${user.company || '未填写企业'}</p>
           <p style="font-size: 11px; color: #999; margin-top: 4px;">申请时间: ${new Date(user.requestTime).toLocaleString()}</p>
         </div>
         <div>
@@ -350,7 +350,7 @@ function renderUserInfo() {
     <div style="background: #f9fafb; border-radius: 8px; padding: 20px;">
       <p style="font-weight: 600; color: #333; font-size: 18px;">${user.name}</p>
       <p style="color: #666; margin-top: 8px;">${user.email}</p>
-      <p style="color: #666;">${user.dept || '未填写部门'}</p>
+      <p style="color: #666;">${user.company || '未填写企业'}</p>
       <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 6px;">
         <p style="font-size: 12px; color: #999;">权限等级</p>
         <p style="font-weight: 600; color: #667eea; margin-top: 4px;">${getRoleName(user.role)}</p>
