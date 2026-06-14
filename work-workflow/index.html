@@ -916,13 +916,20 @@ function kbSearchAnswer(q,el){
     html+='<div style="padding:12px 16px">';
     html+='<div style="font-size:11px;color:#059669;font-weight:600;margin-bottom:8px">💻 代码仓库 - 实时状态 <span style="font-size:10px;color:#059669;background:#d1fae5;padding:2px 6px;border-radius:4px;margin-left:4px">高置信度</span></div>';
     codeResults.slice(0,3).forEach(r=>{
-      html+='<div style="padding:8px 10px;background:#ecfdf5;border-radius:6px;margin-bottom:6px;border-left:3px solid #059669">';
-      html+='<div style="display:flex;align-items:center;gap:6px">';
-      html+='<span style="font-size:12px">📄</span>';
-      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#059669;font-size:12px;font-weight:500;text-decoration:none">'+esc(r.title)+'</a>';
-      html+='<span style="font-size:10px;color:#6b7280;background:#f3f4f6;padding:2px 6px;border-radius:4px">'+esc(r.path)+'</span>';
+      html+='<div style="padding:10px 12px;background:#ecfdf5;border-radius:6px;margin-bottom:8px;border-left:3px solid #059669">';
+      html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">';
+      html+='<span style="font-size:14px">📄</span>';
+      html+='<a href="'+esc(r.url)+'" target="_blank" style="color:#059669;font-size:13px;font-weight:600;text-decoration:none">'+esc(r.title)+'</a>';
       html+='</div>';
-      if(r.summary)html+='<div style="color:#374151;font-size:11px;margin-top:4px;line-height:1.4">'+esc(r.summary).substring(0,80)+'</div>';
+      html+='<div style="font-size:11px;color:#6b7280;margin-bottom:4px">📁 '+esc(r.path)+'</div>';
+      if(r.summary)html+='<div style="color:#374151;font-size:12px;line-height:1.5">'+esc(r.summary)+'</div>';
+      if(r.keywords&&r.keywords.length){
+        html+='<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">';
+        r.keywords.slice(0,5).forEach(k=>{
+          html+='<span style="font-size:10px;background:#d1fae5;color:#059669;padding:2px 6px;border-radius:4px">'+esc(k)+'</span>';
+        });
+        html+='</div>';
+      }
       html+='</div>';
     });
     html+='</div>';
@@ -1192,13 +1199,14 @@ function searchCodeRepo(q){
       results.push({
         key:file.path,
         title:file.name,
-        summary:file.summary.substring(0,100),
+        summary:file.summary,
         category:'代码仓库',
         score,
         source:'code',
         url:gitlabUrl,
         path:file.path,
-        type:file.type
+        type:file.type,
+        keywords:file.keywords
       });
     }
   });
@@ -1657,16 +1665,28 @@ function generateSmartAnswer(q,analysis,sol,jira,docs,code){
   if(isTechnicalQuestion&&!isNonTechnicalQuestion){
     if(code.length){
       answer='<b>结论</b>：根据代码仓库分析，找到了相关功能的实现。';
-      answer+='<br><br><b>💻 代码实现（实时状态 - 高置信度）</b>';
-      code.slice(0,2).forEach(r=>{
-        answer+='<br>• <b>'+esc(r.title)+'</b>：'+esc(r.summary).substring(0,60);
+      answer+='<br><br><b>💻 代码实现详情（实时状态 - 高置信度）</b>';
+      code.slice(0,3).forEach(r=>{
+        answer+='<br><br><b>📄 '+esc(r.title)+'</b>';
+        answer+='<br>• <b>路径</b>：<a href="'+esc(r.url)+'" target="_blank" style="color:#4f46e5">'+esc(r.path)+'</a>';
+        answer+='<br>• <b>功能</b>：'+esc(r.summary);
+        if(r.keywords&&r.keywords.length){
+          answer+='<br>• <b>相关关键词</b>：'+r.keywords.slice(0,5).map(k=>'<code>'+esc(k)+'</code>').join('、');
+        }
       });
-      answer+='<br><br><b>💡 建议</b>';
-      answer+='<br>代码仓库显示的是当前最新实现，可直接参考。';
+      answer+='<br><br><b>💡 实现说明</b>';
+      answer+='<br>• 代码仓库显示的是当前最新实现，可直接参考';
+      answer+='<br>• 点击文件路径可查看完整源代码';
+      answer+='<br>• 如需修改，请联系代码仓库负责人';
       if(sol.length||docs.length){
         answer+='<br><br><b>📚 知识库补充</b>';
-        if(sol.length)answer+='<br>• 历史方案：'+esc(sol[0].summary).substring(0,60);
-        if(docs.length)answer+='<br>• 参考文档：<a href="'+esc(docs[0].url)+'" target="_blank" style="color:#4f46e5">'+esc(docs[0].title)+'</a>';
+        if(sol.length){
+          answer+='<br>• <b>历史方案</b>：'+esc(sol[0].summary);
+          if(sol[0].solution)answer+='<br>• <b>解决方案</b>：'+esc(sol[0].solution).substring(0,80);
+        }
+        if(docs.length){
+          answer+='<br>• <b>参考文档</b>：<a href="'+esc(docs[0].url)+'" target="_blank" style="color:#4f46e5">'+esc(docs[0].title)+'</a>';
+        }
       }
     }else if(sol.length||docs.length){
       answer='<b>结论</b>：知识库中有相关功能的记录。';

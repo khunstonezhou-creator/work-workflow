@@ -1,47 +1,207 @@
 {
-  "lastUpdate": "2026-06-14 20:00:00",
+  "lastUpdate": "2026-06-14 22:00:00",
   "repo": "https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot.git",
-  "totalFiles": 5,
+  "totalFiles": 25,
   "files": [
     {
-      "path": "README.md",
-      "name": "README.md",
-      "type": "markdown",
-      "size": 2048,
-      "keywords": ["摄像机", "spec", "bot", "接入", "厂商", "iot", "xiaomi"],
-      "summary": "摄像机 Spec Bot - 用于管理摄像机设备接入的自动化工具"
+      "path": "Main/live/LiveVideoPageV2.js",
+      "name": "LiveVideoPageV2.js",
+      "type": "javascript",
+      "size": 45000,
+      "keywords": ["直播", "视频", "播放器", "清晰度", "录制", "对讲", "云台", "截图"],
+      "summary": "直播页面主组件，包含视频播放、录制、清晰度切换、对讲、云台控制等功能。关键代码：cameraRenderView.expose(did) 触发埋点，recordingVideoParam 配置录制参数"
     },
     {
-      "path": "docs/接入流程.md",
-      "name": "接入流程.md",
-      "type": "markdown",
-      "size": 4096,
-      "keywords": ["接入", "流程", "厂商", "步骤", "规范", "设备", "测试"],
-      "summary": "厂商接入摄像机设备的完整流程说明，包含前置条件、接入步骤、测试验证等"
+      "path": "Main/live/hooks/useTrack.js",
+      "name": "useTrack.js",
+      "type": "javascript",
+      "size": 8000,
+      "keywords": ["埋点", "track", "expose", "统计", "数据上报", "事件"],
+      "summary": "直播相关埋点 hook，定义了所有直播相关的埋点事件。包含 expose、click、pageview 等事件类型，通过 TrackUtil.newOneTrack 上报"
     },
     {
-      "path": "src/camera_spec.py",
-      "name": "camera_spec.py",
-      "type": "python",
-      "size": 8192,
-      "keywords": ["spec", "camera", "设备", "配置", "解析", "yaml"],
-      "summary": "摄像机 Spec 配置解析和管理模块"
+      "path": "Main/live/components/CameraRenderView.js",
+      "name": "CameraRenderView.js",
+      "type": "javascript",
+      "size": 25000,
+      "keywords": ["渲染", "视频流", "直播画面", "P2P", "硬解码"],
+      "summary": "摄像机渲染视图组件，负责视频流的渲染和显示。包含 P2P 连接、硬解码、画面旋转等功能"
+    },
+    {
+      "path": "Main/setting/Setting.js",
+      "name": "Setting.js",
+      "type": "javascript",
+      "size": 18000,
+      "keywords": ["设置", "配置", "设备信息", "夜视", "画面", "存储"],
+      "summary": "设置页面主组件，包含摄像机设置、夜视模式、画面设置、存储设置等。DeviceModelList 控制新版本设备信息显示"
+    },
+    {
+      "path": "Main/setting/CameraSetting.js",
+      "name": "CameraSetting.js",
+      "type": "javascript",
+      "size": 12000,
+      "keywords": ["摄像机设置", "人形追踪", "抗频闪", "隐私"],
+      "summary": "摄像机设置详情页，包含人形追踪开关、抗频闪设置、隐私模式等配置"
+    },
+    {
+      "path": "Main/setting/StorageSetting.js",
+      "name": "StorageSetting.js",
+      "type": "javascript",
+      "size": 10000,
+      "keywords": ["存储", "SD卡", "NAS", "云存", "录像"],
+      "summary": "存储设置页面，包含 SD 卡管理、NAS 网络存储、云存储配置等功能"
+    },
+    {
+      "path": "Main/ai/AIFunction.js",
+      "name": "AIFunction.js",
+      "type": "javascript",
+      "size": 15000,
+      "keywords": ["AI", "算法", "人形侦测", "宠物检测", "人脸识别", "围栏", "区域"],
+      "summary": "AI 功能模块，包含人形侦测、宠物检测、人脸识别、虚拟围栏等功能的配置和控制"
+    },
+    {
+      "path": "Main/ai/VirtualFence.js",
+      "name": "VirtualFence.js",
+      "type": "javascript",
+      "size": 8000,
+      "keywords": ["虚拟围栏", "区域隐私", "警戒区域", "绘图"],
+      "summary": "虚拟围栏组件，支持绘制和配置警戒区域、隐私保护区域"
+    },
+    {
+      "path": "Main/playback/PlaybackPage.js",
+      "name": "PlaybackPage.js",
+      "type": "javascript",
+      "size": 20000,
+      "keywords": ["回看", "录像", "SD卡", "时间轴", "下载"],
+      "summary": "回看页面，支持 SD 卡录像回看、时间轴浏览、视频下载等功能"
+    },
+    {
+      "path": "Main/playback/RecordInTime.js",
+      "name": "RecordInTime.js",
+      "type": "javascript",
+      "size": 3000,
+      "keywords": ["录制", "即时录制", "非即时", "计时器"],
+      "summary": "录制时间控制模块，DO_NOT_NEED_RECORD_IN_TIME_LIST 控制哪些设备不需要即时录制"
+    },
+    {
+      "path": "Main/home/HomePage.js",
+      "name": "HomePage.js",
+      "type": "javascript",
+      "size": 15000,
+      "keywords": ["首页", "卡片", "大卡", "设备列表", "预览"],
+      "summary": "首页组件，包含设备卡片展示、大卡预览、设备状态显示等"
+    },
+    {
+      "path": "Main/event/EventPage.js",
+      "name": "EventPage.js",
+      "type": "javascript",
+      "size": 18000,
+      "keywords": ["看家", "事件", "消息", "推送", "筛选", "时间线"],
+      "summary": "看家事件页面，包含事件列表、筛选、时间线展示、事件详情等功能"
+    },
+    {
+      "path": "Main/event/EventFilter.js",
+      "name": "EventFilter.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["筛选", "过滤", "事件类型", "时间范围"],
+      "summary": "事件筛选组件，支持按事件类型、时间范围等条件筛选看家事件"
+    },
+    {
+      "path": "Main/push/PushHandler.js",
+      "name": "PushHandler.js",
+      "type": "javascript",
+      "size": 6000,
+      "keywords": ["推送", "通知", "跳转", "消息"],
+      "summary": "推送处理模块，处理推送消息的接收、解析和页面跳转逻辑"
+    },
+    {
+      "path": "Main/call/VideoCall.js",
+      "name": "VideoCall.js",
+      "type": "javascript",
+      "size": 12000,
+      "keywords": ["视频通话", "语音通话", "手势", "双向语音"],
+      "summary": "视频通话模块，支持双向视频/语音通话、手势识别触发通话等功能"
+    },
+    {
+      "path": "Main/ptz/PTZControl.js",
+      "name": "PTZControl.js",
+      "type": "javascript",
+      "size": 8000,
+      "keywords": ["云台", "PTZ", "转动", "巡航", "预设点"],
+      "summary": "云台控制模块，支持云台转动、巡航、预设点设置等功能"
+    },
+    {
+      "path": "util/CameraConfig.js",
+      "name": "CameraConfig.js",
+      "type": "javascript",
+      "size": 10000,
+      "keywords": ["配置", "spec", "标插", "功能开关", "硬编码"],
+      "summary": "摄像机配置工具类，包含 spec 解析、标插配置项读取、功能开关判断等。isSupportVisitInfo 方法控制访问记录显示"
+    },
+    {
+      "path": "util/TrackUtil.js",
+      "name": "TrackUtil.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["埋点", "统计", "上报", "事件", "onetrack"],
+      "summary": "埋点工具类，提供 newOneTrack 方法用于数据上报，支持 expose、click 等事件类型"
+    },
+    {
+      "path": "util/P2PManager.js",
+      "name": "P2PManager.js",
+      "type": "javascript",
+      "size": 15000,
+      "keywords": ["P2P", "连接", "流媒体", "重连", "TUTK"],
+      "summary": "P2P 连接管理器，负责设备 P2P 连接的建立、维护和重连。TUTK SDK 集成"
+    },
+    {
+      "path": "util/SpecParser.js",
+      "name": "SpecParser.js",
+      "type": "javascript",
+      "size": 8000,
+      "keywords": ["spec", "解析", "配置", "siid", "piid", "aiid"],
+      "summary": "Spec 解析工具，解析 IoT 平台的 spec 定义，提取 siid、piid、aiid 等配置信息"
     },
     {
       "path": "config/device_types.yaml",
       "name": "device_types.yaml",
       "type": "yaml",
-      "size": 1024,
-      "keywords": ["设备", "类型", "常电", "低功耗", "4g", "wifi"],
-      "summary": "设备类型配置，包含常电摄像机、低功耗摄像机、4G摄像机等"
+      "size": 2000,
+      "keywords": ["设备类型", "常电", "低功耗", "4G", "WiFi", "门铃"],
+      "summary": "设备类型配置文件，定义了常电摄像机、低功耗摄像机、4G摄像机、门铃等设备类型及其特性"
     },
     {
-      "path": "scripts/onboard_vendor.sh",
-      "name": "onboard_vendor.sh",
-      "type": "shell",
-      "size": 2048,
-      "keywords": ["厂商", "接入", "onboard", "初始化", "配置"],
-      "summary": "厂商接入初始化脚本，自动化配置新厂商的接入环境"
+      "path": "config/feature_flags.json",
+      "name": "feature_flags.json",
+      "type": "json",
+      "size": 3000,
+      "keywords": ["功能开关", "特性", "灰度", "AB测试"],
+      "summary": "功能开关配置，控制各功能的开启/关闭状态，支持按设备型号、用户群体灰度"
+    },
+    {
+      "path": "docs/接入流程.md",
+      "name": "接入流程.md",
+      "type": "markdown",
+      "size": 5000,
+      "keywords": ["接入", "流程", "厂商", "步骤", "规范", "测试"],
+      "summary": "厂商接入摄像机设备的完整流程说明，包含前置条件、接入步骤、测试验证、上线流程等"
+    },
+    {
+      "path": "docs/硬编码清单.md",
+      "name": "硬编码清单.md",
+      "type": "markdown",
+      "size": 4000,
+      "keywords": ["硬编码", "model", "配置", "清单", "检查"],
+      "summary": "硬编码功能清单，列出所有需要在代码中配置设备 model 的功能点，新设备接入时必须检查"
+    },
+    {
+      "path": "docs/spec配置指南.md",
+      "name": "spec配置指南.md",
+      "type": "markdown",
+      "size": 6000,
+      "keywords": ["spec", "配置", "指南", "siid", "piid", "属性"],
+      "summary": "Spec 配置指南，详细说明如何在 IoT 平台配置设备 spec，包括 service、property、action 的定义"
     }
   ]
 }
