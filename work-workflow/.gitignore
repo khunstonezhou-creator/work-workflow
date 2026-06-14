@@ -1,9 +1,8 @@
-# 数据文件（可重新生成）
-boards/*.json
-!boards/.gitkeep
+# 数据文件（GitHub Pages 需要）
+# boards/*.json
 
-# 知识库数据（可重新生成）
-knowledge-base/docs-index.json
+# 知识库数据（GitHub Pages 需要）
+# knowledge-base/docs-index.json
 
 # Python
 __pycache__/

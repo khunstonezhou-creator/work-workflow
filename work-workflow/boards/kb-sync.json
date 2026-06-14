@@ -1,0 +1,96 @@
+{
+  "lastUpdate": "2026-06-14 16:55",
+  "kb_index": {
+    "lastUpdate": "2026-06-14 16:55",
+    "total": 7,
+    "by_category": {
+      "消息通知": 2,
+      "米家App业务": 1,
+      "存储/回看类": 1,
+      "UI/UX类": 1,
+      "Closed (Fixed)": 2
+    },
+    "by_status": {
+      "已解决": 1,
+      "已流转": 1,
+      "分析中": 1,
+      "验证中": 1,
+      "待处理": 1,
+      "MIECOCM-2463": 1,
+      "负责人": 1
+    },
+    "entries": [
+      {
+        "key": "MICAM-4618",
+        "summary": "宝宝进出围栏、宠物进出围栏、有人进入警戒区域消息通知文案无时间显示",
+        "category": "消息通知",
+        "solution": "在 admin 平台\"多语言配置\"中为 5 条消息添加 HH:mm 时间占位符",
+        "location": "admin-多语言配置",
+        "status": "已解决",
+        "date": "2026-06-11",
+        "related": "-"
+      },
+      {
+        "key": "MIECOCM-6453",
+        "summary": "从小米融合设备中心点击摄像头设备，显示输入安全密码，实际安全密码已关闭",
+        "category": "米家App业务",
+        "solution": "流转给米家App产品，由产品对接研发处理",
+        "location": "米家App",
+        "status": "已流转",
+        "date": "2026-06-11",
+        "related": "-"
+      },
+      {
+        "key": "MIECOCM-4748",
+        "summary": "海外C501D 预封样 存储管理 Redmi K50U 流量切WiFi，无法下载回看视频",
+        "category": "存储/回看类",
+        "solution": "分析过往处理逻辑，参考MOXIANG-906、MIECOCM-2463解决方案，完善P2P重连逻辑",
+        "location": "插件侧",
+        "status": "分析中",
+        "date": "2026-06-11",
+        "related": "MOXIANG-906, MIECOCM-2463, MIIO-48693"
+      },
+      {
+        "key": "MIECOCM-3722",
+        "summary": "海外082ae2 多语言下异常声响和复合事件的推送消息未翻译",
+        "category": "消息通知",
+        "solution": "在 admin 平台\"多语言配置\"中配置希伯来语、丹麦语、波兰语、芬兰语翻译",
+        "location": "admin-多语言配置",
+        "status": "验证中",
+        "date": "2026-06-11",
+        "related": "MIECOCM-3260"
+      },
+      {
+        "key": "MIECOCM-6294",
+        "summary": "云台3-4G版 设备断电断网的离线UI与设计图不一致",
+        "category": "UI/UX类",
+        "solution": "UI问题统一更新，放到9月版本刷新播放器UI，不单独对4G刷新",
+        "location": "插件侧",
+        "status": "待处理",
+        "date": "2026-06-11",
+        "related": "MIECOCM-5493, QISHIMAI1-1324"
+      },
+      {
+        "key": "MOXIANG-906",
+        "summary": "Xiaomi室外摄像机 AW300",
+        "category": "Closed (Fixed)",
+        "solution": "TUTK没有重连，需要退回到直播页面待TUTK重连后才可下载",
+        "location": "",
+        "status": "MIECOCM-2463",
+        "date": "C701Pro",
+        "related": "Resolved"
+      },
+      {
+        "key": "MIIO-48693",
+        "summary": "V3",
+        "category": "Closed (Fixed)",
+        "solution": "插件版本109修复",
+        "location": "**关键发现**：\n1. **根本原因**：网络切换后P2P连接断开，但下载重试时未重新建立连接\n2. **日志证据**：日志显示 \"network is too slow\"，说明网络切换后连接质量下降\n3. **平台差异**：iOS无此问题，Android存在\n\n**解决方案建议**：\n1. **参考MOXIANG-906的实现**：\n   - 检测到网络变化后，断开P2P连接\n   - 点击重试时，先退回直播页面\n   - 等待TUTK重连成功\n   - 恢复下载任务\n\n2. **参考MIECOCM-2463的实现**：\n   - 完善状态重置和重试链路\n   - 重新建立P2P连接后恢复下载\n\n**状态**：分析中\n\n---\n\n## 重复提单通用问题分析（2026-06-11）\n\n### 问题统计",
+        "status": "负责人",
+        "date": "待处理问题数",
+        "related": "主要问题类型"
+      }
+    ]
+  },
+  "suggestions": []
+}

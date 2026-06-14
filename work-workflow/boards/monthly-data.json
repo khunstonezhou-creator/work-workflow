@@ -1,0 +1,148 @@
+{
+  "lastUpdate": "2026-06-11",
+  "issues": [
+    {
+      "key": "MIECOCM-6330",
+      "summary": "【云台3-4G版】【固件：5.3.4_0818】【插件：3517】功能SPEC测试失败",
+      "assignee": "邱伟宸",
+      "priority": "Critical",
+      "status": "OPEN",
+      "labels": ["8月标插"],
+      "category": "其他",
+      "created": "2026-06-05",
+      "updated": "2026-06-11"
+    },
+    {
+      "key": "MIECOCM-5611",
+      "summary": "【IPC096AC1】【固件5.3.3_0810，插件3321】【声源识别】声源识别弹窗需要新增插图",
+      "assignee": "卢高振",
+      "priority": "Minor",
+      "status": "Verify",
+      "labels": ["7月标插", "转需求跟进"],
+      "category": "UI适配类",
+      "created": "2026-05-12",
+      "updated": "2026-06-11"
+    },
+    {
+      "key": "MIECOCM-6026",
+      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420+14】【存储管理】下载过程断开网络后，恢复网络后点击重新下载，视频下载失败",
+      "assignee": "周攀",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "存储/回看类",
+      "created": "2026-05-27",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6230",
+      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【人脸识别】开启人脸识别出现弹窗后，右滑屏幕退出，出现toast「请稍后「（预期不出现）",
+      "assignee": "高浩",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "人脸识别/管理",
+      "created": "2026-06-02",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6359",
+      "summary": "【IPC096AC1】【固件5.3.3_0857，插件3543】【定向通知】直播页面显示「请设置安全密码「的定向通知，096是大陆产品，不该提示安全密码的定向通知",
+      "assignee": "卢高振",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "UI适配类",
+      "created": "2026-06-06",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6408",
+      "summary": "【IPC096AC1】【固件5.3.3_0859，插件3579】【回看下载页 云存/sd卡】Iphone Xs Max 单机复现下载开始时间可以滑动到早于结束时间",
+      "assignee": "杜逍",
+      "priority": "Minor",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "存储/回看类",
+      "created": "2026-06-09",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6405",
+      "summary": "【IPC096AC1】【固件5.3.3_0859，插件3579】【状态水印】直播页面提示摄像机打开失败33，但是右上角显示异常声响的状态水印",
+      "assignee": "卢高振",
+      "priority": "Minor",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "UI适配类",
+      "created": "2026-06-09",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6228",
+      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【深色模式】添加人脸备注名称页面，页面标签未做深色适配",
+      "assignee": "高浩",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "深色模式",
+      "created": "2026-06-02",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6388",
+      "summary": "【IPC096AC1 标插：3543】【联系人-来电头像】【Android】主动关闭「相机权限「，然后再去联系人-来电头像页选择拍照的方式进行修改头像，会弹两次相机授权弹窗",
+      "assignee": "桂永乐",
+      "priority": "Minor",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "隐私权限类",
+      "created": "2026-06-08",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-5947",
+      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【联系人】修改联系人名称输入框未校验字符null/true/false，保存成功后列表名称展示为空（设备端也为空）",
+      "assignee": "高浩",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "UI适配类",
+      "created": "2026-05-25",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6025",
+      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【通话】视频通话中，插件开启云台校准，提示操作失败",
+      "assignee": "高浩",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "096AC1设备专属",
+      "created": "2026-05-27",
+      "updated": "2026-06-10"
+    },
+    {
+      "key": "MIECOCM-6067",
+      "summary": "【IPC096AC1】【固件5.3.3_0845，插件3478】【提示文案】进入插件 直播未加载出时，点击通话按钮提示「设备已休眠「",
+      "assignee": "花宇虹",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "UI适配类",
+      "created": "2026-05-28",
+      "updated": "2026-05-28"
+    },
+    {
+      "key": "MIECOCM-6069",
+      "summary": "【IPC096AC1】【固件5.3.3_0845，插件3478】【云台按钮UI】深色模式下，通话界面云台按钮上下有两个浅色色块",
+      "assignee": "花宇虹",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": ["7月标插"],
+      "category": "深色模式",
+      "created": "2026-05-28",
+      "updated": "2026-05-28"
+    }
+  ]
+}

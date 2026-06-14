@@ -1,0 +1,833 @@
+{
+  "lastUpdate": "2026-06-11",
+  "categories": [
+    {
+      "id": "multilingual",
+      "name": "多语言/翻译类问题",
+      "description": "多语言环境下翻译缺失、文案错误、本地化不完整等问题",
+      "suggestion": "批量配置翻译，建立翻译检查清单，定期检查多语言覆盖情况",
+      "priority": "高",
+      "count": 6,
+      "references": [
+        {
+          "key": "XMVO-12982",
+          "summary": "阿拉伯语模式下，按天包选择天数翻译被截断",
+          "solution": "调整UI布局，支持多语言文本长度适配"
+        },
+        {
+          "key": "MIIO-129356",
+          "summary": "切换多语言自动化车功能列表未翻译",
+          "solution": "在翻译平台补充缺失的翻译条目"
+        },
+        {
+          "key": "MIIO-129510",
+          "summary": "检查更新页，语言设置为英文，翻译为Update",
+          "solution": "检查并修正翻译文案"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOCM-3722",
+          "summary": "多语言下异常声响和复合事件的推送消息未翻译",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MOXIANG-2901",
+          "summary": "C302海外插件多语问题",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6158",
+          "summary": "阿拉伯语消息通知显示空白",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6165",
+          "summary": "多种语言消息通知名字翻译未本地化",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-31325",
+          "summary": "英文模式下看家助手设置页面单词换行错误",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-5319",
+          "summary": "看家报警消息，时间和文案之间有的消息带空格，有的不带",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "ios-audio",
+      "name": "iOS音频会话类问题",
+      "description": "iOS系统下音频会话管理问题，包括声音异常、音乐暂停、后台音频等",
+      "suggestion": "统一处理iOS音频会话生命周期，合并为一个需求解决",
+      "priority": "高",
+      "count": 7,
+      "references": [
+        {
+          "key": "MIIO-130104",
+          "summary": "实时画面开启音频，手机音量设置最低，依然有声音传出",
+          "solution": "修复音频会话音量控制逻辑"
+        },
+        {
+          "key": "MIECOCM-4878",
+          "summary": "插件内发起通话，设备端播放视频时，手机端听取部分数字会没有声音",
+          "solution": "优化音频会话切换和恢复逻辑"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIIO-130098",
+          "summary": "直播开启声音，锁屏再解锁后声音异常",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6010",
+          "summary": "苹果手机播放音乐，回放界面点击监听音乐没有暂停",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-5026",
+          "summary": "播放外部音乐时开启摄像机对讲，音乐未暂停",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-128175",
+          "summary": "看家视频页打开监听切至后台再回到前台时没有声音",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-126163",
+          "summary": "插件页播放状态手机来电中断后无声音",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-125765",
+          "summary": "回看云存播放视频打开声音切后台再切回前台小喇叭打开但无声",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3927",
+          "summary": "直播页面插入有线耳机，开启音频，拔掉耳机无外放声音",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "ui-adaptation",
+      "name": "UI适配类问题",
+      "description": "UI显示异常、刘海屏适配、文案显示不全、横竖屏切换等问题",
+      "suggestion": "统一在版本更新时处理，建立UI适配检查清单",
+      "priority": "中",
+      "count": 8,
+      "references": [
+        {
+          "key": "MIIO-130026",
+          "summary": "直播页休眠弹窗被刘海遮挡",
+          "solution": "使用SafeAreaView组件，调整弹窗位置避免刘海遮挡"
+        },
+        {
+          "key": "MIIO-130027",
+          "summary": "直播页点击门铃报警弹窗被刘海遮挡",
+          "solution": "同上，使用SafeAreaView适配刘海屏"
+        },
+        {
+          "key": "MIIO-127744",
+          "summary": "右侧设备卡片和手机刘海屏重叠",
+          "solution": "调整布局，添加刘海屏安全区域"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOCM-6294",
+          "summary": "设备断电断网的离线UI与设计图不一致",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-31344",
+          "summary": "直播页休眠弹窗被刘海遮挡",
+          "assignee": "周睿卿",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-31345",
+          "summary": "直播页点击门铃报警弹窗被刘海遮挡",
+          "assignee": "周睿卿",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-114404",
+          "summary": "插件首页左下角文案显示不全",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-118348",
+          "summary": "看家事件描述文案大于等于3行会显示不全&截断",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "In Progress"
+        },
+        {
+          "key": "CHUANGMI-31328",
+          "summary": "横屏下看家事件页面可滑动区域过小",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6241",
+          "summary": "人脸出现记录滑动时，记录信息可以与日期重叠",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6243",
+          "summary": "人脸识别页面标题建议改为人脸管理",
+          "assignee": "赵容慧",
+          "priority": "Minor",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "096ac1",
+      "name": "096AC1设备专属问题",
+      "description": "096AC1视频通话版设备的专属问题，包括视频通话、云台、状态显示等",
+      "suggestion": "建立096AC1专属问题跟踪表，优先解决视频通话核心问题",
+      "priority": "高",
+      "count": 9,
+      "references": [
+        {
+          "key": "MIECOCM-6272",
+          "summary": "设备呼叫状态下，快速切换音量＋-键，有嘟嘟声",
+          "solution": "修复音量提示音堆积问题"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOCM-3557",
+          "summary": "设备未在通话状态，直播页面显示通话中",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "In Progress"
+        },
+        {
+          "key": "MIECOCM-6169",
+          "summary": "米家音视频通话过程中，将米家App置于后台自动断开通话",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3977",
+          "summary": "手势通话并不会打断小爱/TV的直播画面",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4493",
+          "summary": "手势通话点击push消息会连续弹出两次接通页面",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4824",
+          "summary": "车机查看直播，云台按钮显示上下左右，096仅支持水平云台",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6182",
+          "summary": "设备大卡页面全屏模式下没有云台按钮",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6501",
+          "summary": "联系人名称设置为「xx x「，前两个跟最后一个字符有空格时，只播报前两个字",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6449",
+          "summary": "触发异常声响，直播页面不显示状态水印",
+          "assignee": "赵容慧",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-31332",
+          "summary": "设备绑定过程中拔掉路由器网线，设备播报网络连接成功",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "face-recognition",
+      "name": "人脸识别/管理问题",
+      "description": "人脸识别、人物管理、头像设置等AI功能相关问题",
+      "suggestion": "建立人脸识别功能专项测试，优先解决核心流程问题",
+      "priority": "高",
+      "count": 8,
+      "references": [
+        {
+          "key": "MIECOCM-6245",
+          "summary": "点击人脸上传照片的情况下，直接弹出申请相机权限授权",
+          "solution": "修改权限申请时机，仅在需要时申请"
+        },
+        {
+          "key": "MIECOCM-5115",
+          "summary": "打开人形追踪开关，画面内出现人脸后设备转向没有人脸的区域",
+          "solution": "优化人脸追踪算法逻辑"
+        },
+        {
+          "key": "MIECOCM-5134",
+          "summary": "看家人脸事件显示的人脸图标异常（显示绿色的图片）",
+          "solution": "修复人脸图标显示逻辑"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIIO-123970",
+          "summary": "陌生人物详情页对应的视频，跳转不对应或者出现跳转失败",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-123846",
+          "summary": "看家视频有对应的识别人脸视频，人脸识别管理人物详细页视频tab无对应看家视频",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-124258",
+          "summary": "人物详情页面点击头像右下角拍照调用的是系统相册，无法跳转到录入人脸页面",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-5427",
+          "summary": "本地人脸设备，未开通云存时米家app更多设置-人脸识别管理中不展示设备",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "Verify"
+        },
+        {
+          "key": "MIIO-120769",
+          "summary": "人物详情中陌生人添加为已备注的人后，陌生人tab页仍然展示已添加的陌生人图片",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-118372",
+          "summary": "人物管理页和人物详情页修改头像功能没做英文适配",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-127825",
+          "summary": "看家识别到陌生人脸后不推送消息",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4640",
+          "summary": "设备端检测到人脸事件后无法上传人脸图片",
+          "assignee": "赵容慧",
+          "priority": "Blocker",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "privacy",
+      "name": "隐私权限问题",
+      "description": "权限申请不合理、隐私政策未弹出、权限多余索取等问题",
+      "suggestion": "检查所有权限申请是否合理，参考隐私合规要求",
+      "priority": "高",
+      "count": 3,
+      "references": [
+        {
+          "key": "MIECOCM-6245",
+          "summary": "点击人脸上传照片的情况下，直接弹出申请相机权限授权",
+          "solution": "修改权限申请时机，仅在需要时申请"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOCM-6057",
+          "summary": "安卓手机点击「AI功能-人脸识别-人脸管理-添加-从手机相册选照片「索取「相机「权限",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4276",
+          "summary": "安卓手机点击「截图/录像「功能索取「音乐和音频「权限",
+          "assignee": "赵容慧",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3808",
+          "summary": "不同意隐私政策，可以通过操作快捷卡片和手动控制、自动化操作设备",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "home-guard",
+      "name": "看家助手/事件类问题",
+      "description": "看家助手功能异常、事件漏显示、围栏问题、报警消息等",
+      "suggestion": "检查事件上报逻辑，优化事件优先级处理",
+      "priority": "中",
+      "count": 6,
+      "references": [
+        {
+          "key": "MIECOCM-5134",
+          "summary": "看家人脸事件显示的人脸图标异常（显示绿色的图片）",
+          "solution": "修复人脸图标显示逻辑"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MICAM-4599",
+          "summary": "看家事件概率漏显示宝宝进出围栏事件、宠物进出围栏事件",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-129521",
+          "summary": "人物识别优先级太高 影响围栏事件生成",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-128918",
+          "summary": "宝宝围栏、警戒区域、宠物围栏云台校准中 进入设置检测区域 校准不暂停",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-2296",
+          "summary": "关闭看家助手，仅查看用户进入插件后出现「开启看家助手「的现象",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3953",
+          "summary": "触发大声事件，推送显示画面变动",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4298",
+          "summary": "未开启画面变动算法，触发手势通话，同时推送了一条画面变动消息",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "name": "存储/回看类问题",
+      "description": "SD卡存储、云存储、视频回看、下载等存储相关问题",
+      "suggestion": "完善P2P重连逻辑，优化下载状态管理",
+      "priority": "中",
+      "count": 5,
+      "references": [
+        {
+          "key": "MIECOCM-6422",
+          "summary": "取消3次延时摄影的下载，提示下载失败",
+          "solution": "修复下载取消逻辑"
+        },
+        {
+          "key": "MIECOCM-4268",
+          "summary": "下载一小时内全部sd卡视频，下载一部分后出现失败",
+          "solution": "优化下载队列和错误处理"
+        },
+        {
+          "key": "MIECOCM-5777",
+          "summary": "看家事件图片下载失败",
+          "solution": "修复图片下载接口"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOCM-4748",
+          "summary": "Redmi K50U 流量切WiFi，无法下载回看视频",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "In Progress"
+        },
+        {
+          "key": "MIIO-129831",
+          "summary": "云存/SD卡回看，放大时间轴时间定位线静止时间水印正常",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-128144",
+          "summary": "下载视频列表页，下载过程中暂停下载后再次点击，视频从0%重新开始下载",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-29549",
+          "summary": "缩略图和时间轴的渲染没有一一对应",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4352",
+          "summary": "存储卡文件管理页面，点击暂停后再点击继续，播放时间会往前1-2s",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "live-video",
+      "name": "直播/视频类问题",
+      "description": "直播画面异常、黑屏、加载失败、录屏截图等视频播放问题",
+      "suggestion": "检查P2P连接状态，优化视频流初始化流程",
+      "priority": "中",
+      "count": 6,
+      "references": [
+        {
+          "key": "MIECOCM-4393",
+          "summary": "进入插件查看SD卡回看黑屏，返回查看直播卡在某一帧",
+          "solution": "优化视频流切换和恢复逻辑"
+        },
+        {
+          "key": "MIECOCM-5764",
+          "summary": "退出黑白夜视时直播画面绿屏",
+          "solution": "修复夜视模式切换时的视频渲染问题"
+        }
+      ],
+      "issues": [
+        {
+          "key": "MIECOMX-3263",
+          "summary": "竖屏直播页面/全屏：全部画面：home/锁屏返回，直播流黑屏一两秒",
+          "assignee": "周睿卿",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6070",
+          "summary": "点击微信小程序视频详情页，页面一直加载",
+          "assignee": "周睿卿",
+          "priority": "Critical",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6000",
+          "summary": "手机录屏连续点击两次录屏按钮会提示视频录制失败",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-128917",
+          "summary": "xcode26升级标插回归，直播/看家/回看云存/回看sd卡/存储管理云存/sd卡无截图功能",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "HUALAI-11035",
+          "summary": "场景模式横屏进入插件在返回，直播卡住，安卓端无该问题",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "HUALAI-11034",
+          "summary": "快捷卡片观看视频，休眠设备在唤醒或者进入插件后退出再次点击快捷卡片，一直加载中",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "push-message",
+      "name": "推送消息类问题",
+      "description": "报警消息推送异常、消息格式错误、图标不显示等推送相关问题",
+      "suggestion": "检查推送配置，优化消息格式和显示",
+      "priority": "中",
+      "count": 4,
+      "references": [],
+      "issues": [
+        {
+          "key": "MIECOCM-5528",
+          "summary": "报警消息推送，通知样式设置文本＋图标、文本＋缩略图，报警消息仅展示文本",
+          "assignee": "赵容慧",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-5527",
+          "summary": "报警消息推送，通知样式设置文本＋图标，触发异常声响事件，报警消息仅展示文本",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3953",
+          "summary": "触发大声事件，推送显示画面变动",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4298",
+          "summary": "未开启画面变动算法，触发手势通话，同时推送了一条画面变动消息",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "vehicle",
+      "name": "车机/多路同屏问题",
+      "description": "车机适配、多路同屏显示、云台按钮等车载场景问题",
+      "suggestion": "优化车机和多路同屏场景的UI适配",
+      "priority": "低",
+      "count": 5,
+      "references": [],
+      "issues": [
+        {
+          "key": "MIECOCM-6340",
+          "summary": "车机打开摄像机，直播页面切换清晰度，时间戳无变化",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-4824",
+          "summary": "车机查看直播，云台按钮显示上下左右，096仅支持水平云台",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-6182",
+          "summary": "设备大卡页面全屏模式下没有云台按钮",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-126194",
+          "summary": "直播页不展示多路同屏入口",
+          "assignee": "赵容慧",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOMX-3615",
+          "summary": "枪机球机直播画面按钮隐藏，点击枪机或球机休眠，另一个画面的按钮会一直展示",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "dark-mode",
+      "name": "深色模式问题",
+      "description": "深色模式下页面未适配、颜色显示异常等问题",
+      "suggestion": "统一检查深色模式适配",
+      "priority": "低",
+      "count": 2,
+      "references": [],
+      "issues": [
+        {
+          "key": "CHUANGMI-31294",
+          "summary": "深色模式下，购买云存页面及小贴士页面，未适配深色",
+          "assignee": "赵容慧",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-23347",
+          "summary": "深色模式下小贴士没有同步为深色",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "name": "其他问题",
+      "description": "不属于以上分类的其他问题",
+      "suggestion": "根据具体问题单独处理",
+      "priority": "低",
+      "count": 14,
+      "references": [],
+      "issues": [
+        {
+          "key": "MIIO-129213",
+          "summary": "更多设备信息页，点击「产品百科「无反应",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIECOCM-3501",
+          "summary": "设备更多信息里显示时区",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MICAM-4545",
+          "summary": "1.0智能场景可以创建大模型IF本地自动化，无法执行",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MICAM-3713",
+          "summary": "慧眼助手页无「下拉查看历史记录「的文案提示",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MICAM-4491",
+          "summary": "关闭大模型开关后，看家事件缩略图左下角有事件图标",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "CHUANGMI-30910",
+          "summary": "首页部分设备在中小卡片上没有休眠按钮，卡片颜色灰置",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-127115",
+          "summary": "插件设置页首页卡片大小页面，点击首页卡片形态切换展示为「大卡片√「",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-125877",
+          "summary": "云台版设备进入大卡全屏页 无云台操作台",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "In Progress"
+        },
+        {
+          "key": "MIIO-110685",
+          "summary": "安防场景二级页，事件分类-人员动态类型，不确定触发方式",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-110677",
+          "summary": "安防场景二级页，事件分类-异常类型，不确定什么设备可以触发",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MICAM-3903",
+          "summary": "虚拟围栏区域绘制仅为矩形框",
+          "assignee": "周睿卿",
+          "priority": "Minor",
+          "status": "OPEN"
+        },
+        {
+          "key": "MICAM-4575",
+          "summary": "人形特写跟踪过程中，点击常看位置，画面会抖动",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-117759",
+          "summary": "大模型开关、看家助手开关、人物身份识别为关时，空白页面没有任何提示",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        },
+        {
+          "key": "MIIO-123725",
+          "summary": "在回看云存中，拨动时间轴，与视频中水印的时间段，相差比较大",
+          "assignee": "周睿卿",
+          "priority": "Major",
+          "status": "OPEN"
+        }
+      ]
+    }
+  ]
+}

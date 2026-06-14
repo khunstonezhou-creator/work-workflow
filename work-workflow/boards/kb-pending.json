@@ -1,0 +1,17 @@
+{
+  "lastUpdate": "2026-06-14 16:59",
+  "total": 1,
+  "pending": [
+    {
+      "key": "MIOTITR-382",
+      "type": "new_resolution",
+      "trigger": "已解决: 解决: Fixed",
+      "summary": "ITR-客服紧急来访,用户门锁打开连接蓝牙网关说账号下的全部摄像机全部休眠，一但关闭蓝牙网关连接摄像机就能正常使用，但是",
+      "category": "",
+      "current_status": "",
+      "action": "需要录入知识库：解决方案、解决位置、关联Jira",
+      "time": "2026-06-11T14:07:10",
+      "done": false
+    }
+  ]
+}

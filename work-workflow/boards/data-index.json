@@ -1,0 +1,219 @@
+{
+  "lastUpdate": "2026-06-12 16:12",
+  "csvCount": 50,
+  "csvs": [
+    {
+      "name": "data_20260609141335.csv",
+      "size": 1252,
+      "date": "2026-06-09 14:13",
+      "path": "data-sql/data_20260609141335.csv"
+    },
+    {
+      "name": "data_20260609112028.csv",
+      "size": 1442,
+      "date": "2026-06-09 11:20",
+      "path": "data-sql/data_20260609112028.csv"
+    },
+    {
+      "name": "data_20260609105656.csv",
+      "size": 538,
+      "date": "2026-06-09 10:56",
+      "path": "data-sql/data_20260609105656.csv"
+    },
+    {
+      "name": "data_20260604162543.csv",
+      "size": 10696,
+      "date": "2026-06-04 16:25",
+      "path": "data-sql/data_20260604162543.csv"
+    },
+    {
+      "name": "data_20260604161711.csv",
+      "size": 1235,
+      "date": "2026-06-04 16:17",
+      "path": "data-sql/data_20260604161711.csv"
+    },
+    {
+      "name": "data_20260604161530.csv",
+      "size": 23596,
+      "date": "2026-06-04 16:15",
+      "path": "data-sql/data_20260604161530.csv"
+    },
+    {
+      "name": "data_20260604161513.csv",
+      "size": 1551,
+      "date": "2026-06-04 16:15",
+      "path": "data-sql/data_20260604161513.csv"
+    },
+    {
+      "name": "data_20260604161508.csv",
+      "size": 1494948,
+      "date": "2026-06-04 16:15",
+      "path": "data-sql/data_20260604161508.csv"
+    },
+    {
+      "name": "data_20260604155346.csv",
+      "size": 650,
+      "date": "2026-06-04 15:53",
+      "path": "data-sql/data_20260604155346.csv"
+    },
+    {
+      "name": "data_20260604155215.csv",
+      "size": 888,
+      "date": "2026-06-04 15:52",
+      "path": "data-sql/data_20260604155215.csv"
+    },
+    {
+      "name": "data_20260604155052.csv",
+      "size": 129388,
+      "date": "2026-06-04 15:50",
+      "path": "data-sql/data_20260604155052.csv"
+    },
+    {
+      "name": "data_20260604154621.csv",
+      "size": 2885,
+      "date": "2026-06-04 15:46",
+      "path": "data-sql/data_20260604154621.csv"
+    },
+    {
+      "name": "data_20260604153919.csv",
+      "size": 1151,
+      "date": "2026-06-04 15:39",
+      "path": "data-sql/data_20260604153919.csv"
+    },
+    {
+      "name": "data_20260604153758.csv",
+      "size": 2135,
+      "date": "2026-06-04 15:37",
+      "path": "data-sql/data_20260604153758.csv"
+    },
+    {
+      "name": "data_20260602163013.csv",
+      "size": 1993,
+      "date": "2026-06-02 16:30",
+      "path": "data-sql/data_20260602163013.csv"
+    },
+    {
+      "name": "data_20260529154543.csv",
+      "size": 1295,
+      "date": "2026-05-29 15:45",
+      "path": "data-sql/data_20260529154543.csv"
+    },
+    {
+      "name": "data_20260529154431.csv",
+      "size": 1135,
+      "date": "2026-05-29 15:44",
+      "path": "data-sql/data_20260529154431.csv"
+    },
+    {
+      "name": "data_20260526165129.csv",
+      "size": 542,
+      "date": "2026-05-26 16:51",
+      "path": "data-sql/data_20260526165129.csv"
+    },
+    {
+      "name": "data_20260521162135.csv",
+      "size": 1615,
+      "date": "2026-05-21 16:21",
+      "path": "data-sql/data_20260521162135.csv"
+    },
+    {
+      "name": "data_20260521161400.csv",
+      "size": 930,
+      "date": "2026-05-21 16:14",
+      "path": "data-sql/data_20260521161400.csv"
+    }
+  ],
+  "docs": [
+    {
+      "name": "dataworks_openapi_full.md",
+      "title": "DataWorks API 文档",
+      "size": 1412696,
+      "path": "data-sql/docs/dataworks_openapi_full.md"
+    },
+    {
+      "name": "dt_metadata_api.md",
+      "title": "元数据 API 文档",
+      "size": 37237,
+      "path": "data-sql/docs/dt_metadata_api.md"
+    },
+    {
+      "name": "knowledge_ai_auto.md",
+      "title": "AI 自动化知识",
+      "size": 34550,
+      "path": "data-sql/docs/knowledge_ai_auto.md"
+    },
+    {
+      "name": "knowledge_analysis_methodology.md",
+      "title": "分析方法论",
+      "size": 3421,
+      "path": "data-sql/docs/knowledge_analysis_methodology.md"
+    },
+    {
+      "name": "knowledge_app_ux.md",
+      "title": "App UX 知识",
+      "size": 49939,
+      "path": "data-sql/docs/knowledge_app_ux.md"
+    },
+    {
+      "name": "knowledge_bind_network.md",
+      "title": "配网绑定知识",
+      "size": 1469,
+      "path": "data-sql/docs/knowledge_bind_network.md"
+    },
+    {
+      "name": "knowledge_cloud_storage.md",
+      "title": "云存储知识",
+      "size": 13694,
+      "path": "data-sql/docs/knowledge_cloud_storage.md"
+    },
+    {
+      "name": "knowledge_data_warehouse.md",
+      "title": "数仓知识库",
+      "size": 76410,
+      "path": "data-sql/docs/knowledge_data_warehouse.md"
+    },
+    {
+      "name": "knowledge_device.md",
+      "title": "设备知识库",
+      "size": 101146,
+      "path": "data-sql/docs/knowledge_device.md"
+    },
+    {
+      "name": "knowledge_global.md",
+      "title": "国际化知识",
+      "size": 12261,
+      "path": "data-sql/docs/knowledge_global.md"
+    },
+    {
+      "name": "knowledge_historical_query.md",
+      "title": "历史查询案例",
+      "size": 54582,
+      "path": "data-sql/docs/knowledge_historical_query.md"
+    },
+    {
+      "name": "knowledge_ops_biz.md",
+      "title": "运营业务知识",
+      "size": 18272,
+      "path": "data-sql/docs/knowledge_ops_biz.md"
+    },
+    {
+      "name": "knowledge_ops_workflow.md",
+      "title": "运营工作流",
+      "size": 34540,
+      "path": "data-sql/docs/knowledge_ops_workflow.md"
+    },
+    {
+      "name": "knowledge_sql_pattern.md",
+      "title": "SQL 模式库",
+      "size": 2005,
+      "path": "data-sql/docs/knowledge_sql_pattern.md"
+    }
+  ],
+  "tables": 4,
+  "tableSample": [
+    "version",
+    "description",
+    "tables",
+    "update_rule"
+  ]
+}

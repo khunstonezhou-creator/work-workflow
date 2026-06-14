@@ -1,0 +1,1170 @@
+{
+  "lastUpdate": "2026-06-14",
+  "total": 170,
+  "categories": {
+    "接入流程与规范": {
+      "icon": "📋",
+      "description": "摄像机品类接入流程、规范、SOP",
+      "docs": [
+        {
+          "id": "F1bxdWs6ionF1exCNzRcIQ4enEd",
+          "title": "【外发版】小米IoT平台摄像机品类接入流程",
+          "type": "docx",
+          "summary": "外发给厂商的摄像机接入流程文档"
+        },
+        {
+          "id": "JV1ZdQlQ5oPpBnxQ6lwcMNI9nBf",
+          "title": "【内部版】小米IoT平台摄像机品类接入流程",
+          "type": "docx",
+          "summary": "IoT内部人员参考的摄像机接入流程"
+        },
+        {
+          "id": "AP4QdAF48oOafux66ezcq6BMnIc",
+          "title": "【已过期】小米 IoT 摄像机产品接入流程",
+          "type": "docx",
+          "summary": "早期版本的摄像机接入流程（已过期）"
+        },
+        {
+          "id": "ZnRtdOjOLo9saNxkJBNcNKtfndf",
+          "title": "【外发版】小米 IoT 常电摄像机产品接入规范",
+          "type": "docx",
+          "summary": "常电摄像机接入规范，保障功能体验和智能体系一致"
+        },
+        {
+          "id": "WNeqdzGMuo0tfmxAeEDcb1p0nNh",
+          "title": "小米 IoT 摄像机产品接入规范-1.0版本",
+          "type": "docx",
+          "summary": "摄像机产品接入规范1.0版本"
+        },
+        {
+          "id": "BGtBdW6lVowKYRxYkHEcLRCInCb",
+          "title": "小米 IoT 常电摄像机产品接入规范",
+          "type": "docx",
+          "summary": "常电摄像机产品接入规范"
+        },
+        {
+          "id": "ZBEqdE14Ao5TRUxG2aMcyauGnad",
+          "title": "摄像机工作SOP",
+          "type": "docx",
+          "summary": "摄像机工作标准操作流程，含米系和三方新品接入事项"
+        },
+        {
+          "id": "CnbDwFHeKirjnOkIeDvcUUCCn9d",
+          "title": "摄像机新品接入线上标插流程规范",
+          "type": "docx",
+          "summary": "部分新品接入无需开发即可满足需求的流程规范"
+        },
+        {
+          "id": "EeZewskANiOMv4kMN1jcPCd4nge",
+          "title": "三方摄像机接入取消标插测试 — 流程梳理",
+          "type": "docx",
+          "summary": "取消标插测试环节，提升三方厂商接入效率"
+        },
+        {
+          "id": "JESUwjnEKiZaahkt1OoceZ2nn3G",
+          "title": "摄像机标插厂商接入探索-试行版",
+          "type": "docx",
+          "summary": "标插开发人力不足时的厂商接入探索方案"
+        },
+        {
+          "id": "WJu6dMebIoHYxUxJ0XTcE6bjnYb",
+          "title": "摄像机接入标准",
+          "type": "docx",
+          "summary": "摄像机接入标准文档"
+        },
+        {
+          "id": "NM71dYOAjo3G5yxU4AJc0ehBnMe",
+          "title": "摄像机品类产品资料馆",
+          "type": "docx",
+          "summary": "摄像机品类产品定义标准化与流程规范化资料"
+        }
+      ]
+    },
+    "软件功能说明书": {
+      "icon": "📄",
+      "description": "各款摄像机产品的软件功能说明书",
+      "docs": [
+        {
+          "id": "VFj9dP0Ybo35XNx7zS7cUxaon4c",
+          "title": "【C700 双摄】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "C700双摄IoT软件功能说明书"
+        },
+        {
+          "id": "NG9WwDi8li8rXgkw49jc3AuZnSd",
+          "title": "【小米智能摄像机 3】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机3软件功能说明书"
+        },
+        {
+          "id": "HkuEdMelNo0SEBxZuBWc3C1Xn0c",
+          "title": "【小米智能摄像机 4 变焦版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机4变焦版软件功能说明书"
+        },
+        {
+          "id": "W4LIwvZgHiDYnnkOb9wcybx2nfg",
+          "title": "【小米智能摄像机 4 4K通话版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机4 4K通话版软件功能说明书"
+        },
+        {
+          "id": "RoRednEJToyrctxZ5QCcNCRXnnb",
+          "title": "【小米智能摄像机4 双摄版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机4双摄版软件功能说明书"
+        },
+        {
+          "id": "X9yGwm8JHiYFktkCiP1ca9jMn1f",
+          "title": "【小米智能摄像机 4 全彩夜视版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机4全彩夜视版软件功能说明书"
+        },
+        {
+          "id": "G8RZdd13Yo9OFTxftnIc3slOnNc",
+          "title": "【小米智能摄像机4】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机4软件功能说明书"
+        },
+        {
+          "id": "LTXgdQiyfollMrxMVBycZWRwnF0",
+          "title": "【小米室外摄像机 5 双摄版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米室外摄像机5双摄版软件功能说明书"
+        },
+        {
+          "id": "HZSwwGQMbijv6zkJv2wc06yUnxe",
+          "title": "【小米智能摄像机 3 4G版】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机3 4G版软件功能说明书"
+        },
+        {
+          "id": "ZHrsweW3tiJ3LVkhzTecz1Ipnte",
+          "title": "【小米智能摄像机 视频通话版 2】小米 IoT 软件功能说明书",
+          "type": "docx",
+          "summary": "小米智能摄像机视频通话版2软件功能说明书"
+        },
+        {
+          "id": "AfEHdJsr4oZahRx3QhycQJutnph",
+          "title": "小米室外摄像机CW500双摄版（海外版）- 软件功能说明书",
+          "type": "docx",
+          "summary": "小米室外摄像机CW500双摄版海外版软件功能说明书"
+        },
+        {
+          "id": "PsYxwPILBi3rSjkIWi4cFUjen7n",
+          "title": "【小米智能室外摄像机 4 2K双摄版】软件功能说明书",
+          "type": "docx",
+          "summary": "室外摄像机4 2K双摄版软件功能说明书"
+        },
+        {
+          "id": "Z5hvwVvfji7lPbkxABKc9u3fnCe",
+          "title": "【xiaovv智能云台摄像机 Q2Pro】软件功能说明书",
+          "type": "docx",
+          "summary": "xiaovv智能云台摄像机Q2Pro软件功能说明书"
+        },
+        {
+          "id": "D0IIwc00SioegGkhwbScSur2nOb",
+          "title": "【小米智能太阳能摄像机 4 Pro 4G双摄版】软件功能说明书",
+          "type": "docx",
+          "summary": "太阳能摄像机4 Pro 4G双摄版软件功能说明书"
+        },
+        {
+          "id": "S04OwPYlui4IK4kgj12cULl6nhd",
+          "title": "【小米智能摄像机 磁吸4G版】软件功能说明书",
+          "type": "docx",
+          "summary": "磁吸4G版软件功能说明书"
+        },
+        {
+          "id": "E3qLwHMskiFHeAktVhycsxrtnuf",
+          "title": "【Xiaomi Smart Camera C501 Dual】软件功能说明书",
+          "type": "docx",
+          "summary": "C501双摄海外版软件功能说明书"
+        },
+        {
+          "id": "OQbdwQqREiRCPgkMNYjcvO4Onxh",
+          "title": "【Xiaomi Smart Camera C401】软件功能说明书",
+          "type": "docx",
+          "summary": "C401软件功能说明书"
+        },
+        {
+          "id": "Q3HKwALMNiXQxWkjsnbcp0XgnHh",
+          "title": "【摩象2026ECN-小米智能摄像机 3 3K】软件功能说明书",
+          "type": "docx",
+          "summary": "摩象2026ECN摄像机3 3K软件功能说明书"
+        },
+        {
+          "id": "SfOuwwPfVi3P8wkYapIcBQlunbd",
+          "title": "【CW401D】软件功能说明书",
+          "type": "docx",
+          "summary": "CW401D软件功能说明书"
+        },
+        {
+          "id": "XDXQwSn8uiL1EEkwB2ccUYO2n5g",
+          "title": "【小米智能室外摄像机 4 3K 4G双摄版】软件功能说明书（国内版）",
+          "type": "docx",
+          "summary": "室外摄像机4 3K 4G双摄版国内版软件功能说明书"
+        },
+        {
+          "id": "H1xJwuEeriFOm3krOchcnedAnwc",
+          "title": "小白智能摄像机云台版Y2 功能开发书",
+          "type": "docx",
+          "summary": "小白智能摄像机云台版Y2功能开发书"
+        },
+        {
+          "id": "R8tPwqyNtiB958kXxO2coOG9nPb",
+          "title": "【摄像机模版】软件功能说明书",
+          "type": "docx",
+          "summary": "摄像机软件功能说明书模版"
+        },
+        {
+          "id": "W5WYwmnlaij6cUkIu9zcglWcn4c",
+          "title": "【摩象-- Xiaomi Outdoor Camera CW401 Dual】软件功能说明书",
+          "type": "docx",
+          "summary": "CW401 Dual软件功能说明书"
+        },
+        {
+          "id": "ZPx1wsZl8iTgDJk3rXGcBJbEnPg",
+          "title": "小米智能摄像机 C300 软件功能开发书",
+          "type": "docx",
+          "summary": "C300软件功能开发书-IPC-C01自研"
+        }
+      ]
+    },
+    "标准插件": {
+      "icon": "🔌",
+      "description": "标准插件接入方案、模块方案、版本记录",
+      "docs": [
+        {
+          "id": "Gta5d87LCoRgBUxhe60ciz87nWh",
+          "title": "摄像机标准插件接入方案",
+          "type": "docx",
+          "summary": "摄像机插件接入标准方案产品方案"
+        },
+        {
+          "id": "PpF4d0B4FoFngfxLinicQ3V1nAD",
+          "title": "IoT内部-摄像机标准插件接入方案",
+          "type": "docx",
+          "summary": "摄像机配置文件和Spec在插件接入中的应用"
+        },
+        {
+          "id": "GCDddYq29o3v8txQXEwch97fnTb",
+          "title": "摄像机开发者接入标准插件流程指引",
+          "type": "docx",
+          "summary": "开发者通过IoT平台选择功能设置快速生成插件包"
+        },
+        {
+          "id": "Syovdwkmto5ckwxnLGacvAFDnff",
+          "title": "摄像机标准插件模块方案",
+          "type": "docx",
+          "summary": "标准插件目标、支持范围、模块设计"
+        },
+        {
+          "id": "JtyXdhHDSoiz76xFBmLci9yBnVg",
+          "title": "摄像机标插版本合入记录",
+          "type": "docx",
+          "summary": "标插版本合入历史记录"
+        },
+        {
+          "id": "WQTWdd7zoo5hPCx0P2xcQ2e3nEh",
+          "title": "摄像机标准插件接入疑问-答复",
+          "type": "docx",
+          "summary": "生态链评估标准插件的五个主要担忧及答复"
+        },
+        {
+          "id": "HZ7adnrnYoIB4qxZccRcbboPnAf",
+          "title": "标准插件接入疑问",
+          "type": "docx",
+          "summary": "标准插件通用问题解答"
+        },
+        {
+          "id": "PZi1dUVdooe1Wfxp4dTcEnh5n5e",
+          "title": "摄像机标准插件（副本）",
+          "type": "docx",
+          "summary": "标准插件文档副本"
+        },
+        {
+          "id": "PvC6d6Lbpo6o56xBzvRcc3pnnVb",
+          "title": "【待施工】双镜头摄像机标准接入规范",
+          "type": "docx",
+          "summary": "双镜头摄像机标准接入规范（待完善）"
+        },
+        {
+          "id": "UAmgd19bKoMg1txyKdoctJjxntf",
+          "title": "摄像机公版功能",
+          "type": "docx",
+          "summary": "摄像机接入公版必须集成的核心功能"
+        }
+      ]
+    },
+    "Spec与配置": {
+      "icon": "⚙️",
+      "description": "Spec需求、配置规范、事件定义",
+      "docs": [
+        {
+          "id": "ROq8dEAkgosbWgxsfS1cdNo8nbf",
+          "title": "Spec新增移动网络-4G测速",
+          "type": "docx",
+          "summary": "小米智能室外摄像机4 4G双摄版 Spec需求"
+        },
+        {
+          "id": "SEvWd5hLuoV4orxzPG2caKFlnZd",
+          "title": "双摄摄像机【休眠】标准spec适配",
+          "type": "docx",
+          "summary": "海外电视适配标准spec双摄摄像机休眠唤醒"
+        },
+        {
+          "id": "YLiudr5pcoPiAKxQzu5clYKDnMg",
+          "title": "摄像机固件新增存储卡上报策略",
+          "type": "docx",
+          "summary": "固件定期上报存储卡状态信息的策略"
+        },
+        {
+          "id": "E96RdV4KFo77ODxolfhce2fjnLe",
+          "title": "【待确认】看家事件spec标准化",
+          "type": "docx",
+          "summary": "看家事件spec标准化讨论"
+        },
+        {
+          "id": "NnggdNjgjo798oxFCm2cl2ZKn0b",
+          "title": "摄像机预连接问题",
+          "type": "docx",
+          "summary": "长连接和预连接统一管理问题"
+        }
+      ]
+    },
+    "C700双目产品": {
+      "icon": "📷",
+      "description": "C700双目/4Pro AI变焦版相关需求和定义",
+      "docs": [
+        {
+          "id": "TY1gdyQy0opMOPxxEOCcZACqnbe",
+          "title": "C700 双摄新增软件整体需求 - 生态链",
+          "type": "docx",
+          "summary": "C700双目定位旗舰机，搭载手机镜头、3T算力、云端大模型"
+        },
+        {
+          "id": "L10xdqYFxoqcbYxnwFscwokonEh",
+          "title": "C700双目插件需求文档",
+          "type": "docx",
+          "summary": "C700双目插件完整需求文档"
+        },
+        {
+          "id": "SGUbdKsIBo7IKexB8kVcM1wmnTb",
+          "title": "C700 双目端侧算法软件产品定义",
+          "type": "docx",
+          "summary": "C700双目端侧算法定义，含ReID、手势识别等"
+        },
+        {
+          "id": "KS09dKR1eoKPe9xzUhLcrQm8nmf",
+          "title": "C700双目二期大模型需求",
+          "type": "docx",
+          "summary": "C700双目二期大模型需求"
+        },
+        {
+          "id": "Ft6ndkpOYoWrf3xtAD2clhAknJe",
+          "title": "C700 双目手机镜头模式产品需求文档",
+          "type": "docx",
+          "summary": "C700双目手机镜头模式，支持Vlog拍摄"
+        },
+        {
+          "id": "UaUkdDoIVoXfu0x07kFcuDmhnie",
+          "title": "C700双目-IOT跟踪",
+          "type": "docx",
+          "summary": "C700双目IOT跟踪，产品上市需求"
+        },
+        {
+          "id": "ZABUdlba5oa7klxX0VUcN2CknGh",
+          "title": "C700双摄AI事件TAG定义",
+          "type": "docx",
+          "summary": "C700双摄AI事件TAG定义，含tag优先级"
+        },
+        {
+          "id": "P5WZwLU1IizZB2k7IfBcBW5nnBd",
+          "title": "c700双目tips",
+          "type": "docx",
+          "summary": "C700双目使用提示"
+        },
+        {
+          "id": "S2dQwbvJ5iCJ0AkAMvBcr4Renjc",
+          "title": "c700双目优化需求",
+          "type": "docx",
+          "summary": "C700双目优化需求文档"
+        },
+        {
+          "id": "Xf0Cw3PMpiYJJhkeoPscCxDgneg",
+          "title": "C700双目插件需求文档",
+          "type": "docx",
+          "summary": "C700双目插件需求文档"
+        },
+        {
+          "id": "C4UTwrKeFi71xAkvX74cVIk7nRb",
+          "title": "c700双目二期大模型需求",
+          "type": "docx",
+          "summary": "C700双目二期大模型需求"
+        },
+        {
+          "id": "Nec2wBTN0icF2qkixL4csWqln6e",
+          "title": "室外5双摄初步分工",
+          "type": "wiki",
+          "summary": "室外5双摄初步分工和排期"
+        }
+      ]
+    },
+    "大模型/AI功能": {
+      "icon": "🤖",
+      "description": "大模型产品方案、事件定义、输出模版",
+      "docs": [
+        {
+          "id": "Uz60dttSyo2jbexx8j5c6tdInpc",
+          "title": "小米智能摄像机 大模型软件产品方案（一期）",
+          "type": "docx",
+          "summary": "大模型一期产品方案，聚焦儿童关键行为"
+        },
+        {
+          "id": "F7Audl14UoaoBlx5EgVc2oONnte",
+          "title": "大模型 儿童、宠物、老人每日报告需求（二期）",
+          "type": "docx",
+          "summary": "大模型二期，拓展老人和宠物看护场景"
+        },
+        {
+          "id": "RSImdBRnXoDa30xxqT9c6wqYn9b",
+          "title": "大模型 儿童、宠物、老人看护（二期）",
+          "type": "docx",
+          "summary": "AI养娃防沉迷提醒、老人看护、宠物看护"
+        },
+        {
+          "id": "Ch0CdZFdKodKpVxdD4LcpeJmnJc",
+          "title": "米家视觉大模型相关功能-C700",
+          "type": "docx",
+          "summary": "米家智能助手加入视觉能力"
+        },
+        {
+          "id": "RQj8dfWOPo6JGUxhMA1ceR19nFh",
+          "title": "大模型事件定义",
+          "type": "docx",
+          "summary": "大模型事件汇总定义"
+        },
+        {
+          "id": "YwUqd0oUQoPmP2xFJqFcpg98nZ8",
+          "title": "智能检索 官方推荐问题",
+          "type": "docx",
+          "summary": "智能检索功能的官方推荐问题配置"
+        },
+        {
+          "id": "RaPXdnNh0ozELmxChWTcfQjenVh",
+          "title": "摄像机大模型输出模版",
+          "type": "docx",
+          "summary": "RAG意图识别规则、Query核心要素拆解标准"
+        },
+        {
+          "id": "DpPpwOHxJiFOX3kLHpEc04m1nmf",
+          "title": "大模型去除宠物拆家注意事项 iot方案和排期",
+          "type": "docx",
+          "summary": "大模型去除宠物拆家功能的IoT方案和排期"
+        },
+        {
+          "id": "SJPMw5BGciKVS5kews3cPjtqnHd",
+          "title": "大模型摄像机宠物看护与AI反馈需求文档",
+          "type": "docx",
+          "summary": "宠物看护与AI反馈需求"
+        },
+        {
+          "id": "CG4Mw4hSdiMxOwkPQO1cXv9GnQh",
+          "title": "屏蔽宠物拆家",
+          "type": "docx",
+          "summary": "宠物拆家算法未准出情况下的屏蔽方案"
+        },
+        {
+          "id": "Za0BwbDk5in5p0k9GGBcYjUcnyh",
+          "title": "基于AI辅助的整体复盘工具-以摄像机改版为例",
+          "type": "docx",
+          "summary": "基于AI辅助的产品复盘工具"
+        }
+      ]
+    },
+    "品类规范与标准": {
+      "icon": "📐",
+      "description": "功能选型规范、算法事件规范、品类标准定义",
+      "docs": [
+        {
+          "id": "TLYtdSbrqo2wm0x1vLncmSBAnBh",
+          "title": "小米摄像品类 功能及算法选型产品定义规范",
+          "type": "docx",
+          "summary": "新品功能快速预览、功能命名配置统一"
+        },
+        {
+          "id": "EnLudKFmvo8oE1xhVCJcKkiKnTc",
+          "title": "摄像机品类算法事件名称、自动化设置规范",
+          "type": "docx",
+          "summary": "端侧算法事件列表，所有AI算法均需作为自动化联动条件"
+        },
+        {
+          "id": "KNAudlzUqofpjoxRY6Lc18bDnFe",
+          "title": "C700双目算法事件名称、自动化设置规范",
+          "type": "docx",
+          "summary": "C700双目算法事件，AI云存会员推送逻辑"
+        },
+        {
+          "id": "HNNodP98ioVBjSxhkkJcGut8njg",
+          "title": "品类标准定义分享-摄像机",
+          "type": "docx",
+          "summary": "中国家用摄像头市场规模和品类标准定义"
+        },
+        {
+          "id": "Afd5whaQoi0EO4kJJwUc3dJnnZg",
+          "title": "摄像机相机协同",
+          "type": "docx",
+          "summary": "摄像机与手机相机协同功能"
+        }
+      ]
+    },
+    "项目管理与周报": {
+      "icon": "📊",
+      "description": "项目进展、周报、规划、走查",
+      "docs": [
+        {
+          "id": "BCgMd8ixloBVLixHRfpcLfronre",
+          "title": "C700探索版大模型专项周例会",
+          "type": "docx",
+          "summary": "大模型落地专项一期/1.5期/2期规划"
+        },
+        {
+          "id": "OM62dMUKPomL9ExNvLnctMGSnzf",
+          "title": "4pro AI变焦版（原C700双目）软件周报",
+          "type": "docx",
+          "summary": "C700双目软件周报"
+        },
+        {
+          "id": "HEAydoXnEo96qZxkSQccE9lInUh",
+          "title": "C700探索版&C700双目米家内部项目文档",
+          "type": "docx",
+          "summary": "米家内部对齐开发进展"
+        },
+        {
+          "id": "NXc9dCrCzow6myxVpiDcqIyWnTe",
+          "title": "IPC 摄像机大模型开发三期规划",
+          "type": "docx",
+          "summary": "IPC摄像机大模型开发三期规划"
+        },
+        {
+          "id": "MQVSdd6FLorOXqxwG5ncG7UUn8c",
+          "title": "C700 探索版大模型产品&UIUE 走查说明",
+          "type": "docx",
+          "summary": "大模型产品走查环境配置"
+        },
+        {
+          "id": "Z83ZddWloopZy2xvW80cBbGqnoc",
+          "title": "2024年摄像机接入项目",
+          "type": "docx",
+          "summary": "2024年已上线的37个摄像机接入项目"
+        },
+        {
+          "id": "BcGFd4V4IoBAGsxZWApc0enMnWf",
+          "title": "2023 H1 摄像机项目",
+          "type": "docx",
+          "summary": "2023年上半年接入27款产品"
+        },
+        {
+          "id": "TBUHdwRkuo5jZhxfQWAcC3zanrb",
+          "title": "2022年的摄像机接入",
+          "type": "docx",
+          "summary": "2022年摄像机接入项目记录"
+        },
+        {
+          "id": "GLaedADjCo37IhxDlpdcLvfan6f",
+          "title": "摄像机 Q3 OKR文档汇总附录",
+          "type": "docx",
+          "summary": "摄像机核心体验OKR文档"
+        },
+        {
+          "id": "IMAfdBexeoytglxygFtcErVMnGg",
+          "title": "安防产品工作内容",
+          "type": "docx",
+          "summary": "安防产品工作内容，含复盘、数据分析、质量事故"
+        }
+      ]
+    },
+    "测试与提测": {
+      "icon": "🧪",
+      "description": "提测规范、测试流程、走查说明",
+      "docs": [
+        {
+          "id": "TgpZwh22GiT6dQkEDMgcR8jQnBf",
+          "title": "摄像机新品接入标插测试提测规范SOP",
+          "type": "docx",
+          "summary": "标准插件开发方式接入米家APP的提测流程"
+        },
+        {
+          "id": "BSDDw6nzHifBTtkWS7xcxFn3nfb",
+          "title": "摄像机使用标准插件接入米家APP提测模板",
+          "type": "docx",
+          "summary": "提测邮件模版和相关事项"
+        }
+      ]
+    },
+    "海外接入": {
+      "icon": "🌍",
+      "description": "Yandex等海外平台接入",
+      "docs": [
+        {
+          "id": "VoOYdPmnYop9u9xD3yHc3YHDn70",
+          "title": "摄像机接入Yandex的相关资料整理",
+          "type": "docx",
+          "summary": "俄罗斯Yandex平台接入，支持rtsp和webrtc方案"
+        },
+        {
+          "id": "ZPwudn8AdoTeFwxXKFccnNElnJg",
+          "title": "摄像机接入Yandex 投入成本评估",
+          "type": "docx",
+          "summary": "Yandex接入的人力成本评估"
+        },
+        {
+          "id": "PHHmd2QjsoiXiMxTnsncTqrHnTg",
+          "title": "摄像机品类接入俄罗斯 Yandex 产品需求",
+          "type": "docx",
+          "summary": "Yandex产品需求文档"
+        },
+        {
+          "id": "EYnPwBQ6ziK67gkDCDGcZ7YBnsh",
+          "title": "三方摄像机不支持导入上车&临时上车",
+          "type": "docx",
+          "summary": "三方摄像机上车相关规范"
+        }
+      ]
+    },
+    "数据与分析": {
+      "icon": "📈",
+      "description": "摄像机数据盘点、用户调研",
+      "docs": [
+        {
+          "id": "GdMEd5XbgoMMN6x02CDcCGU9n2g",
+          "title": "摄像机数据盘点",
+          "type": "docx",
+          "summary": "常用数据索引，设备接入量、插件活跃量等"
+        },
+        {
+          "id": "HBmvdqtPooZPizxBGM1cnBBMnlg",
+          "title": "摄像机数据",
+          "type": "docx",
+          "summary": "摄像机数据0818，设备接入总量3084万"
+        },
+        {
+          "id": "FTmldjB9dog5F2xmC4lcQap8nMV",
+          "title": "小米摄像机数据",
+          "type": "docx",
+          "summary": "米系摄像机设备总接入3089万，当日活跃1705万"
+        },
+        {
+          "id": "I0qYdAd0qoo2dvxDd17cbDqknCd",
+          "title": "高端摄像机用户调研报告",
+          "type": "docx",
+          "summary": "高端摄像机用户调研报告"
+        },
+        {
+          "id": "XslvwKPnxi6wkWkBMv3cebepnfn",
+          "title": "c501双摄数据简报",
+          "type": "docx",
+          "summary": "C501双摄用户行为分析报告"
+        },
+        {
+          "id": "VnTLw4H8BiU13kk6KInczdEhnDd",
+          "title": "背屏打印数据简报",
+          "type": "docx",
+          "summary": "背屏打印数据简报"
+        },
+        {
+          "id": "FhfgwWXpQilEDNkyyTwcKWdanze",
+          "title": "米家版本历史增速",
+          "type": "docx",
+          "summary": "米家版本历史增速数据"
+        }
+      ]
+    },
+    "FAQ与问题排查": {
+      "icon": "❓",
+      "description": "常见问题、排查指南",
+      "docs": [
+        {
+          "id": "V7yPdyXn9ocSMmxYIwscyuWFnyc",
+          "title": "摄像机产品接入FAQ",
+          "type": "docx",
+          "summary": "标准插件相关常见问题排查"
+        },
+        {
+          "id": "DMK6dfvvWouzmnxK3JPcMSZanSd",
+          "title": "摄像机厂商接入FAQ",
+          "type": "docx",
+          "summary": "厂商接入常见问题"
+        },
+        {
+          "id": "TZZpdtvnloNwVbxzHitcr2Dgnme",
+          "title": "摄像机厂商接入FAQ 副本-未编辑版",
+          "type": "docx",
+          "summary": "厂商接入FAQ未编辑版，含698条问题"
+        }
+      ]
+    },
+    "产品方案": {
+      "icon": "💡",
+      "description": "微信接入、4G配网等产品方案",
+      "docs": [
+        {
+          "id": "ZAo0drwPkoFjyOxxxeXcUDjMnLd",
+          "title": "【产品方案】摄像头通知接入微信 V02- 小程序",
+          "type": "docx",
+          "summary": "摄像头通知接入微信小程序方案"
+        },
+        {
+          "id": "RmSawafi1icdg9kvkFwcjGPDn4y",
+          "title": "【PRD】摄像头通知接入微信-小程序（仅Owner）",
+          "type": "docx",
+          "summary": "摄像头通知接入微信PRD"
+        },
+        {
+          "id": "KubUwA0RHiZvb1kf94ncPmGxnkf",
+          "title": "【PRD】4G室外摄像机扫码配网方案",
+          "type": "docx",
+          "summary": "4G室外摄像机扫码配网方案"
+        },
+        {
+          "id": "VSXjd0aj0oXb1WxV7W3cuCXsnHe",
+          "title": "摄像机设备需求 For HyperMind",
+          "type": "docx",
+          "summary": "摄像机设备需求"
+        },
+        {
+          "id": "U72adoahoosxQNxFZzZcueLYnNd",
+          "title": "鹿客 AI 摄像机接入米家风险项",
+          "type": "docx",
+          "summary": "鹿客品牌摄像机接入米家的风险评估"
+        },
+        {
+          "id": "RdOywc5nNirevLkHYn5cc7NTnLf",
+          "title": "插件 Jira 修复一条龙与用户反馈自动排查",
+          "type": "docx",
+          "summary": "Kiro AI Agent自动化工作流"
+        }
+      ]
+    },
+    "知识库与科普": {
+      "icon": "📚",
+      "description": "日常工作入口、科普手册、知识库总览",
+      "docs": [
+        {
+          "id": "Vw9Ywq3EQiPAhakr357cd1nvn7e",
+          "title": "摄像机接入日常工作",
+          "type": "wiki",
+          "summary": "摄像机接入日常工作主页面"
+        },
+        {
+          "id": "CCoLw9uPeiLiXOk2GUCcLhPknEh",
+          "title": "摄像机小白科普手册",
+          "type": "wiki",
+          "summary": "摄像机小白科普手册，含找人、名词解释"
+        },
+        {
+          "id": "W7I4wYdp3ikAsYkVydpch5J0nPd",
+          "title": "一分钟教你学会摄像机接入",
+          "type": "wiki",
+          "summary": "摄像机接入快速入门"
+        },
+        {
+          "id": "PVjndONBToAyGLx7m3ScAXxAnSh",
+          "title": "摄像机知识库",
+          "type": "docx",
+          "summary": "摄像机知识库总览，含接入流程、规范、FAQ等"
+        },
+        {
+          "id": "Og0ldvXDjoHCTexLN8hcLroNnZf",
+          "title": "摄像机厂商接入资料",
+          "type": "docx",
+          "summary": "厂商接入资料汇总"
+        }
+      ]
+    },
+    "插件功能迭代": {
+      "icon": "🔧",
+      "description": "插件功能优化、UI迭代、体验改进",
+      "docs": [
+        {
+          "id": "OTB4wjXueixatUklykkc2d0InDH",
+          "title": "事件颜色变动-影响范围",
+          "type": "docx",
+          "summary": "事件颜色变动的影响范围分析"
+        },
+        {
+          "id": "N33Swtct1iUNr9k9qBRcS5yhnBc",
+          "title": "推送跳转逻辑优化",
+          "type": "docx",
+          "summary": "推送消息跳转逻辑优化方案"
+        },
+        {
+          "id": "SFtxwR26zifULMkOFUJcWLdXnVg",
+          "title": "插件旋转适配",
+          "type": "docx",
+          "summary": "插件旋转适配方案，安卓手机和pad"
+        },
+        {
+          "id": "EN0KwWszriu6YZkYQNxccRzqnBc",
+          "title": "摄像机插件和安防场景事件展示迭代",
+          "type": "docx",
+          "summary": "识别报错、事件聚合等迭代（暂停）"
+        },
+        {
+          "id": "KpEvwHLiUimIkfkmDiFcnGwwnhg",
+          "title": "回看空页面展示优化",
+          "type": "docx",
+          "summary": "回看模块无视频时的空页面兜底方案"
+        },
+        {
+          "id": "AksLwH9NYiABpukIzqkclF9jn7e",
+          "title": "时间排序-分享版",
+          "type": "docx",
+          "summary": "时间排序分享版方案"
+        },
+        {
+          "id": "YEF0wdCbxiUkwKkHUdsctv6JnPb",
+          "title": "摄像机大卡全屏页配置云台、对讲需求",
+          "type": "docx",
+          "summary": "摄像机大卡全屏页配置云台和对讲功能"
+        },
+        {
+          "id": "CXEVwud6ui3WXjkzLwScF3COnkg",
+          "title": "设置项新增切换wifi功能",
+          "type": "docx",
+          "summary": "设置项新增切换wifi功能方案"
+        },
+        {
+          "id": "R3uuwEgnsiOq19k5cpoceo1wnac",
+          "title": "警戒区域、宠物宝宝围栏检测Push消息配置",
+          "type": "docx",
+          "summary": "警戒区域和围栏检测的Push消息配置"
+        }
+      ]
+    },
+    "4G产品相关": {
+      "icon": "📡",
+      "description": "4G摄像机适配、低功耗、新形态",
+      "docs": [
+        {
+          "id": "F9TMwb8Isiu3bckGafucQY69nEe",
+          "title": "摄像机4G新形态适配",
+          "type": "docx",
+          "summary": "摄像机4G新形态适配方案"
+        },
+        {
+          "id": "QRoewzl2eiHR21k5FNucMN4nnte",
+          "title": "摄像机4G低功耗新形态适配-ai版",
+          "type": "docx",
+          "summary": "4G低功耗新形态AI版适配"
+        },
+        {
+          "id": "LfoZwUAHoiXIaNkuPzgceX44nGo",
+          "title": "4g摄像机多端增加长时间观看限制能力",
+          "type": "docx",
+          "summary": "4G摄像机多端长时间观看限制"
+        },
+        {
+          "id": "UrU7wCmFGiWp9VkONKccfK5PnlJ",
+          "title": "4g产品-播放器提示和设置项适配",
+          "type": "docx",
+          "summary": "4G产品播放器提示和设置项适配"
+        },
+        {
+          "id": "R259wyeX2i3VFSkvGW7cEZyInJe",
+          "title": "4g产品增加缓存的技术方案",
+          "type": "docx",
+          "summary": "4G产品起播卡顿的缓存技术方案"
+        },
+        {
+          "id": "L5JiwRlWrisZdMka6GNciQoBnVc",
+          "title": "车端适配低功耗摄像机提需",
+          "type": "docx",
+          "summary": "车端适配低功耗摄像机需求"
+        },
+        {
+          "id": "DsoQwrjStirJOKkgUsscLhQxnvb",
+          "title": "4g需求",
+          "type": "wiki",
+          "summary": "4G需求汇总页面"
+        },
+        {
+          "id": "TRJnwO0quitHcykpna9cRuWynRc",
+          "title": "单/双摄延时摄影",
+          "type": "docx",
+          "summary": "单摄和双摄延时摄影方案"
+        }
+      ]
+    },
+    "安防与检测": {
+      "icon": "🔔",
+      "description": "烟火检测、烟感、事件联动",
+      "docs": [
+        {
+          "id": "SnHCwQ6AEiwvQskVrVfcakJ8n2c",
+          "title": "烟火检测提示优化",
+          "type": "docx",
+          "summary": "烟火检测电话外呼误报优化方案"
+        },
+        {
+          "id": "NNPowjMN9iTPbGk8d9GcBZx4n1d",
+          "title": "烟感-消防码",
+          "type": "docx",
+          "summary": "烟感品类加消防身份码国标要求"
+        },
+        {
+          "id": "J4Mtwzwk4iMFDhkIB4IcGk6hnBe",
+          "title": "烟雾传感器丢包方案",
+          "type": "wiki",
+          "summary": "烟雾传感器丢包处理方案"
+        },
+        {
+          "id": "Av5lwxsqXi3iR4kDPM3c3BMDnvc",
+          "title": "固件升级前置条件判断提需",
+          "type": "docx",
+          "summary": "固件升级前置条件判断需求"
+        },
+        {
+          "id": "Ffr8wpJehihhCRkPfF8cjjbynzb",
+          "title": "服务端统一方案",
+          "type": "docx",
+          "summary": "事件标签服务端统一方案"
+        },
+        {
+          "id": "R3uuwEgnsiOq19k5cpoceo1wnac",
+          "title": "警戒区域、宠物宝宝围栏检测Push消息配置",
+          "type": "docx",
+          "summary": "警戒区域和围栏检测的Push消息配置"
+        },
+        {
+          "id": "Bzo3wK2oTipwGikxTIjchGRKntc",
+          "title": "安防长期方案产品文档梳理",
+          "type": "docx",
+          "summary": "安防事件多端统一方案梳理"
+        }
+      ]
+    },
+    "跨设备联动": {
+      "icon": "📺",
+      "description": "电视、音箱、车机等跨设备联动",
+      "docs": [
+        {
+          "id": "Qk2FweZGeisSgTkakSoc5Fk3nV2",
+          "title": "TV OS4-家庭事件电视联动体验升级",
+          "type": "docx",
+          "summary": "电视联动体验升级方案"
+        },
+        {
+          "id": "QrYSwZoRnivhaAkcDCzcT3aUngC",
+          "title": "小爱语控查看门铃设备",
+          "type": "docx",
+          "summary": "小爱语控查看门铃设备方案"
+        },
+        {
+          "id": "EiXIw7cJzi6WvZk9lq4c6Bk2noe",
+          "title": "电视、带屏音箱上语控唤醒门铃需求",
+          "type": "docx",
+          "summary": "电视和带屏音箱语控唤醒门铃"
+        },
+        {
+          "id": "NqRwwTtq1i5F6CkqhBZc897pnII",
+          "title": "韩国合规需求-CCTV产品录制视频不自动录音功能",
+          "type": "docx",
+          "summary": "韩国CCTV合规录制不自动录音"
+        }
+      ]
+    },
+    "运营与商业化": {
+      "icon": "💰",
+      "description": "运营营收、展会、版本管理",
+      "docs": [
+        {
+          "id": "SeSlwhdRxioOv9kSRRpccrjfntg",
+          "title": "【需求梳理】非标插设备提高运营营收方案",
+          "type": "docx",
+          "summary": "非标插设备提高运营营收方案"
+        },
+        {
+          "id": "Mg24wePfpiFahckJlCjcYQ4qnjd",
+          "title": "米家进版需求",
+          "type": "wiki",
+          "summary": "米家进版需求汇总"
+        },
+        {
+          "id": "YWV7wRoZri4TRikC1eqcYwV8nS9",
+          "title": "上海AWE展会",
+          "type": "docx",
+          "summary": "上海AWE展会相关"
+        }
+      ]
+    },
+    "性能优化": {
+      "icon": "⚡",
+      "description": "下载速度、缓存、播放优化",
+      "docs": [
+        {
+          "id": "Jl3lwtQnfiGuaAkWqnVcpt0enUM",
+          "title": "下载速度优化专项",
+          "type": "docx",
+          "summary": "云存视频下载速度优化方案"
+        }
+      ]
+    },
+    "用户调研与体验": {
+      "icon": "👥",
+      "description": "用户访谈、问卷、体验评估",
+      "docs": [
+        {
+          "id": "YjzZwtfleiWrVOkqHrxcypAznAg",
+          "title": "摄像机改版用户体验访谈",
+          "type": "docx",
+          "summary": "新老插件用户体验访谈评估"
+        },
+        {
+          "id": "O00Vw1KWWizpvkkQaZgcbua1nGf",
+          "title": "摄像机改版问卷和访谈",
+          "type": "docx",
+          "summary": "V2.1迭代用户调研问卷与访谈提纲"
+        },
+        {
+          "id": "I0qYdAd0qoo2dvxDd17cbDqknCd",
+          "title": "高端摄像机用户调研报告",
+          "type": "docx",
+          "summary": "高端摄像机用户调研报告"
+        }
+      ]
+    },
+    "配置与规范": {
+      "icon": "⚙️",
+      "description": "设备配置、spec、自动化模板",
+      "docs": [
+        {
+          "id": "PIwIw9x9ZiZH7BkBJ5yceY6yn6b",
+          "title": "自动化模板和自动化能力验收流程",
+          "type": "docx",
+          "summary": "自动化模板和自动化能力验收流程"
+        },
+        {
+          "id": "EIjRwINTViH1kDkk9LbcqMFYnsh",
+          "title": "已上线设备-profile设备和翻译spec设备",
+          "type": "docx",
+          "summary": "已上线设备profile和翻译spec设备"
+        },
+        {
+          "id": "Dy0Sw9pDui2rRckcKAwcuZR8nTg",
+          "title": "已上线-ipc设备双摄拼接和非拼接",
+          "type": "docx",
+          "summary": "已上线ipc设备双摄拼接和非拼接"
+        },
+        {
+          "id": "JBoaw9wQ7iRJl7k7ABicaryDnFc",
+          "title": "摄像机插件全语言表单",
+          "type": "docx",
+          "summary": "摄像机插件全语言表单"
+        },
+        {
+          "id": "Vz3GwZ2eLivm3JkIXsccXlPNn9h",
+          "title": "暂不公开能力相关语言",
+          "type": "docx",
+          "summary": "暂不公开能力相关语言配置"
+        },
+        {
+          "id": "BjdjwttsaiFbMsknvTCchBeFnAf",
+          "title": "摄像机标准插件功能",
+          "type": "wiki",
+          "summary": "摄像机标准插件功能（白板）"
+        },
+        {
+          "id": "Z48AwE7V6ivf3okIZl9c1CcVnBe",
+          "title": "融合讨论",
+          "type": "wiki",
+          "summary": "融合讨论（白板）"
+        },
+        {
+          "id": "HN27wMWbgiyiuCkwHOTceyJbnVw",
+          "title": "摄像机品类模板纪要",
+          "type": "docx",
+          "summary": "摄像机品类模版与厂商宣贯遗留确认项"
+        },
+        {
+          "id": "CkAJwpFZ7i7b9xkzcAIcCnLPnuh",
+          "title": "摄像机品类模板",
+          "type": "docx",
+          "summary": "摄像机品类模板，定义产品功能时优先使用标准服务/属性/方法/事件"
+        },
+        {
+          "id": "J8ydw7V9AiWtwTkjywycICInnfc",
+          "title": "摄像机的自动化标准化",
+          "type": "docx",
+          "summary": "摄像机自动化标准化方案"
+        },
+        {
+          "id": "HLo1weal9icqRgk12IycLJLEnsh",
+          "title": "摄像机新增标准spec 需求模版",
+          "type": "docx",
+          "summary": "摄像机新增标准spec需求模版，含需求新增流程"
+        }
+      ]
+    },
+    "流程与SOP": {
+      "icon": "📝",
+      "description": "工作流程、SOP、安全审查",
+      "docs": [
+        {
+          "id": "SYutwPvuQiA6lqkzentcYBionUe",
+          "title": "切标插sop",
+          "type": "docx",
+          "summary": "切换标插标准操作流程"
+        },
+        {
+          "id": "Y7N8wBYpmi9onfkNSDbclJsMnLh",
+          "title": "安全审查流程",
+          "type": "docx",
+          "summary": "安全审查流程和gap分析"
+        },
+        {
+          "id": "DmVWw9uDqiSimLkcEUbcFHR5ntg",
+          "title": "需求for ai开发模版",
+          "type": "docx",
+          "summary": "AI开发需求模版"
+        },
+        {
+          "id": "UwlgwtMy9iw1B5kJp73cG6San4g",
+          "title": "功能使用情况",
+          "type": "docx",
+          "summary": "功能使用情况统计"
+        }
+      ]
+    },
+    "其他": {
+      "icon": "📌",
+      "description": "会议纪要、开发者大会、其他",
+      "docs": [
+        {
+          "id": "T7czwhJTKiipPRkma2WcS1UqnVh",
+          "title": "智能纪要：摄像机产品功能需求分析",
+          "type": "docx",
+          "summary": "2026年3月16日摄像机产品功能需求分析会议纪要"
+        },
+        {
+          "id": "Joulwwz4riyicckVSe1c0D9Anfg",
+          "title": "开发者大会设备清单",
+          "type": "docx",
+          "summary": "开发者大会设备清单"
+        },
+        {
+          "id": "G3qDw0N5ritfJAka7Qicm7v3nNg",
+          "title": "PluginInstanceProvider spec pkey 创建时间分析",
+          "type": "docx",
+          "summary": "PluginInstanceProvider spec pkey创建时间分析"
+        },
+        {
+          "id": "V1IIwNSpSi9Ev8kaAPDchr8snlc",
+          "title": "摄像机情况",
+          "type": "docx",
+          "summary": "摄像机整体情况"
+        }
+      ]
+    }
+  }
+}
