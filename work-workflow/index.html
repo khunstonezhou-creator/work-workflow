@@ -752,8 +752,75 @@ function kbSearchAnswer(q,el){
   const jiraResults=searchJiraIssues(q);
   const docResults=searchFeishuDocs(q);
   const totalHits=solResults.length+jiraResults.length+docResults.length;
+
+  // 检测是否是 Jira 编号
+  const jiraKeyMatch=q.match(/([A-Z][A-Z0-9]+-\d+)/i);
+  const isJiraKey=!!jiraKeyMatch;
+  const jiraKey=isJiraKey?jiraKeyMatch[1].toUpperCase():'';
+
   if(!totalHits){
-    el.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:24px;margin-bottom:8px">🤔</div><div style="color:#666;font-size:13px">未找到相关内容</div><div style="color:#999;font-size:11px;margin-top:4px">试试其他关键词，如 Jira 编号、功能模块、错误描述</div></div>';
+    // 没有匹配结果时，提供智能分析和建议
+    let html='<div style="background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden">';
+    // AI 分析头部
+    html+='<div style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;padding:16px">';
+    html+='<div style="font-size:14px;font-weight:600;margin-bottom:8px">🔍 智能分析</div>';
+    if(isJiraKey){
+      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未收录 <b>'+esc(jiraKey)+'</b> 的解决方案。以下是一些分析和建议：</div>';
+    }else{
+      html+='<div style="font-size:13px;line-height:1.6">知识库中暂未找到「'+esc(q)+'」的相关内容。以下是一些建议：</div>';
+    }
+    html+='</div>';
+
+    // Jira 项目分析
+    if(isJiraKey){
+      const project=jiraKey.split('-')[0];
+      const projectInfo=analyzeJiraProject(project);
+      html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
+      html+='<div style="font-size:12px;font-weight:600;color:#1e40af;margin-bottom:8px">📋 项目信息</div>';
+      html+='<div style="padding:10px;background:#eff6ff;border-radius:6px">';
+      html+='<div style="font-size:12px;color:#1e3a8a"><b>项目代码：</b>'+esc(project)+'</div>';
+      html+='<div style="font-size:12px;color:#1e3a8a;margin-top:4px"><b>可能的项目：</b>'+esc(projectInfo.name)+'</div>';
+      html+='<div style="font-size:12px;color:#1e3a8a;margin-top:4px"><b>常见问题类型：</b>'+esc(projectInfo.commonIssues)+'</div>';
+      html+='</div>';
+      html+='</div>';
+    }
+
+    // 建议的处理步骤
+    html+='<div style="padding:14px 16px;border-bottom:1px solid #f0f0f0">';
+    html+='<div style="font-size:12px;font-weight:600;color:#2e7d32;margin-bottom:8px">💡 建议的处理步骤</div>';
+    html+='<div style="padding:10px;background:#f0fdf4;border-radius:6px">';
+    if(isJiraKey){
+      html+='<div style="font-size:12px;color:#166534;line-height:1.8">';
+      html+='1. <b>查看 Jira 详情</b>：点击下方链接查看问题描述和评论<br>';
+      html+='2. <b>分析问题分类</b>：根据标题和描述判断问题类型<br>';
+      html+='3. <b>检索历史方案</b>：在 Jira 中搜索类似问题的解决方案<br>';
+      html+='4. <b>参考竞品实现</b>：查看竞品（萤石、海康、Ring）的类似功能<br>';
+      html+='5. <b>记录解决方案</b>：处理完成后沉淀到知识库';
+      html+='</div>';
+    }else{
+      html+='<div style="font-size:12px;color:#166534;line-height:1.8">';
+      html+='1. <b>细化搜索词</b>：尝试使用更具体的关键词<br>';
+      html+='2. <b>查看分类</b>：浏览知识库的各个分类<br>';
+      html+='3. <b>搜索 Jira</b>：在 Jira 中直接搜索相关问题<br>';
+      html+='4. <b>参考文档</b>：查看飞书文档中的相关资料';
+      html+='</div>';
+    }
+    html+='</div></div>';
+
+    // 快捷链接
+    html+='<div style="padding:14px 16px">';
+    html+='<div style="font-size:12px;font-weight:600;color:#7c3aed;margin-bottom:8px">🔗 快捷操作</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    if(isJiraKey){
+      html+='<a href="'+JIRA+esc(jiraKey)+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none;hover:background:#e5e7eb">📋 查看 Jira 详情</a>';
+      html+='<a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22'+encodeURIComponent(jiraKey)+'%22" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">🔍 Jira 搜索相似</a>';
+    }
+    html+='<a href="https://jira.n.xiaomi.com/issues/?jql=summary%20~%20%22'+encodeURIComponent(q)+'%22" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">🔍 Jira 全文搜索</a>';
+    html+='<a href="https://mi.feishu.cn/search?q='+encodeURIComponent(q)+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:8px 12px;background:#f3f4f6;border-radius:6px;font-size:12px;color:#374151;text-decoration:none">📄 飞书文档搜索</a>';
+    html+='</div></div>';
+
+    html+='</div>';
+    el.innerHTML=html;
     return;
   }
   let html='<div style="background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden">';
@@ -1285,6 +1352,20 @@ function showSug(key){
 let KB_DATA=null;
 let DOCS_DATA=null;
 let SOLUTIONS_RAW=''; // solutions.md 原始内容
+
+// Jira 项目分析
+function analyzeJiraProject(project){
+  const projects={
+    'MICAM':{name:'小米摄像机',commonIssues:'UI适配、功能bug、性能优化'},
+    'MIECOCM':{name:'米家摄像机插件',commonIssues:'插件兼容性、UI适配、功能需求'},
+    'MIECOMX':{name:'米家摄像机MX',commonIssues:'看家助手、事件检测、推送通知'},
+    'MIIO':{name:'米家IoT平台',commonIssues:'设备接入、协议适配、平台功能'},
+    'MOXIANG':{name:'摩象摄像机',commonIssues:'硬件适配、固件升级、功能开发'},
+    'MIOTITR':{name:'IoT迭代',commonIssues:'需求迭代、功能优化、bug修复'},
+    'QISHIMAI1':{name:'启视迈',commonIssues:'第三方设备接入、功能适配'},
+  };
+  return projects[project]||{name:'未知项目',commonIssues:'请查看Jira详情了解具体问题'};
+}
 
 // 加载知识库文档索引
 fetch('knowledge-base/docs-index.json').then(r=>r.json()).then(d=>{DOCS_DATA=d}).catch(()=>{});
