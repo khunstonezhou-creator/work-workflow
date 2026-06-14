@@ -1,6 +1,6 @@
 {
   "lastUpdate": "2026-06-14",
-  "total": 170,
+  "total": 264,
   "categories": {
     "接入流程与规范": {
       "icon": "📋",
@@ -227,6 +227,12 @@
           "title": "小米智能摄像机 C300 软件功能开发书",
           "type": "docx",
           "summary": "C300软件功能开发书-IPC-C01自研"
+        },
+        {
+          "id": "W3qbwAZiZiFNS6kOJLXcgb9qn5b",
+          "title": "软件功能说明书汇总",
+          "type": "wiki",
+          "summary": "软件功能说明书汇总目录"
         }
       ]
     },
@@ -1163,6 +1169,606 @@
           "title": "摄像机情况",
           "type": "docx",
           "summary": "摄像机整体情况"
+        }
+      ]
+    },
+    "需求管理与待办": {
+      "icon": "📋",
+      "description": "产品需求管理、待办清单、进版需求",
+      "docs": [
+        {
+          "id": "Od03wEYcoiA2L6k5OfbcHK2bnBg",
+          "title": "摄像机+门铃需求管理（After2025年9月）",
+          "type": "wiki",
+          "summary": "摄像机和门铃产品的需求管理总表"
+        },
+        {
+          "id": "JXZqwBiwPixe3Xkk8FjcGlarnWh",
+          "title": "产品待办清单和常见问题自助",
+          "type": "wiki",
+          "summary": "产品待办事项和常见问题自助解决方案"
+        },
+        {
+          "id": "VYFIwhbmCiy71Bk8eVzcgj5CnNf",
+          "title": "个人待办",
+          "type": "wiki",
+          "summary": "个人待办事项管理"
+        },
+        {
+          "id": "Mg24wePfpiFahckJlCjcYQ4qnjd",
+          "title": "米家进版需求",
+          "type": "wiki",
+          "summary": "米家App进版相关需求"
+        },
+        {
+          "id": "Jl3lwtQnfiGuaAkWqnVcpt0enUM",
+          "title": "下载速度优化专项",
+          "type": "wiki",
+          "summary": "下载速度优化需求和技术方案"
+        },
+        {
+          "id": "YEF0wdCbxiUkwKkHUdsctv6JnPb",
+          "title": "摄像机大卡全屏页配置云台、对讲需求",
+          "type": "wiki",
+          "summary": "大卡全屏页云台和对讲功能配置需求"
+        },
+        {
+          "id": "R259wyeX2i3VFSkvGW7cEZyInJe",
+          "title": "4g产品增加缓存的技术方案",
+          "type": "wiki",
+          "summary": "4G产品缓存技术方案"
+        }
+      ]
+    },
+    "4G产品需求": {
+      "icon": "📡",
+      "description": "4G摄像机相关需求和适配",
+      "docs": [
+        {
+          "id": "DsoQwrjStirJOKkgUsscLhQxnvb",
+          "title": "4g需求",
+          "type": "wiki",
+          "summary": "4G产品需求汇总"
+        },
+        {
+          "id": "QRoewzl2eiHR21k5FNucMN4nnte",
+          "title": "摄像机4G低功耗新形态适配-ai版",
+          "type": "wiki",
+          "summary": "4G低功耗摄像机新形态AI适配方案"
+        },
+        {
+          "id": "F9TMwb8Isiu3bckGafucQY69nEe",
+          "title": "摄像机4G新形态适配",
+          "type": "wiki",
+          "summary": "4G摄像机新形态适配需求"
+        },
+        {
+          "id": "LfoZwUAHoiXIaNkuPzgceX44nGo",
+          "title": "4g摄像机多端增加长时间观看限制能力",
+          "type": "wiki",
+          "summary": "4G摄像机多端长时间观看限制"
+        },
+        {
+          "id": "UrU7wCmFGiWp9VkONKccfK5PnlJ",
+          "title": "4g产品-播放器提示和设置项适配",
+          "type": "wiki",
+          "summary": "4G产品播放器提示和设置项适配"
+        },
+        {
+          "id": "L5JiwRlWrisZdMka6GNciQoBnVc",
+          "title": "车端适配低功耗摄像机提需",
+          "type": "wiki",
+          "summary": "车端低功耗摄像机适配需求"
+        },
+        {
+          "id": "St8fwLajzit1GKkfow9cPhD2nZg",
+          "title": "4g流量费用核算",
+          "type": "wiki",
+          "summary": "4G流量费用核算方案"
+        }
+      ]
+    },
+    "C700双目相关": {
+      "icon": "📷",
+      "description": "C700双目摄像机相关资料和需求",
+      "docs": [
+        {
+          "id": "JFYUwn4diiVk70kYIABcpM81nng",
+          "title": "c700双目相关资料",
+          "type": "wiki",
+          "summary": "C700双目摄像机资料汇总"
+        },
+        {
+          "id": "DpPpwOHxJiFOX3kLHpEc04m1nmf",
+          "title": "大模型去除宠物拆家注意事项 iot方案和排期",
+          "type": "wiki",
+          "summary": "大模型去除宠物拆家功能方案和排期"
+        },
+        {
+          "id": "P5WZwLU1IizZB2k7IfBcBW5nnBd",
+          "title": "c700双目tips",
+          "type": "wiki",
+          "summary": "C700双目使用技巧和注意事项"
+        },
+        {
+          "id": "S2dQwbvJ5iCJ0AkAMvBcr4Renjc",
+          "title": "c700双目优化需求",
+          "type": "wiki",
+          "summary": "C700双目优化需求"
+        },
+        {
+          "id": "R3uuwEgnsiOq19k5cpoceo1wnac",
+          "title": "警戒区域、宠物宝宝围栏检测Push消息配置",
+          "type": "wiki",
+          "summary": "警戒区域和围栏检测推送消息配置"
+        },
+        {
+          "id": "CG4Mw4hSdiMxOwkPQO1cXv9GnQh",
+          "title": "屏蔽宠物拆家",
+          "type": "wiki",
+          "summary": "宠物拆家屏蔽功能"
+        },
+        {
+          "id": "SJPMw5BGciKVS5kews3cPjtqnHd",
+          "title": "大模型摄像机宠物看护与AI反馈需求文档",
+          "type": "wiki",
+          "summary": "大模型宠物看护和AI反馈需求"
+        },
+        {
+          "id": "Xf0Cw3PMpiYJJhkeoPscCxDgneg",
+          "title": "C700双目插件需求文档",
+          "type": "wiki",
+          "summary": "C700双目插件需求"
+        },
+        {
+          "id": "C4UTwrKeFi71xAkvX74cVIk7nRb",
+          "title": "c700双目二期大模型需求",
+          "type": "wiki",
+          "summary": "C700双目二期大模型需求"
+        }
+      ]
+    },
+    "功能需求文档": {
+      "icon": "📝",
+      "description": "各类功能需求和技术方案文档",
+      "docs": [
+        {
+          "id": "DtPEwISk9i4IOdkBPQ8c37lnnsb",
+          "title": "需求文档汇总",
+          "type": "wiki",
+          "summary": "功能需求文档汇总"
+        },
+        {
+          "id": "OTB4wjXueixatUklykkc2d0InDH",
+          "title": "事件颜色变动-影响范围",
+          "type": "wiki",
+          "summary": "事件颜色变动影响范围分析"
+        },
+        {
+          "id": "N33Swtct1iUNr9k9qBRcS5yhnBc",
+          "title": "推送跳转逻辑优化",
+          "type": "wiki",
+          "summary": "推送跳转逻辑优化方案"
+        },
+        {
+          "id": "UaoAwrr5biJzxpk2j97cRX1CnXf",
+          "title": "空调灵敏度",
+          "type": "wiki",
+          "summary": "空调灵敏度相关需求"
+        },
+        {
+          "id": "NNPowjMN9iTPbGk8d9GcBZx4n1d",
+          "title": "烟感-消防码",
+          "type": "wiki",
+          "summary": "烟感消防码功能"
+        },
+        {
+          "id": "WlVLwu8QJiAie8kpapEcJSc2nCf",
+          "title": "环境光变化toast",
+          "type": "wiki",
+          "summary": "环境光变化提示功能"
+        },
+        {
+          "id": "SnHCwQ6AEiwvQskVrVfcakJ8n2c",
+          "title": "烟火检测提示优化",
+          "type": "wiki",
+          "summary": "烟火检测提示优化方案"
+        },
+        {
+          "id": "Qk2FweZGeisSgTkakSoc5Fk3nV2",
+          "title": "TV OS4-家庭事件电视联动体验升级",
+          "type": "wiki",
+          "summary": "TV OS4家庭事件联动升级"
+        },
+        {
+          "id": "AksLwH9NYiABpukIzqkclF9jn7e",
+          "title": "时间排序-分享版",
+          "type": "wiki",
+          "summary": "时间排序分享版功能"
+        },
+        {
+          "id": "FKsrwUh1eilMsikwisQcsumtnKe",
+          "title": "自定义插件标题栏适配",
+          "type": "wiki",
+          "summary": "自定义插件标题栏适配方案"
+        },
+        {
+          "id": "SFtxwR26zifULMkOFUJcWLdXnVg",
+          "title": "插件旋转适配",
+          "type": "wiki",
+          "summary": "插件旋转适配方案"
+        },
+        {
+          "id": "J4Mtwzwk4iMFDhkIB4IcGk6hnBe",
+          "title": "烟雾传感器丢包方案",
+          "type": "wiki",
+          "summary": "烟雾传感器丢包处理方案"
+        },
+        {
+          "id": "QrYSwZoRnivhaAkcDCzcT3aUngC",
+          "title": "小爱语控查看门铃设备",
+          "type": "wiki",
+          "summary": "小爱语控查看门铃设备功能"
+        },
+        {
+          "id": "EN0KwWszriu6YZkYQNxccRzqnBc",
+          "title": "摄像机插件和安防场景事件展示迭代",
+          "type": "wiki",
+          "summary": "插件和安防场景事件展示迭代"
+        },
+        {
+          "id": "KpEvwHLiUimIkfkmDiFcnGwwnhg",
+          "title": "回看空页面展示优化",
+          "type": "wiki",
+          "summary": "回看空页面展示优化"
+        },
+        {
+          "id": "NqRwwTtq1i5F6CkqhBZc897pnII",
+          "title": "韩国合规需求-CCTV产品录制视频不自动录音功能",
+          "type": "wiki",
+          "summary": "韩国合规需求"
+        },
+        {
+          "id": "EiXIw7cJzi6WvZk9lq4c6Bk2noe",
+          "title": "电视、带屏音箱上语控唤醒门铃需求",
+          "type": "wiki",
+          "summary": "电视和带屏音箱语控唤醒门铃"
+        },
+        {
+          "id": "CXEVwud6ui3WXjkzLwScF3COnkg",
+          "title": "设置项新增切换wifi功能",
+          "type": "wiki",
+          "summary": "设置项切换wifi功能"
+        },
+        {
+          "id": "SeSlwhdRxioOv9kSRRpccrjfntg",
+          "title": "非标插设备提高运营营收方案",
+          "type": "wiki",
+          "summary": "非标插设备运营营收方案"
+        },
+        {
+          "id": "Ffr8wpJehihhCRkPfF8cjjbynzb",
+          "title": "服务端统一方案",
+          "type": "wiki",
+          "summary": "服务端统一方案"
+        },
+        {
+          "id": "EHmFwfIC7iiIf3k2jD0cM3p1nvh",
+          "title": "烟雾传感器模板2.0提需",
+          "type": "wiki",
+          "summary": "烟雾传感器模板2.0需求"
+        },
+        {
+          "id": "Av5lwxsqXi3iR4kDPM3c3BMDnvc",
+          "title": "固件升级前置条件判断提需",
+          "type": "wiki",
+          "summary": "固件升级前置条件判断"
+        },
+        {
+          "id": "TRJnwO0quitHcykpna9cRuWynRc",
+          "title": "单/双摄延时摄影",
+          "type": "wiki",
+          "summary": "单双摄延时摄影功能"
+        }
+      ]
+    },
+    "模板与规范": {
+      "icon": "📐",
+      "description": "各类模板、规范和SOP",
+      "docs": [
+        {
+          "id": "N45QwNOwciIv6jkCWsNcQqUPnle",
+          "title": "模板汇总",
+          "type": "wiki",
+          "summary": "模板汇总目录"
+        },
+        {
+          "id": "AMS3wnOeSixXvYkJXFTcEW9MnVg",
+          "title": "摄像机模版-小米IoT软件功能说明书",
+          "type": "wiki",
+          "summary": "摄像机软件功能说明书模板"
+        },
+        {
+          "id": "AsSMw24YmidTiqkEUaOcyCQznXb",
+          "title": "模板与规范汇总",
+          "type": "wiki",
+          "summary": "模板与规范汇总"
+        },
+        {
+          "id": "HN27wMWbgiyiuCkwHOTceyJbnVw",
+          "title": "摄像机品类模板纪要",
+          "type": "wiki",
+          "summary": "摄像机品类模板纪要"
+        },
+        {
+          "id": "CkAJwpFZ7i7b9xkzcAIcCnLPnuh",
+          "title": "摄像机品类模板",
+          "type": "wiki",
+          "summary": "摄像机品类模板"
+        },
+        {
+          "id": "J8ydw7V9AiWtwTkjywycICInnfc",
+          "title": "摄像机的自动化标准化",
+          "type": "wiki",
+          "summary": "摄像机自动化标准化方案"
+        },
+        {
+          "id": "HLo1weal9icqRgk12IycLJLEnsh",
+          "title": "摄像机新增标准spec需求模版",
+          "type": "wiki",
+          "summary": "新增标准spec需求模板"
+        }
+      ]
+    },
+    "资料库与参考": {
+      "icon": "📚",
+      "description": "产品资料库、竞品分析、统计参考",
+      "docs": [
+        {
+          "id": "O3clwk8BDiHLU9kEqZNcuOjonRh",
+          "title": "资料库总目录",
+          "type": "wiki",
+          "summary": "产品资料库总目录"
+        },
+        {
+          "id": "TLl6wB0C1irqUekidKicgvCAnnt",
+          "title": "摄像机功能和需求资料库目录",
+          "type": "wiki",
+          "summary": "功能和需求资料库目录"
+        },
+        {
+          "id": "YTutwhIVdi1H7Zkmh80cbVnUnrh",
+          "title": "竞品购买",
+          "type": "wiki",
+          "summary": "竞品购买记录"
+        },
+        {
+          "id": "PIwIw9x9ZiZH7BkBJ5yceY6yn6b",
+          "title": "自动化模板和自动化能力验收流程",
+          "type": "wiki",
+          "summary": "自动化模板和验收流程"
+        },
+        {
+          "id": "E76Nwliulik1eYklhA8cokO8nsb",
+          "title": "2026年全年活跃和分区活跃预估",
+          "type": "wiki",
+          "summary": "2026年活跃数据预估"
+        },
+        {
+          "id": "LSsswQOcdiDxpdkO7FEcImi2nFg",
+          "title": "使用标插的摄像机list",
+          "type": "wiki",
+          "summary": "使用标插的摄像机列表"
+        },
+        {
+          "id": "G7xFwwiAWiUBfnk052vc0lA9nAb",
+          "title": "摄像机云存标签和spec对应现状",
+          "type": "wiki",
+          "summary": "云存标签和spec对应关系"
+        },
+        {
+          "id": "BjdjwttsaiFbMsknvTCchBeFnAf",
+          "title": "摄像机标准插件功能",
+          "type": "wiki",
+          "summary": "标准插件功能说明"
+        },
+        {
+          "id": "EIjRwINTViH1kDkk9LbcqMFYnsh",
+          "title": "已上线设备-profile设备和翻译spec设备",
+          "type": "wiki",
+          "summary": "已上线设备profile和翻译spec"
+        },
+        {
+          "id": "Dy0Sw9pDui2rRckcKAwcuZR8nTg",
+          "title": "已上线-ipc设备双摄拼接和非拼接",
+          "type": "wiki",
+          "summary": "IPC设备双摄拼接情况"
+        },
+        {
+          "id": "J1YZwxWrfiE5JJkYOIscgbnrntc",
+          "title": "AI功能横向对比",
+          "type": "wiki",
+          "summary": "AI功能横向对比分析"
+        },
+        {
+          "id": "OAI0wxnYPi09IZkBZlzcakLXnmd",
+          "title": "摄像机&门铃列表-6月更新",
+          "type": "wiki",
+          "summary": "摄像机和门铃设备列表"
+        },
+        {
+          "id": "DMV9wUZc3i3JKiknjY2c2LqunEe",
+          "title": "摄像机单双路统计",
+          "type": "wiki",
+          "summary": "摄像机单双路统计"
+        },
+        {
+          "id": "V1IIwNSpSi9Ev8kaAPDchr8snlc",
+          "title": "摄像机情况",
+          "type": "wiki",
+          "summary": "摄像机整体情况"
+        },
+        {
+          "id": "KVlIwyookiLVo2kVsRccG1X1nnc",
+          "title": "23-25上线摄像机设备",
+          "type": "wiki",
+          "summary": "2023-2025年上线摄像机设备"
+        },
+        {
+          "id": "CCoLw9uPeiLiXOk2GUCcLhPknEh",
+          "title": "摄像机小白科普手册",
+          "type": "wiki",
+          "summary": "摄像机入门科普手册"
+        }
+      ]
+    },
+    "其他参考": {
+      "icon": "📎",
+      "description": "其他参考文档",
+      "docs": [
+        {
+          "id": "ZiGQw7vTiiNOykkfpqucjArxnpf",
+          "title": "软件说明书",
+          "type": "wiki",
+          "summary": "软件说明书目录"
+        },
+        {
+          "id": "YTLKwClJUiWhzekXoZWcX1K8n3d",
+          "title": "软件功能说明书-申请权限时备注企业+角色",
+          "type": "wiki",
+          "summary": "申请权限时备注企业+角色"
+        },
+        {
+          "id": "Je9dw48IAi7bgvkX1YIcXvJVnxd",
+          "title": "小程序接入摄像机",
+          "type": "wiki",
+          "summary": "小程序接入摄像机方案"
+        },
+        {
+          "id": "NxNJwHj6diWjOgkKC74cKrJGnCh",
+          "title": "版长和合入记录",
+          "type": "wiki",
+          "summary": "版长和合入记录"
+        },
+        {
+          "id": "Z48AwE7V6ivf3okIZl9c1CcVnBe",
+          "title": "融合讨论",
+          "type": "wiki",
+          "summary": "融合讨论记录"
+        },
+        {
+          "id": "YjzZwtfleiWrVOkqHrxcypAznAg",
+          "title": "摄像机改版用户体验访谈",
+          "type": "wiki",
+          "summary": "改版用户体验访谈"
+        },
+        {
+          "id": "JBoaw9wQ7iRJl7k7ABicaryDnFc",
+          "title": "摄像机插件全语言表单",
+          "type": "wiki",
+          "summary": "插件全语言表单"
+        },
+        {
+          "id": "Vz3GwZ2eLivm3JkIXsccXlPNn9h",
+          "title": "暂不公开能力相关语言",
+          "type": "wiki",
+          "summary": "暂不公开能力相关语言"
+        },
+        {
+          "id": "Y7N8wBYpmi9onfkNSDbclJsMnLh",
+          "title": "安全审查流程",
+          "type": "wiki",
+          "summary": "安全审查流程"
+        },
+        {
+          "id": "Za0BwbDk5in5p0k9GGBcYjUcnyh",
+          "title": "基于AI辅助的整体复盘工具",
+          "type": "wiki",
+          "summary": "AI辅助复盘工具"
+        },
+        {
+          "id": "O00Vw1KWWizpvkkQaZgcbua1nGf",
+          "title": "摄像机改版问卷和访谈",
+          "type": "wiki",
+          "summary": "改版问卷和访谈记录"
+        },
+        {
+          "id": "DmVWw9uDqiSimLkcEUbcFHR5ntg",
+          "title": "需求for ai开发模版",
+          "type": "wiki",
+          "summary": "AI开发需求模板"
+        },
+        {
+          "id": "UwlgwtMy9iw1B5kJp73cG6San4g",
+          "title": "功能使用情况",
+          "type": "wiki",
+          "summary": "功能使用情况统计"
+        },
+        {
+          "id": "A98rwuXmei3VvIkawYZclgLnnnh",
+          "title": "海外上线设备-摄像机",
+          "type": "wiki",
+          "summary": "海外上线摄像机设备"
+        },
+        {
+          "id": "Afd5whaQoi0EO4kJJwUc3dJnnZg",
+          "title": "摄像机相机协同",
+          "type": "wiki",
+          "summary": "摄像机相机协同功能"
+        },
+        {
+          "id": "Nec2wBTN0icF2qkixL4csWqln6e",
+          "title": "室外5双摄初步分工",
+          "type": "wiki",
+          "summary": "室外5双摄分工"
+        },
+        {
+          "id": "SYutwPvuQiA6lqkzentcYBionUe",
+          "title": "切标插sop",
+          "type": "wiki",
+          "summary": "切标插标准操作流程"
+        },
+        {
+          "id": "CYEFwC76EiTAGTkgCuncMx68nvg",
+          "title": "门铃事件优先级",
+          "type": "wiki",
+          "summary": "门铃事件优先级"
+        },
+        {
+          "id": "Bzo3wK2oTipwGikxTIjchGRKntc",
+          "title": "安防长期方案产品文档梳理",
+          "type": "wiki",
+          "summary": "安防长期方案产品文档"
+        },
+        {
+          "id": "S67ewVvHCiBAFFkiCWDcYI3XnRb",
+          "title": "安防长期方案事件配置",
+          "type": "wiki",
+          "summary": "安防长期方案事件配置"
+        },
+        {
+          "id": "YWV7wRoZri4TRikC1eqcYwV8nS9",
+          "title": "上海AWE展会",
+          "type": "wiki",
+          "summary": "上海AWE展会相关"
+        },
+        {
+          "id": "Joulwwz4riyicckVSe1c0D9Anfg",
+          "title": "开发者大会设备清单",
+          "type": "wiki",
+          "summary": "开发者大会设备清单"
+        },
+        {
+          "id": "G3qDw0N5ritfJAka7Qicm7v3nNg",
+          "title": "PluginInstanceProvider spec pkey 创建时间分析",
+          "type": "wiki",
+          "summary": "PluginInstanceProvider分析"
+        },
+        {
+          "id": "T7czwhJTKiipPRkma2WcS1UqnVh",
+          "title": "智能纪要：摄像机产品功能需求分析",
+          "type": "wiki",
+          "summary": "2026年3月产品功能需求分析纪要"
         }
       ]
     }
