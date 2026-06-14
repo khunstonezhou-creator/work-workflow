@@ -720,23 +720,32 @@ function qaGenerateJiraAnswer(jiraKey, similarJiras, code, docs, projects) {
     });
   }
 
-  // 竞品分析链接
-  const qLower = (localIssue?.summary || '').toLowerCase() + ' ' + (projectInfo.commonIssues || '').toLowerCase();
-  let competitorCategory = 'default';
-  if (/看家|事件|报警|侦测/.test(qLower)) competitorCategory = '看家助手/事件类';
-  else if (/推送|通知|消息/.test(qLower)) competitorCategory = '推送消息类';
-  else if (/直播|视频|播放|黑屏/.test(qLower)) competitorCategory = '直播/视频类';
-  else if (/存储|回看|sd卡|云存/.test(qLower)) competitorCategory = '存储/回看类';
-  else if (/人脸|识别|ReID/.test(qLower)) competitorCategory = '人脸识别/管理';
-  else if (/云台|PTZ|转动|巡航/.test(qLower)) competitorCategory = '云台/PTZ类';
-
-  answer += '<br><br><b>🔍 竞品参考</b>';
-  answer += '<br>• <a href="competitor-analysis.html?theme=camera_ai&jira=' + encodeURIComponent(jiraKey) + '&category=' + encodeURIComponent(competitorCategory) + '" target="_blank" style="color:#4f46e5;font-weight:600">📊 查看「' + esc(competitorCategory) + '」竞品分析报告 →</a>';
-  answer += '<br><span style="font-size:11px;color:#999">涵盖萤石、Ring、Google Nest、海康等竞品的功能对比和行业洞察</span>';
+  // 判断是否需要竞品分析建议（代码和知识库无法完全解决时）
+  const isProblemWithoutSolution = !localIssue && code.length === 0;
+  const isDesignDecision = /方案|选型|设计|决策|对比|选择/.test(qLower);
+  const needsCompetitorAnalysis = isProblemWithoutSolution || isDesignDecision;
 
   // 快捷操作
   answer += '<br><br><b>🔗 快捷操作</b>';
   answer += '<br>• <a href="' + JIRA_BASE + jiraKey + '" target="_blank" style="color:#4f46e5">查看 Jira 详情</a>';
+
+  // 追问：是否需要竞品分析
+  if (needsCompetitorAnalysis) {
+    const qLowerFull = (localIssue?.summary || '').toLowerCase() + ' ' + (projectInfo.commonIssues || '').toLowerCase();
+    let competitorCategory = 'default';
+    if (/看家|事件|报警|侦测/.test(qLowerFull)) competitorCategory = '看家助手/事件类';
+    else if (/推送|通知|消息/.test(qLowerFull)) competitorCategory = '推送消息类';
+    else if (/直播|视频|播放|黑屏/.test(qLowerFull)) competitorCategory = '直播/视频类';
+    else if (/存储|回看|sd卡|云存/.test(qLowerFull)) competitorCategory = '存储/回看类';
+    else if (/人脸|识别|ReID/.test(qLowerFull)) competitorCategory = '人脸识别/管理';
+    else if (/云台|PTZ|转动|巡航/.test(qLowerFull)) competitorCategory = '云台/PTZ类';
+
+    answer += '<br><br><div style="background:#f0f4ff;border-radius:8px;padding:12px;border-left:3px solid #667eea">';
+    answer += '<div style="font-size:12px;color:#4f46e5;margin-bottom:6px">💡 需要进一步参考竞品方案吗？</div>';
+    answer += '<div style="font-size:11px;color:#666;margin-bottom:8px">该问题暂无现成解决方案，可参考竞品（萤石、Ring、Google Nest、海康）的类似功能实现获取决策建议。</div>';
+    answer += '<a href="competitor-analysis.html?theme=camera_ai&jira=' + encodeURIComponent(jiraKey) + '&category=' + encodeURIComponent(competitorCategory) + '" target="_blank" style="display:inline-block;padding:6px 16px;background:#667eea;color:white;border-radius:6px;font-size:12px;text-decoration:none">📊 查看竞品分析报告</a>';
+    answer += '</div>';
+  }
 
   return answer;
 }
