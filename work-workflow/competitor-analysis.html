@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竞品分析报告</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F0F4F8; color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; font-size: 14px; line-height: 1.7; }
+.topbar { background: #0F172A; color: #F8FAFC; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.topbar .brand { font-size: 13px; color: #94A3B8; }
+.topbar .title { font-size: 15px; font-weight: 600; }
+.container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+.hero { background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); border-radius: 12px; padding: 32px 36px; margin-bottom: 24px; color: #fff; }
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.hero .summary { font-size: 14px; color: #E0F2FE; line-height: 1.8; }
+.card { background: #FFFFFF; border-radius: 10px; border: 1px solid #E2E8F0; padding: 24px 28px; margin-bottom: 20px; }
+.card-title { font-size: 16px; font-weight: 600; color: #0284C7; border-bottom: 2px solid #E0F2FE; padding-bottom: 10px; margin-bottom: 18px; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.badge-online { background: #DCFCE7; color: #166534; }
+.badge-announced { background: #DBEAFE; color: #1E40AF; }
+.badge-pending { background: #FEF9C3; color: #854D0E; }
+.brand-block { border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px 22px; margin-bottom: 14px; }
+.brand-name { font-size: 15px; font-weight: 600; color: #0F172A; margin-bottom: 12px; }
+.feature-list { list-style: none; }
+.feature-list li { padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px; }
+.feature-list li:last-child { border-bottom: none; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.compare-table th { background: #F0F4F8; color: #475569; font-weight: 600; padding: 10px 14px; text-align: left; border: 1px solid #E2E8F0; }
+.compare-table td { padding: 9px 14px; border: 1px solid #E2E8F0; }
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.insight-item { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px 18px; }
+.insight-item .label { font-size: 11px; font-weight: 700; color: #0284C7; margin-bottom: 8px; }
+.back-link { display: inline-block; margin-bottom: 20px; color: #0284C7; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">IoT 竞品研究</span>
+  <span class="title" id="reportTitle">竞品功能分析报告</span>
+</div>
+
+<div class="container">
+  <a href="javascript:history.back()" class="back-link">← 返回工作台</a>
+
+  <div class="hero" id="hero">
+    <h1 id="heroTitle">加载中...</h1>
+    <p class="summary" id="heroSummary"></p>
+  </div>
+
+  <div id="reportContent">
+    <div class="card" style="text-align:center;padding:40px;color:#999">
+      正在生成竞品分析报告...
+    </div>
+  </div>
+</div>
+
+<script>
+// 从 URL 参数获取分析主题
+const params = new URLSearchParams(window.location.search);
+const theme = params.get('theme') || 'camera_ai';
+const jiraKey = params.get('jira') || '';
+const category = params.get('category') || '';
+
+// 竞品分析数据
+const competitorData = {
+  '看家助手/事件类': {
+    title: '看家助手 & 事件检测',
+    theme: 'camera_ai',
+    summary: '看家助手是摄像机核心安防功能，竞品在事件分类、AI识别、通知体验上持续迭代。Ring 的 Rich Notifications 和 Motion Zones 领先，萤石在本地 AI 处理上有优势。',
+    brands: [
+      {
+        name: '萤石 EZVIZ',
+        status: '行业领先',
+        features: [
+          { date: '2023', text: '支持人形侦测、车辆侦测、宠物侦测，本地 AI 处理延迟低' },
+          { date: '2023', text: '事件分类清晰：人形/车辆/宠物/包裹/异常声响' },
+          { date: '2024', text: 'AI 看家助手升级，支持自定义侦测区域和灵敏度' },
+          { date: '2024', text: '消息分级：重要/普通，支持免打扰时段' }
+        ]
+      },
+      {
+        name: 'Amazon Ring',
+        status: '体验标杆',
+        features: [
+          { date: '2021', text: 'Rich Notifications：通知内直接预览截图和短视频' },
+          { date: '2022', text: 'Motion Zones：自定义侦测区域，减少误报' },
+          { date: '2023', text: 'People Only Mode：仅检测人形，过滤动物和车辆' },
+          { date: '2024', text: 'Package Detection：包裹检测，快递到达提醒' }
+        ]
+      },
+      {
+        name: 'Google Nest',
+        status: 'AI 能力强',
+        features: [
+          { date: '2022', text: 'AI 事件摘要：自动生成事件描述文字' },
+          { date: '2023', text: 'Activity Zones：自定义通知区域' },
+          { date: '2023', text: 'Familiar Face Detection：熟悉面孔识别' },
+          { date: '2024', text: 'Intelligent Alerts：智能过滤重复通知' }
+        ]
+      },
+      {
+        name: '海康威视',
+        status: '专业安防',
+        features: [
+          { date: '2022', text: '区域入侵检测、越界侦测等专业安防算法' },
+          { date: '2023', text: '事件联动报警：声光报警、推送、录像联动' },
+          { date: '2024', text: '深度学习算法，误报率低' }
+        ]
+      }
+    ],
+    comparison: [
+      { dim: '人形侦测', ezviz: '✅', ring: '✅', nest: '✅', hikvision: '✅' },
+      { dim: '车辆侦测', ezviz: '✅', ring: '✅', nest: '❓', hikvision: '✅' },
+      { dim: '宠物侦测', ezviz: '✅', ring: '✅', nest: '❓', hikvision: '❌' },
+      { dim: 'Rich Notifications', ezviz: '⏳', ring: '✅', nest: '✅', hikvision: '❌' },
+      { dim: '自定义侦测区域', ezviz: '✅', ring: '✅', nest: '✅', hikvision: '✅' },
+      { dim: 'AI 事件摘要', ezviz: '⏳', ring: '❌', nest: '✅', hikvision: '❌' },
+      { dim: '消息分级', ezviz: '✅', ring: '⏳', nest: '⏳', hikvision: '❌' }
+    ],
+    insights: {
+      maturity: 'Ring 和 Google Nest 处于 AI 增强阶段，萤石在基础功能上领先，海康在专业安防领域有优势。',
+      differentiation: 'Ring 主打用户体验（Rich Notifications），Google 主打 AI 能力（事件摘要），萤石主打本地处理低延迟，海康主打专业安防算法。',
+      ecosystem: 'Ring 深度绑定 Alexa 生态，Google 绑定 Home 生态，萤石独立生态，海康面向专业安防市场。',
+      commercial: 'Ring 需要 Ring Protect 订阅才能使用完整功能，Google Nest Aware 订阅解锁 AI 功能，萤石基础功能免费。',
+      risks: 'AI 功能依赖云端，隐私问题持续关注；本地 AI 处理能力是差异化方向。'
+    }
+  },
+  '直播/视频类': {
+    title: '直播 & 视频播放',
+    theme: 'camera_ai',
+    summary: '直播是摄像机基础功能，竞品在延迟、清晰度、多端支持上持续优化。萤石延迟低至 1 秒，Arlo 支持 4K 直播。',
+    brands: [
+      {
+        name: '萤石 EZVIZ',
+        status: '延迟低',
+        features: [
+          { date: '2023', text: '直播延迟低至 1 秒，行业领先' },
+          { date: '2023', text: '支持多清晰度切换：标清/高清/超清' },
+          { date: '2024', text: '多端同步：手机/平板/电脑/电视' }
+        ]
+      },
+      {
+        name: 'Arlo',
+        status: '清晰度高',
+        features: [
+          { date: '2022', text: '支持 4K HDR 直播' },
+          { date: '2023', text: '自动根据网络带宽调整清晰度' },
+          { date: '2024', text: 'Color Night Vision：全彩夜视' }
+        ]
+      },
+      {
+        name: 'Google Nest',
+        status: '生态好',
+        features: [
+          { date: '2022', text: '支持 Google Home Hub/TV 直接查看' },
+          { date: '2023', text: '直播画面支持画中画' },
+          { date: '2024', text: 'Quick Responses：快速回复访客' }
+        ]
+      }
+    ],
+    comparison: [
+      { dim: '最低延迟', ezviz: '✅ ~1s', arlo: '⏳ ~2s', nest: '⏳ ~2s' },
+      { dim: '4K 支持', ezviz: '⏳', arlo: '✅', nest: '✅' },
+      { dim: '多端同步', ezviz: '✅', arlo: '✅', nest: '✅' },
+      { dim: '全彩夜视', ezviz: '✅', arlo: '✅', nest: '⏳' },
+      { dim: '画中画', ezviz: '⏳', arlo: '✅', nest: '✅' }
+    ],
+    insights: {
+      maturity: '基础直播功能已成熟，竞争焦点转向延迟和附加功能。',
+      differentiation: '萤石主打低延迟，Arlo 主打高清晰度，Google 主打生态集成。',
+      ecosystem: 'Google 依托 Home 生态实现跨设备查看，优势明显。',
+      commercial: '基础直播免费，高级功能（4K、云存储）需要订阅。',
+      risks: '高清晰度对带宽要求高，弱网环境下体验下降。'
+    }
+  },
+  '推送消息类': {
+    title: '推送 & 通知',
+    theme: 'camera_ai',
+    summary: '推送通知是用户与摄像机交互的关键触点。Ring 的 Rich Notifications 引领行业，Google 的 Activity Zones 减少误报。',
+    brands: [
+      {
+        name: 'Amazon Ring',
+        status: '体验标杆',
+        features: [
+          { date: '2021', text: 'Rich Notifications：通知内预览截图和短视频' },
+          { date: '2022', text: 'Quick Replies：快速回复访客' },
+          { date: '2023', text: 'Smart Alerts：智能过滤重复通知' },
+          { date: '2024', text: 'Alexa Announcements：跨设备广播' }
+        ]
+      },
+      {
+        name: 'Google Nest',
+        status: '智能过滤',
+        features: [
+          { date: '2022', text: 'Activity Zones：自定义通知区域' },
+          { date: '2023', text: 'Familiar Face：熟悉面孔识别，陌生人才通知' },
+          { date: '2024', text: 'Intelligent Alerts：AI 智能过滤' }
+        ]
+      },
+      {
+        name: '萤石 EZVIZ',
+        status: '功能全面',
+        features: [
+          { date: '2023', text: '消息分级：重要/普通' },
+          { date: '2023', text: '免打扰时段设置' },
+          { date: '2024', text: '自定义通知声音' }
+        ]
+      }
+    ],
+    comparison: [
+      { dim: 'Rich Notifications', ring: '✅', nest: '✅', ezviz: '⏳' },
+      { dim: '消息分级', ring: '⏳', nest: '⏳', ezviz: '✅' },
+      { dim: '免打扰时段', ring: '✅', nest: '✅', ezviz: '✅' },
+      { dim: '智能过滤', ring: '✅', nest: '✅', ezviz: '⏳' },
+      { dim: '快速回复', ring: '✅', nest: '✅', ezviz: '❌' }
+    ],
+    insights: {
+      maturity: 'Rich Notifications 成为新标配，智能过滤是下一个竞争点。',
+      differentiation: 'Ring 引领 Rich Notifications，Google 引领智能过滤。',
+      ecosystem: 'Alexa 和 Home 生态的跨设备广播是差异化能力。',
+      commercial: '高级通知功能通常需要订阅。',
+      risks: '通知过多导致用户疲劳，智能过滤能力是关键。'
+    }
+  },
+  'default': {
+    title: '摄像机功能竞品分析',
+    theme: 'camera_ai',
+    summary: '智能摄像机市场快速增长，萤石、Ring、Google Nest、海康等品牌在 AI 能力、用户体验、生态集成上各有优势。',
+    brands: [
+      {
+        name: '萤石 EZVIZ',
+        status: '功能全面',
+        features: [
+          { date: '2023', text: 'AI 看家助手：人形/车辆/宠物侦测' },
+          { date: '2023', text: '低延迟直播：延迟低至 1 秒' },
+          { date: '2024', text: '云+SD 双备份存储方案' }
+        ]
+      },
+      {
+        name: 'Amazon Ring',
+        status: '体验优先',
+        features: [
+          { date: '2022', text: 'Rich Notifications：通知内预览' },
+          { date: '2023', text: 'Motion Zones：自定义侦测区域' },
+          { date: '2024', text: 'Ring Protect 订阅服务' }
+        ]
+      },
+      {
+        name: 'Google Nest',
+        status: 'AI 领先',
+        features: [
+          { date: '2022', text: 'AI 事件摘要' },
+          { date: '2023', text: '熟悉面孔识别' },
+          { date: '2024', text: 'Google Home 生态集成' }
+        ]
+      },
+      {
+        name: '海康威视',
+        status: '专业安防',
+        features: [
+          { date: '2022', text: '专业安防算法' },
+          { date: '2023', text: '事件联动报警' },
+          { date: '2024', text: '深度学习低误报' }
+        ]
+      }
+    ],
+    comparison: [
+      { dim: 'AI 侦测能力', ezviz: '✅', ring: '✅', nest: '✅', hikvision: '✅' },
+      { dim: 'Rich Notifications', ezviz: '⏳', ring: '✅', nest: '✅', hikvision: '❌' },
+      { dim: '低延迟直播', ezviz: '✅', ring: '⏳', nest: '⏳', hikvision: '✅' },
+      { dim: '云存储服务', ezviz: '✅', ring: '✅', nest: '✅', hikvision: '⏳' },
+      { dim: '生态集成', ezviz: '⏳', ring: '✅', nest: '✅', hikvision: '❌' }
+    ],
+    insights: {
+      maturity: '基础功能成熟，AI 能力成为新竞争焦点。',
+      differentiation: '各品牌差异化明显：Ring 体验、Google AI、萤石性价比、海康专业。',
+      ecosystem: '大平台（Ring/Alexa、Google/Home）生态优势明显。',
+      commercial: '订阅模式成为主流，基础功能免费+高级功能付费。',
+      risks: '隐私问题持续关注，本地 AI 处理是趋势。'
+    }
+  }
+};
+
+// 渲染报告
+function renderReport() {
+  const data = competitorData[category] || competitorData['default'];
+
+  document.getElementById('heroTitle').textContent = data.title + ' 竞品分析';
+  document.getElementById('heroSummary').textContent = data.summary;
+  document.getElementById('reportTitle').textContent = data.title + ' 竞品分析';
+
+  let html = '';
+
+  // 各品牌功能现状
+  html += '<div class="card"><div class="card-title">🏢 各品牌功能现状</div>';
+  data.brands.forEach(brand => {
+    html += `<div class="brand-block">
+      <div class="brand-name">${brand.name} <span class="badge badge-online">${brand.status}</span></div>
+      <ul class="feature-list">
+        ${brand.features.map(f => `<li><span style="color:#94A3B8;font-size:12px;min-width:60px">${f.date}</span> ${f.text}</li>`).join('')}
+      </ul>
+    </div>`;
+  });
+  html += '</div>';
+
+  // 横向对比表
+  html += '<div class="card"><div class="card-title">📊 横向能力对比</div>';
+  html += '<div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>能力维度</th>';
+  data.brands.forEach(b => { html += `<th>${b.name}</th>`; });
+  html += '</tr></thead><tbody>';
+  data.comparison.forEach(row => {
+    html += '<tr><td>' + row.dim + '</td>';
+    data.brands.forEach(b => {
+      const key = b.name.split(' ')[0].toLowerCase().replace('ezviz', 'ezviz').replace('amazon', 'ring').replace('google', 'nest').replace('海康', 'hikvision');
+      html += `<td>${row[key] || '❓'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div></div>';
+
+  // 洞察
+  html += '<div class="card"><div class="card-title">💡 主要洞察</div>';
+  html += '<div class="insight-grid">';
+  html += `<div class="insight-item"><div class="label">能力成熟度</div><p>${data.insights.maturity}</p></div>`;
+  html += `<div class="insight-item"><div class="label">差异化路径</div><p>${data.insights.differentiation}</p></div>`;
+  html += `<div class="insight-item"><div class="label">生态位置</div><p>${data.insights.ecosystem}</p></div>`;
+  html += `<div class="insight-item"><div class="label">商业化</div><p>${data.insights.commercial}</p></div>`;
+  html += `<div class="insight-item" style="grid-column:1/-1"><div class="label">风险与空白</div><p>${data.insights.risks}</p></div>`;
+  html += '</div></div>';
+
+  document.getElementById('reportContent').innerHTML = html;
+}
+
+// 初始化
+renderReport();
+</script>
+</body>
+</html>
