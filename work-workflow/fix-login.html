@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>修复登录 - 个人工作台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 500px; padding: 20px; }
+.card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+h1 { text-align: center; margin-bottom: 20px; color: #333; }
+p { color: #666; margin-bottom: 20px; line-height: 1.6; }
+.btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-bottom: 12px; transition: all 0.2s; }
+.btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+.btn-danger { background: #ef4444; color: white; }
+.btn-danger:hover { background: #dc2626; }
+.btn-secondary { background: #6b7280; color: white; }
+.btn-secondary:hover { background: #4b5563; }
+.message { padding: 12px; border-radius: 8px; margin-top: 16px; text-align: center; font-size: 14px; }
+.message.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.message.info { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+.options { margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+.options h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>🔧 修复登录</h1>
+    <p>如果你无法登录，可以尝试以下方法：</p>
+
+    <button class="btn btn-primary" onclick="resetAndInit()">重置并初始化管理员账号</button>
+    <button class="btn btn-danger" onclick="clearAll()">清除所有数据</button>
+    <button class="btn btn-secondary" onclick="goToSetup()">直接进入设置页面</button>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <div class="options">
+      <h3>其他选项：</h3>
+      <button class="btn btn-secondary" onclick="goToLogin()" style="background: #9ca3af;">直接进入登录页面</button>
+      <button class="btn btn-secondary" onclick="goToWorkbench()" style="background: #9ca3af;">直接进入工作台</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'workbench_users';
+const CURRENT_USER_KEY = 'workbench_current_user';
+const ADMIN_EMAIL = 'zhouruiqing1@xiaomi.com';
+const ADMIN_NAME = '周睿卿';
+const ADMIN_DEPT = '摄像机接入';
+
+function showMessage(text, type) {
+  const el = document.getElementById('message');
+  el.textContent = text;
+  el.className = `message ${type}`;
+  el.style.display = 'block';
+}
+
+function resetAndInit() {
+  // 清除现有数据
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(CURRENT_USER_KEY);
+
+  // 重新初始化
+  const users = {
+    approved: [{
+      email: ADMIN_EMAIL,
+      name: ADMIN_NAME,
+      dept: ADMIN_DEPT,
+      role: 'admin',
+      approvedTime: new Date().toISOString(),
+      screenshot: null
+    }],
+    pending: []
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(users.approved[0]));
+
+  showMessage('✅ 管理员账号已重置！邮箱: ' + ADMIN_EMAIL, 'success');
+
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1500);
+}
+
+function clearAll() {
+  if (confirm('确定要清除所有用户数据吗？这将删除所有已注册的用户。')) {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
+    showMessage('✅ 所有数据已清除', 'success');
+  }
+}
+
+function goToSetup() {
+  window.location.href = 'setup.html';
+}
+
+function goToLogin() {
+  window.location.href = 'auth-system.html';
+}
+
+function goToWorkbench() {
+  // 先确保有管理员
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (!data) {
+    resetAndInit();
+  } else {
+    const users = JSON.parse(data);
+    const admin = users.approved.find(u => u.email === ADMIN_EMAIL);
+    if (admin) {
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(admin));
+    }
+    window.location.href = 'index.html';
+  }
+}
+</script>
+</body>
+</html>
