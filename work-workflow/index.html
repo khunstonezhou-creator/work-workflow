@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>个人工作台</title>
 <script src="auth-check.js"></script>
-<script src="ai-config.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#333;display:flex;min-height:100vh}
@@ -212,8 +211,6 @@ a:hover{text-decoration:underline}
 
           <div style="text-align:center;padding:12px;font-size:11px;color:#999">
             💡 基于代码仓库和知识库的实时分析 · 置信度高
-            <span id="ai-status" style="margin-left:12px"></span>
-            <a href="#" onclick="qaShowSettings()" style="color:#667eea;margin-left:12px">⚙️ AI 设置</a>
           </div>
         </div>
       </div>
@@ -541,196 +538,21 @@ function qaAsk() {
   // 显示加载状态
   const loadingId = qaAddLoading();
 
-  // 优先使用 AI 回答（如果配置了 API Key）
-  if (window.AI_CONFIG && window.AI_CONFIG.isEnabled()) {
-    // 带超时的 AI 调用
-    const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('timeout')), 30000)
-    );
-
-    Promise.race([qaAskAI(question), timeout])
-      .then(answer => {
-        qaRemoveLoading(loadingId);
-        qaAddMessage(answer, 'assistant');
-      })
-      .catch(error => {
-        console.error('AI 回答失败:', error);
-        // 回退到本地回答
-        const answer = qaGenerateAnswer(question);
-        qaRemoveLoading(loadingId);
-        qaAddMessage(answer + '<br><br><span style="font-size:11px;color:#999">⚠️ AI 服务响应超时，已切换到本地回答</span>', 'assistant');
-      });
-  } else {
-    // 使用本地回答（同步，快速）
-    setTimeout(() => {
-      try {
-        const answer = qaGenerateAnswer(question);
-        qaRemoveLoading(loadingId);
-        qaAddMessage(answer, 'assistant');
-      } catch (error) {
-        console.error('回答生成失败:', error);
-        qaRemoveLoading(loadingId);
-        qaAddMessage('抱歉，回答生成失败，请稍后重试。', 'assistant');
-      }
-    }, 300);
-  }
-}
-
-// 调用 Claude API
-async function qaAskAI(question) {
-  const config = window.AI_CONFIG;
-
-  // 构建上下文信息
-  const context = qaBuildContext(question);
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 25000);
-
-  try {
-    const response = await fetch(config.apiEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': config.apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: config.model,
-        max_tokens: config.maxTokens,
-        system: config.systemPrompt,
-        messages: [{
-          role: 'user',
-          content: context + '\n\n用户问题：' + question
-        }]
-      }),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error('API 请求失败: ' + response.status);
+  // 使用本地回答
+  setTimeout(() => {
+    try {
+      const answer = qaGenerateAnswer(question);
+      qaRemoveLoading(loadingId);
+      qaAddMessage(answer, 'assistant');
+    } catch (error) {
+      console.error('回答生成失败:', error);
+      qaRemoveLoading(loadingId);
+      qaAddMessage('抱歉，回答生成失败，请稍后重试。', 'assistant');
     }
-
-    const data = await response.json();
-    const aiAnswer = data.content[0].text;
-
-    // 格式化 AI 回答
-    return qaFormatAIAnswer(aiAnswer);
-  } catch (error) {
-    clearTimeout(timeoutId);
-    throw error;
-  }
+  }, 300);
 }
 
 // 构建上下文信息
-function qaBuildContext(question) {
-  const qLower = question.toLowerCase();
-  let context = '';
-
-  // 搜索相关代码文件
-  const codeResults = qaSearchCode(question);
-  if (codeResults.length > 0) {
-    context += '\n\n## 相关代码文件\n';
-    codeResults.slice(0, 3).forEach(r => {
-      context += '- ' + r.path + '：' + r.summary + '\n';
-    });
-  }
-
-  // 搜索相关文档
-  const docResults = qaSearchDocs(question);
-  if (docResults.length > 0) {
-    context += '\n\n## 相关文档\n';
-    docResults.slice(0, 3).forEach(r => {
-      context += '- ' + r.title + '：' + (r.summary || '') + '\n';
-    });
-  }
-
-  // 搜索相似 Jira
-  const jiraResults = qaSearchSimilarJiras(question, '');
-  if (jiraResults.length > 0) {
-    context += '\n\n## 相似 Jira 问题\n';
-    jiraResults.slice(0, 3).forEach(r => {
-      context += '- ' + r.key + '：' + r.summary + ' [' + r.status + ']\n';
-    });
-  }
-
-  return context;
-}
-
-// 格式化 AI 回答
-function qaFormatAIAnswer(answer) {
-  // 将 Markdown 格式转换为 HTML
-  let html = answer
-    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-    .replace(/\*(.*?)\*/g, '<i>$1</i>')
-    .replace(/`(.*?)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br>');
-
-  // 高亮关键部分
-  html = html
-    .replace(/(📋 结论：)/g, '<b style="color:#667eea">$1</b>')
-    .replace(/(🎯 关键代码位置：?)/g, '<b style="color:#059669">$1</b>')
-    .replace(/(🔧 修复方向：?)/g, '<b style="color:#d97706">$1</b>')
-    .replace(/(📖 参考文档：?)/g, '<b style="color:#7c3aed">$1</b>');
-
-  return html;
-}
-
-// AI 设置相关
-function qaShowSettings() {
-  const modal = document.getElementById('ai-settings-modal');
-  if (modal) {
-    modal.style.display = 'block';
-  }
-}
-
-function qaHideSettings() {
-  const modal = document.getElementById('ai-settings-modal');
-  if (modal) {
-    modal.style.display = 'none';
-  }
-}
-
-function qaSaveApiKey() {
-  const input = document.getElementById('api-key-input');
-  const apiKey = input.value.trim();
-
-  if (apiKey) {
-    window.AI_CONFIG.apiKey = apiKey;
-    localStorage.setItem('ai_api_key', apiKey);
-    qaUpdateAIStatus();
-    qaHideSettings();
-    qaAddMessage('✅ AI 配置已保存！现在可以使用 AI 增强回答。', 'assistant');
-  } else {
-    window.AI_CONFIG.apiKey = '';
-    localStorage.removeItem('ai_api_key');
-    qaUpdateAIStatus();
-    qaHideSettings();
-    qaAddMessage('ℹ️ AI 配置已清除，将使用本地回答。', 'assistant');
-  }
-}
-
-function qaUpdateAIStatus() {
-  const statusEl = document.getElementById('ai-status');
-  if (statusEl) {
-    if (window.AI_CONFIG && window.AI_CONFIG.isEnabled()) {
-      statusEl.innerHTML = '<span style="color:#22c55e">● AI 已启用</span>';
-    } else {
-      statusEl.innerHTML = '<span style="color:#999">○ AI 未配置</span>';
-    }
-  }
-}
-
-// 初始化 AI 配置
-function qaInitAI() {
-  const savedKey = localStorage.getItem('ai_api_key');
-  if (savedKey) {
-    window.AI_CONFIG.apiKey = savedKey;
-  }
-  qaUpdateAIStatus();
-}
-
 function qaAddMessage(content, type) {
   const container = document.getElementById('qa-chat');
   const avatar = type === 'user' ? '👤' : '🤖';
@@ -2814,54 +2636,6 @@ function closeModal(){document.getElementById('modal').classList.remove('show')}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
 init();
-</script>
-<!-- AI 设置弹窗 -->
-<div id="ai-settings-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000">
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:12px;padding:24px;width:400px;max-width:90%">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <h3 style="font-size:18px;color:#333">⚙️ AI 设置</h3>
-      <button onclick="qaHideSettings()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#999">&times;</button>
-    </div>
-
-    <div style="margin-bottom:16px">
-      <label style="display:block;margin-bottom:8px;font-weight:500;color:#555">Claude API Key</label>
-      <input id="api-key-input" type="password" placeholder="输入你的 Claude API Key"
-        style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:13px"
-        value="${localStorage.getItem('ai_api_key') || ''}">
-      <p style="font-size:11px;color:#999;margin-top:6px">
-        API Key 仅存储在本地浏览器，不会上传到服务器。
-        <a href="https://console.anthropic.com/" target="_blank" style="color:#667eea">获取 API Key</a>
-      </p>
-    </div>
-
-    <div style="background:#f9fafb;padding:12px;border-radius:8px;margin-bottom:16px">
-      <div style="font-size:12px;color:#666;margin-bottom:8px">💡 AI 增强功能</div>
-      <ul style="font-size:11px;color:#666;margin:0;padding-left:20px">
-        <li>更精准的代码定位</li>
-        <li>智能问题分析和排查建议</li>
-        <li>实时代码解读</li>
-        <li>自然语言交互</li>
-      </ul>
-    </div>
-
-    <div style="display:flex;gap:12px">
-      <button onclick="qaSaveApiKey()" style="flex:1;padding:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:6px;font-size:13px;cursor:pointer">
-        保存配置
-      </button>
-      <button onclick="qaHideSettings()" style="flex:1;padding:10px;background:#e5e7eb;color:#374151;border:none;border-radius:6px;font-size:13px;cursor:pointer">
-        取消
-      </button>
-    </div>
-  </div>
-</div>
-
-<script>
-// 页面加载后初始化 AI
-document.addEventListener('DOMContentLoaded', function() {
-  if (typeof qaInitAI === 'function') {
-    qaInitAI();
-  }
-});
 </script>
 </body>
 </html>
