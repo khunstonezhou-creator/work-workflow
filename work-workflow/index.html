@@ -608,9 +608,10 @@ function qaGenerateAnswer(q) {
   };
 
   // 检测问题类型
-  const isFeatureListQuestion = /有哪些功能|功能有哪些|支持哪些|功能列表|功能清单|有什么功能/.test(qLower);
-  const isAIFeatureQuestion = /ai功能|人工智能|智能功能|算法功能/.test(qLower);
-  const isTechnicalQuestion = /功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|埋点|点位|统计|接口|api|播放器|云台|看家|推送|存储|ai|算法|围栏|人脸|宠物|通话|夜视|录制|回看|sd卡|黑屏|卡顿|双摄/.test(qLower);
+  const isFeatureListQuestion = /有哪些|有什么|列出|清单|列表|都有啥|都有什么/.test(qLower);
+  const isAIFeatureQuestion = /ai功能|人工智能|智能功能|算法功能|ai能力/.test(qLower);
+  const isTrackingQuestion = /埋点|点位|track|expose|统计|上报|数据/.test(qLower);
+  const isTechnicalQuestion = /功能|实现|代码|逻辑|机制|spec|配置|硬编码|model|播放器|云台|看家|推送|存储|围栏|人脸|宠物|通话|夜视|录制|回看|sd卡|黑屏|卡顿|双摄/.test(qLower);
   const isNonTechnicalQuestion = /接入流程|怎么接入|如何接入|厂商接入|找谁|联系谁|负责人|文档在哪/.test(qLower);
 
   // 搜索代码和文档
@@ -625,13 +626,13 @@ function qaGenerateAnswer(q) {
     return qaGenerateJiraAnswer(jiraKey, similarJiras, codeResults, docResults, jiraProjects);
   }
 
-  // 功能清单类问题
-  if (isFeatureListQuestion || isAIFeatureQuestion) {
+  // 功能清单类问题（包括埋点清单）
+  if (isFeatureListQuestion || isAIFeatureQuestion || (isTrackingQuestion && isFeatureListQuestion)) {
     return qaGenerateFeatureListAnswer(q, codeResults, docResults);
   }
 
-  // 技术问题
-  if (isTechnicalQuestion && !isNonTechnicalQuestion) {
+  // 技术问题（包括埋点问题）
+  if (isTechnicalQuestion || isTrackingQuestion) {
     return qaGenerateTechnicalAnswer(q, codeResults, docResults);
   }
 
@@ -755,22 +756,39 @@ function qaSearchCode(q) {
   const qLower = q.toLowerCase();
   const results = [];
 
+  // 提取关键词（支持中文单字匹配）
+  const keywords = qLower.split(/[\s,，。、！？\?\!]+/).filter(w => w.length >= 1);
+
   CODE_DATA.files.forEach(file => {
     let score = 0;
     const searchText = (file.name + ' ' + file.path + ' ' + file.summary + ' ' + (file.keywords || []).join(' ')).toLowerCase();
 
-    qLower.split(/\s+/).forEach(w => {
-      if (w.length >= 2 && searchText.includes(w)) score += 5;
+    // 关键词匹配
+    keywords.forEach(w => {
+      if (searchText.includes(w)) score += 5;
     });
 
+    // 完整查询匹配
     if (searchText.includes(qLower)) score += 10;
+
+    // 关键词精确匹配（权重更高）
+    if (file.keywords) {
+      file.keywords.forEach(kw => {
+        if (qLower.includes(kw.toLowerCase()) || kw.toLowerCase().includes(qLower)) score += 8;
+      });
+    }
+
+    // 特殊关键词加权
+    if (/埋点|track|expose|统计/.test(qLower) && /埋点|track|expose/.test(searchText)) score += 15;
+    if (/直播|视频|播放/.test(qLower) && /直播|视频|Live/.test(searchText)) score += 10;
+    if (/AI|智能|算法/.test(qLower) && /AI|智能|aicamera/.test(searchText)) score += 10;
 
     if (score > 0) {
       results.push({ ...file, score, url: 'https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot/-/blob/main/' + file.path });
     }
   });
 
-  return results.sort((a, b) => b.score - a.score).slice(0, 5);
+  return results.sort((a, b) => b.score - a.score).slice(0, 8);
 }
 
 function qaSearchDocs(q) {
@@ -857,6 +875,54 @@ function qaGenerateFeatureListAnswer(q, code, docs) {
       answer += '<b>📖 参考文档</b><br>';
       docs.slice(0, 3).forEach(r => {
         answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+      });
+    }
+
+    return answer;
+  }
+
+  // 埋点相关问题
+  const isTrackingQuestion = /埋点|点位|track|expose|统计|上报|数据/.test(qLower);
+  if (isTrackingQuestion) {
+    let answer = '<b>📋 结论</b>：摄像机埋点系统包含以下内容：<br><br>';
+
+    answer += '<b>📊 埋点事件类型</b><br>';
+    answer += '• <b>expose（曝光）</b>：页面/组件展示时触发，如首页卡片曝光、直播画面曝光<br>';
+    answer += '• <b>click（点击）</b>：用户点击操作时触发，如按钮点击、功能入口点击<br>';
+    answer += '• <b>pageview（页面访问）</b>：页面加载时触发，统计 PV 和停留时长<br><br>';
+
+    answer += '<b>📁 核心代码文件</b><br>';
+    answer += '• <b>useTrack.js</b>：直播埋点 hook，定义直播相关事件<br>';
+    answer += '• <b>TrackUtil.js</b>：埋点工具类，提供 newOneTrack 上报方法<br>';
+    answer += '• <b>exposeEvents.js</b>：曝光事件定义，包含 card_id 配置<br>';
+    answer += '• <b>clickEvents.js</b>：点击事件定义<br>';
+    answer += '• <b>settingTrack.js</b>：设置页面埋点<br>';
+    answer += '• <b>aiTrack.js</b>：AI 功能埋点<br><br>';
+
+    answer += '<b>🔧 埋点调用示例</b><br>';
+    answer += '<code>// 直播画面曝光<br>';
+    answer += 'cameraRenderView.expose(did)<br>';
+    answer += '// 事件: expose, ref: camera_homepage, card_id: 10026</code><br><br>';
+
+    answer += '<b>📋 数据平台查询</b><br>';
+    answer += '• 在数据工场中按以下条件筛选：<br>';
+    answer += '&nbsp;&nbsp;- 事件: expose / click / pageview<br>';
+    answer += '&nbsp;&nbsp;- ref: camera_homepage<br>';
+    answer += '&nbsp;&nbsp;- card_id: 具体业务 ID<br><br>';
+
+    answer += '<b>📖 参考文档</b><br>';
+    answer += '• docs/埋点规范.md<br>';
+    answer += '• docs/数据平台查询指南.md<br>';
+
+    // 从代码索引中提取相关文件
+    const trackingFiles = code.filter(r =>
+      r.module === '埋点模块' ||
+      (r.keywords && r.keywords.some(k => /埋点|track|expose/.test(k)))
+    );
+    if (trackingFiles.length > 0) {
+      answer += '<br><b>💻 相关代码文件</b><br>';
+      trackingFiles.slice(0, 5).forEach(r => {
+        answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.name) + '</a>：' + esc(r.summary).substring(0, 50) + '<br>';
       });
     }
 

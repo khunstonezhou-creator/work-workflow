@@ -3,7 +3,7 @@
   "repo": "https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot.git",
   "project": "com.xiaomi.stdcamera",
   "description": "米家摄像机标准插件（React Native），核心代码在 Main/ 目录",
-  "totalFiles": 40,
+  "totalFiles": 48,
   "moduleMapping": {
     "直播/黑屏/卡顿": "Main/live/ (LiveVideoPageV2.js 542KB)",
     "双摄/双镜头": "Main/live/DualLayout.js",
@@ -61,9 +61,81 @@
       "name": "useTrack.js",
       "type": "javascript",
       "size": 8000,
-      "keywords": ["埋点", "track", "expose", "统计", "数据上报"],
-      "summary": "直播埋点 hook，定义直播相关埋点事件。cameraRenderView.expose(did) 触发曝光埋点",
+      "keywords": ["埋点", "track", "expose", "统计", "数据上报", "事件", "onetrack", "数据"],
+      "summary": "直播埋点 hook，定义直播相关埋点事件。cameraRenderView.expose(did) 触发曝光埋点。包含 expose、click、pageview 等事件类型",
       "module": "埋点模块"
+    },
+    {
+      "path": "util/TrackUtil.js",
+      "name": "TrackUtil.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["埋点", "track", "统计", "上报", "事件", "onetrack", "数据", "工具"],
+      "summary": "埋点工具类，提供 newOneTrack 方法用于数据上报。所有埋点通过此类统一上报到数据平台",
+      "module": "埋点模块"
+    },
+    {
+      "path": "Main/live/track/exposeEvents.js",
+      "name": "exposeEvents.js",
+      "type": "javascript",
+      "size": 6000,
+      "keywords": ["埋点", "expose", "曝光", "事件", "直播", "首页", "卡片"],
+      "summary": "曝光埋点事件定义，包含首页卡片曝光(card_id)、直播画面曝光、功能入口曝光等",
+      "module": "埋点模块"
+    },
+    {
+      "path": "Main/live/track/clickEvents.js",
+      "name": "clickEvents.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["埋点", "click", "点击", "事件", "按钮", "操作"],
+      "summary": "点击埋点事件定义，包含功能按钮点击、设置项点击、操作行为等",
+      "module": "埋点模块"
+    },
+    {
+      "path": "Main/live/track/pageEvents.js",
+      "name": "pageEvents.js",
+      "type": "javascript",
+      "size": 4000,
+      "keywords": ["埋点", "pageview", "页面", "访问", "PV", "停留"],
+      "summary": "页面访问埋点事件定义，包含各页面的 PV 统计和停留时长",
+      "module": "埋点模块"
+    },
+    {
+      "path": "Main/setting/track/settingTrack.js",
+      "name": "settingTrack.js",
+      "type": "javascript",
+      "size": 3000,
+      "keywords": ["埋点", "设置", "track", "配置", "操作"],
+      "summary": "设置页面埋点，统计用户在设置页面的操作行为和功能使用情况",
+      "module": "埋点模块"
+    },
+    {
+      "path": "Main/aicamera/track/aiTrack.js",
+      "name": "aiTrack.js",
+      "type": "javascript",
+      "size": 3000,
+      "keywords": ["埋点", "AI", "智能", "track", "侦测", "识别"],
+      "summary": "AI 功能埋点，统计人形侦测、宠物检测、人脸识别等 AI 功能的使用情况",
+      "module": "埋点模块"
+    },
+    {
+      "path": "docs/埋点规范.md",
+      "name": "埋点规范.md",
+      "type": "markdown",
+      "size": 8000,
+      "keywords": ["埋点", "规范", "统计", "事件", "数据", "上报", "指南"],
+      "summary": "摄像机埋点规范文档，定义了所有埋点事件的命名规则、参数格式、上报流程、数据平台查询方法",
+      "module": "文档"
+    },
+    {
+      "path": "docs/数据平台查询指南.md",
+      "name": "数据平台查询指南.md",
+      "type": "markdown",
+      "size": 5000,
+      "keywords": ["数据", "查询", "平台", "SQL", "统计", "分析", "data-sql"],
+      "summary": "数据平台查询指南，包含如何在数据工场中查询埋点数据、常用 SQL 模板",
+      "module": "文档"
     },
     {
       "path": "Main/live/components/CameraRenderView.js",
