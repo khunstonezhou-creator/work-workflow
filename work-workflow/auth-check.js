@@ -1,8 +1,12 @@
 /**
  * 权限管理脚本
  * 用于检查用户登录状态和权限
+ *
+ * 【已禁用】权限管理功能暂时关闭
+ * 如需恢复，请取消注释以下代码
  */
 
+/*
 const AUTH_CONFIG = {
   storageKey: 'workbench_users',
   currentUserKey: 'workbench_current_user',
@@ -160,4 +164,18 @@ window.authSystem = {
   getRole: getUserRole,
   hasPermission,
   logout: logoutUser
+};
+*/
+
+// 【临时替代】权限管理已禁用，所有人都可以访问所有内容
+console.log('ℹ️ 权限管理已禁用，所有用户可直接访问');
+
+// 提供空的函数避免错误
+window.authSystem = {
+  getUser: () => ({ name: '用户', role: 'admin' }),
+  isAuthenticated: () => true,
+  isInitialized: () => true,
+  getRole: () => 'admin',
+  hasPermission: () => true,
+  logout: () => {}
 };
