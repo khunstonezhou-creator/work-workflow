@@ -1688,8 +1688,8 @@ function generateAnalysisAnswer(q,analysis){
     answer+='<br>2. 参考代码仓库中的接入流程实现';
     answer+='<br>3. 查看飞书文档「小米IoT平台摄像机品类接入流程」';
     answer+='<br><br><b>👥 负责人</b>';
-    answer+='<br>• 周睿卿：摄像机接入开发';
-    answer+='<br>• 赵容慧：摄像机接入开发';
+    answer+='<br>• 周睿卿：摄像机接入产品';
+    answer+='<br>• 赵容慧：摄像机接入产品';
     return answer;
   }
 
@@ -1700,7 +1700,7 @@ function generateAnalysisAnswer(q,analysis){
     answer+='<br>1. 查看代码仓库了解当前实现状态';
     answer+='<br>2. 检索知识库中的历史解决方案';
     answer+='<br>3. 参考相关文档和规范';
-    answer+='<br><br><b>👥 如需帮助</b>：联系 <b>周睿卿</b> 或 <b>赵容慧</b>';
+    answer+='<br><br><b>👥 如需帮助</b>：联系 <b>周睿卿</b> 或 <b>赵容慧</b>（摄像机接入产品）';
   }else if(analysis.intent==='what'){
     answer='这是一个关于<b>'+(analysis.category||'功能特性')+'</b>的查询。';
     answer+='<br><br><b>📋 建议</b>';
@@ -1711,7 +1711,7 @@ function generateAnalysisAnswer(q,analysis){
     answer='根据问题关键词「'+esc(q)+'」分析，'+(analysis.category?'这属于<b>'+analysis.category+'</b>类型的问题。':'请尝试更具体的描述或关键词。');
     answer+='<br><br><b>💡 提示</b>：如果知识库没有找到答案，可以：';
     answer+='<br>1. 查看代码仓库（实时更新，置信度更高）';
-    answer+='<br>2. 联系负责人：<b>周睿卿</b>、<b>赵容慧</b>';
+    answer+='<br>2. 联系负责人：<b>周睿卿</b>、<b>赵容慧</b>（摄像机接入产品）';
   }
   return answer;
 }
