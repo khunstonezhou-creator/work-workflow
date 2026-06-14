@@ -6,7 +6,8 @@
 const AUTH_CONFIG = {
   storageKey: 'workbench_users',
   currentUserKey: 'workbench_current_user',
-  loginPage: 'auth-system.html'
+  loginPage: 'auth-system.html',
+  setupPage: 'setup.html'
 };
 
 // 获取当前用户
@@ -18,6 +19,14 @@ function getAuthUser() {
 // 检查是否已登录
 function isAuthenticated() {
   return !!getAuthUser();
+}
+
+// 检查系统是否已初始化（是否有管理员）
+function isSystemInitialized() {
+  const data = localStorage.getItem(AUTH_CONFIG.storageKey);
+  if (!data) return false;
+  const users = JSON.parse(data);
+  return users.approved && users.approved.some(u => u.role === 'admin');
 }
 
 // 获取用户权限
@@ -40,6 +49,11 @@ function redirectToLogin() {
   window.location.href = AUTH_CONFIG.loginPage;
 }
 
+// 重定向到设置页面
+function redirectToSetup() {
+  window.location.href = AUTH_CONFIG.setupPage;
+}
+
 // 应用权限控制
 function applyPermissions() {
   const user = getAuthUser();
@@ -58,17 +72,26 @@ function applyPermissions() {
 
   // 外部同学只能看到知识库搜索
   if (user.role === 'external') {
-    // 隐藏所有看板
-    document.querySelectorAll('.nav, .section, .card').forEach(el => {
-      if (!el.closest('#kb-section') && !el.closest('.kb-search')) {
+    // 隐藏所有非知识库的导航
+    document.querySelectorAll('.nav').forEach(el => {
+      if (el.id !== 'nav-kb' && !el.textContent.includes('知识库')) {
         el.style.display = 'none';
       }
     });
 
-    // 只显示知识库部分
-    const kbSection = document.getElementById('kb-section');
-    if (kbSection) {
-      kbSection.style.display = 'block';
+    // 隐藏非知识库的内容区域
+    document.querySelectorAll('.tab').forEach(el => {
+      if (el.id !== 't-kb') {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  // 管理员显示管理后台链接
+  if (user.role === 'admin') {
+    const adminLink = document.getElementById('admin-link');
+    if (adminLink) {
+      adminLink.style.display = 'inline';
     }
   }
 
@@ -107,20 +130,33 @@ function logoutUser() {
 
 // 页面加载时检查权限
 document.addEventListener('DOMContentLoaded', function() {
-  // 如果当前页面不是登录页面
-  if (!window.location.pathname.includes('auth-system')) {
-    if (!isAuthenticated()) {
-      redirectToLogin();
-      return;
-    }
-    applyPermissions();
+  // 如果当前页面是登录页面或设置页面，不做检查
+  const currentPage = window.location.pathname.split('/').pop();
+  if (currentPage === 'auth-system.html' || currentPage === 'setup.html') {
+    return;
   }
+
+  // 检查系统是否已初始化
+  if (!isSystemInitialized()) {
+    redirectToSetup();
+    return;
+  }
+
+  // 检查是否已登录
+  if (!isAuthenticated()) {
+    redirectToLogin();
+    return;
+  }
+
+  // 应用权限
+  applyPermissions();
 });
 
 // 导出函数供外部使用
 window.authSystem = {
   getUser: getAuthUser,
   isAuthenticated,
+  isInitialized: isSystemInitialized,
   getRole: getUserRole,
   hasPermission,
   logout: logoutUser

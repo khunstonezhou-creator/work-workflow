@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统初始化 - 个人工作台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 500px; padding: 20px; }
+.card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+h1 { text-align: center; margin-bottom: 30px; color: #333; font-size: 28px; }
+.icon { text-align: center; font-size: 64px; margin-bottom: 20px; }
+.form-group { margin-bottom: 24px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }
+.form-group input { width: 100%; padding: 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px; transition: all 0.2s; }
+.form-group input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+.form-group input:disabled { background: #f9fafb; color: #6b7280; }
+.btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+.btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-secondary { background: #6b7280; margin-top: 12px; }
+.btn-secondary:hover { background: #4b5563; }
+.message { padding: 16px; border-radius: 10px; margin-top: 20px; text-align: center; font-size: 14px; }
+.message.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.message.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.message.info { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+.features { margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+.features h3 { font-size: 14px; color: #666; margin-bottom: 16px; }
+.feature-list { list-style: none; }
+.feature-list li { padding: 8px 0; color: #555; font-size: 13px; }
+.feature-list li::before { content: '✓ '; color: #22c55e; font-weight: bold; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="icon">🚀</div>
+    <h1>系统初始化</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 30px;">欢迎使用个人工作台，请初始化管理员账号</p>
+
+    <div class="form-group">
+      <label>管理员邮箱</label>
+      <input type="email" id="adminEmail" value="zhouruiqing1@xiaomi.com" disabled>
+    </div>
+
+    <div class="form-group">
+      <label>管理员姓名</label>
+      <input type="text" id="adminName" value="周睿卿" disabled>
+    </div>
+
+    <div class="form-group">
+      <label>部门/团队</label>
+      <input type="text" id="adminDept" value="摄像机接入" disabled>
+    </div>
+
+    <button class="btn" id="initBtn" onclick="initSystem()">初始化系统</button>
+    <button class="btn btn-secondary hidden" id="loginBtn" onclick="goToLogin()">进入登录页面</button>
+
+    <div id="message" class="message hidden"></div>
+
+    <div class="features">
+      <h3>🎯 权限管理功能</h3>
+      <ul class="feature-list">
+        <li>管理员：完全访问权限 + 审核用户</li>
+        <li>小米内部人：查看所有看板（只读）</li>
+        <li>外部同学：仅知识库搜索</li>
+        <li>@xiaomi.com 邮箱自动识别</li>
+        <li>邮箱截图审核机制</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'workbench_users';
+const CURRENT_USER_KEY = 'workbench_current_user';
+
+function initSystem() {
+  const btn = document.getElementById('initBtn');
+  btn.disabled = true;
+  btn.textContent = '初始化中...';
+
+  // 模拟初始化过程
+  setTimeout(() => {
+    const users = getUsers();
+
+    // 添加管理员账号
+    if (!users.approved.find(u => u.email === 'zhouruiqing1@xiaomi.com')) {
+      users.approved.push({
+        email: 'zhouruiqing1@xiaomi.com',
+        name: '周睿卿',
+        dept: '摄像机接入',
+        role: 'admin',
+        approvedTime: new Date().toISOString(),
+        screenshot: null
+      });
+      saveUsers(users);
+    }
+
+    // 设置当前用户
+    const admin = users.approved.find(u => u.email === 'zhouruiqing1@xiaomi.com');
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(admin));
+
+    showMessage('✅ 系统初始化成功！管理员账号已创建。', 'success');
+    btn.classList.add('hidden');
+    document.getElementById('loginBtn').classList.remove('hidden');
+  }, 1000);
+}
+
+function getUsers() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : { approved: [], pending: [] };
+}
+
+function saveUsers(users) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+function goToLogin() {
+  window.location.href = 'auth-system.html';
+}
+
+function showMessage(text, type) {
+  const el = document.getElementById('message');
+  el.textContent = text;
+  el.className = `message ${type}`;
+  el.classList.remove('hidden');
+}
+</script>
+</body>
+</html>
