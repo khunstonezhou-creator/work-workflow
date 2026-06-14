@@ -1,7 +1,7 @@
 {
   "lastUpdate": "2026-06-14 22:00:00",
   "repo": "https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot.git",
-  "totalFiles": 25,
+  "totalFiles": 34,
   "files": [
     {
       "path": "Main/live/LiveVideoPageV2.js",
@@ -57,7 +57,44 @@
       "type": "javascript",
       "size": 15000,
       "keywords": ["AI", "算法", "人形侦测", "宠物检测", "人脸识别", "围栏", "区域"],
-      "summary": "AI 功能模块，包含人形侦测、宠物检测、人脸识别、虚拟围栏等功能的配置和控制"
+      "summary": "AI 功能主模块，统一管理所有 AI 功能的开关、配置和状态。包含人形侦测、宠物检测、人脸识别、异常声响、烟火检测等功能的入口",
+      "features": ["人形侦测", "宠物检测", "人脸识别", "异常声响检测", "烟火检测"]
+    },
+    {
+      "path": "Main/ai/HumanDetection.js",
+      "name": "HumanDetection.js",
+      "type": "javascript",
+      "size": 8000,
+      "keywords": ["人形侦测", "人形", "检测", "移动侦测", "灵敏度"],
+      "summary": "人形侦测功能模块，检测画面中的人形目标，支持灵敏度配置、区域设置、联动报警等",
+      "features": ["人形侦测", "移动侦测"]
+    },
+    {
+      "path": "Main/ai/PetDetection.js",
+      "name": "PetDetection.js",
+      "type": "javascript",
+      "size": 6000,
+      "keywords": ["宠物", "猫", "狗", "宠物检测", "宠物识别"],
+      "summary": "宠物检测功能模块，检测画面中的猫狗等宠物。新版本使用宠物检测替代宠物识别",
+      "features": ["宠物检测", "宠物识别"]
+    },
+    {
+      "path": "Main/ai/FaceRecognition.js",
+      "name": "FaceRecognition.js",
+      "type": "javascript",
+      "size": 10000,
+      "keywords": ["人脸", "识别", "家庭成员", "陌生人", "云端"],
+      "summary": "人脸识别功能模块，识别家庭成员和陌生人。注意：人脸识别是云端算法，spec 中不要配置 face-detection-switch，否则会认为是本地算法",
+      "features": ["人脸识别", "陌生人检测"]
+    },
+    {
+      "path": "Main/ai/PersonReID.js",
+      "name": "PersonReID.js",
+      "type": "javascript",
+      "size": 7000,
+      "keywords": ["ReID", "人物身份", "追踪", "跨摄像头"],
+      "summary": "人物身份识别（ReID）模块，支持跨摄像头追踪同一人物。厂商需要配置 reid 的 spec",
+      "features": ["人物身份识别", "跨摄像头追踪"]
     },
     {
       "path": "Main/ai/VirtualFence.js",
@@ -65,7 +102,44 @@
       "type": "javascript",
       "size": 8000,
       "keywords": ["虚拟围栏", "区域隐私", "警戒区域", "绘图"],
-      "summary": "虚拟围栏组件，支持绘制和配置警戒区域、隐私保护区域"
+      "summary": "虚拟围栏组件，支持绘制和配置警戒区域、隐私保护区域。形状需按文档定义，不能按平台描述",
+      "features": ["虚拟围栏", "区域隐私保护"]
+    },
+    {
+      "path": "Main/ai/AbnormalSound.js",
+      "name": "AbnormalSound.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["异常声响", "哭声", "玻璃破碎", "声响检测"],
+      "summary": "异常声响检测模块，检测哭声、玻璃破碎等异常声音。需配置 abnormal-sound-detection spec",
+      "features": ["异常声响检测", "哭声检测"]
+    },
+    {
+      "path": "Main/ai/SmokeDetection.js",
+      "name": "SmokeDetection.js",
+      "type": "javascript",
+      "size": 4000,
+      "keywords": ["烟火", "烟雾", "火焰", "消防"],
+      "summary": "烟火检测模块，检测画面中的烟雾和火焰。包含电话外呼功能，需要申请服务端配置",
+      "features": ["烟火检测", "电话外呼"]
+    },
+    {
+      "path": "Main/ai/DailyStory.js",
+      "name": "DailyStory.js",
+      "type": "javascript",
+      "size": 6000,
+      "keywords": ["每日故事", "精彩瞬间", "自动生成", "视频"],
+      "summary": "每日故事功能模块，自动生成每日精彩瞬间视频。需要在硬编码中配置 model",
+      "features": ["每日故事"]
+    },
+    {
+      "path": "Main/ai/FamilyGuard.js",
+      "name": "FamilyGuard.js",
+      "type": "javascript",
+      "size": 5000,
+      "keywords": ["家人守护", "家人看护", "老人", "关怀"],
+      "summary": "家人守护功能模块，监测家人活动情况。family-guard-config spec 需要给空字符串默认值",
+      "features": ["家人守护"]
     },
     {
       "path": "Main/playback/PlaybackPage.js",

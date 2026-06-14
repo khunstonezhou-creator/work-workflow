@@ -1206,7 +1206,8 @@ function searchCodeRepo(q){
         url:gitlabUrl,
         path:file.path,
         type:file.type,
-        keywords:file.keywords
+        keywords:file.keywords,
+        features:file.features||[]
       });
     }
   });
@@ -1659,6 +1660,82 @@ function generateSmartAnswer(q,analysis,sol,jira,docs,code){
     }
 
     return answer;
+  }
+
+  // 功能清单类问题 - 特殊处理
+  const isFeatureListQuestion=/有哪些功能|功能有哪些|支持哪些|功能列表|功能清单|有什么功能|功能是什么/.test(qLower);
+  const isAIFeatureQuestion=/ai功能|人工智能|智能功能|算法功能/.test(qLower);
+
+  if(isFeatureListQuestion||isAIFeatureQuestion){
+    // 从代码中提取功能列表
+    const features={};
+    code.forEach(r=>{
+      if(r.features&&r.features.length){
+        r.features.forEach(f=>{
+          if(!features[f]){
+            features[f]={name:f,files:[]};
+          }
+          features[f].files.push({title:r.title,path:r.path,url:r.url});
+        });
+      }
+    });
+
+    if(Object.keys(features).length>0){
+      answer='<b>结论</b>：摄像机目前已支持以下 AI 功能：';
+      answer+='<br><br><b>📋 AI 功能清单</b>';
+
+      // 按类别分组
+      const categories={
+        '🔍 侦测类':['人形侦测','移动侦测','宠物检测','宠物识别','异常声响检测','哭声检测','烟火检测'],
+        '👤 识别类':['人脸识别','陌生人检测','人物身份识别','跨摄像头追踪','每日故事'],
+        '🛡️ 保护类':['虚拟围栏','区域隐私保护','家人守护']
+      };
+
+      for(const [catName,catFeatures] of Object.entries(categories)){
+        const matchedFeatures=catFeatures.filter(f=>features[f]);
+        if(matchedFeatures.length>0){
+          answer+='<br><br><b>'+catName+'</b>';
+          matchedFeatures.forEach(f=>{
+            const feat=features[f];
+            answer+='<br>• <b>'+esc(f)+'</b>';
+            if(feat.files.length>0){
+              answer+=' - '+esc(feat.files[0].title).replace('.js','');
+            }
+          });
+        }
+      }
+
+      // 其他未分类的功能
+      const allCategorized=Object.values(categories).flat();
+      const otherFeatures=Object.keys(features).filter(f=>!allCategorized.includes(f));
+      if(otherFeatures.length>0){
+        answer+='<br><br><b>📦 其他功能</b>';
+        otherFeatures.forEach(f=>{
+          answer+='<br>• <b>'+esc(f)+'</b>';
+        });
+      }
+
+      answer+='<br><br><b>⚙️ 配置方式</b>';
+      answer+='<br>• 在 IoT 平台配置 AI 相关 spec';
+      answer+='<br>• 部分功能需要云端开通（如人脸识别）';
+      answer+='<br>• 部分功能有硬编码限制（需检查 model 列表）';
+
+      answer+='<br><br><b>💻 相关代码文件</b>';
+      const uniqueFiles=[...new Set(code.map(r=>r.title))].slice(0,5);
+      uniqueFiles.forEach(f=>{
+        const file=code.find(r=>r.title===f);
+        if(file){
+          answer+='<br>• <a href="'+esc(file.url)+'" target="_blank" style="color:#4f46e5">'+esc(f)+'</a>';
+        }
+      });
+
+      if(docs.length){
+        answer+='<br><br><b>📚 参考文档</b>';
+        answer+='<br>• <a href="'+esc(docs[0].url)+'" target="_blank" style="color:#4f46e5">'+esc(docs[0].title)+'</a>';
+      }
+
+      return answer;
+    }
   }
 
   // 技术问题 - 代码仓库参与回答（高置信度）
