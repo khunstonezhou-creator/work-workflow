@@ -1,6 +1,6 @@
 {
   "lastUpdate": "2026-06-14",
-  "total": 264,
+  "total": 280,
   "categories": {
     "接入流程与规范": {
       "icon": "📋",
@@ -233,6 +233,102 @@
           "title": "软件功能说明书汇总",
           "type": "wiki",
           "summary": "软件功能说明书汇总目录"
+        },
+        {
+          "id": "Ym5ewODtAiugUYk4r3Dcrf51nld",
+          "title": "创米 EC6 Pro 海外 功能说明书",
+          "type": "wiki",
+          "summary": "创米EC6 Pro海外版功能说明书"
+        },
+        {
+          "id": "NRyHwBfzxiB9hBkpQwrcIeMSnje",
+          "title": "创米c100 功能说明书",
+          "type": "wiki",
+          "summary": "创米c100功能说明书"
+        },
+        {
+          "id": "WtVZwdSlsiCAvUkphnWc787hnth",
+          "title": "创米C40国内版 功能说明书",
+          "type": "wiki",
+          "summary": "创米C40国内版功能说明书"
+        },
+        {
+          "id": "XNX0wKNKhikuIXkvaEpcOIS8n8e",
+          "title": "创米C40海外版 功能说明书",
+          "type": "wiki",
+          "summary": "创米C40海外版功能说明书"
+        },
+        {
+          "id": "PmhIwhHaxiATVLkEC7fcZYUOnje",
+          "title": "创米CW100 Dual 功能说明书",
+          "type": "wiki",
+          "summary": "创米CW100双摄版功能说明书"
+        },
+        {
+          "id": "JTp3wDYMBiqBzukwZYjcXeJrnhe",
+          "title": "德泰 3MP云台机国内版 D2 功能说明书",
+          "type": "wiki",
+          "summary": "德泰D2功能说明书"
+        },
+        {
+          "id": "Xlshwpdejih9WAkdj5FchGvonNg",
+          "title": "丰年康 功能说明书",
+          "type": "wiki",
+          "summary": "丰年康功能说明书"
+        },
+        {
+          "id": "NY7rwSoR6ivPULk4nqKcgBUInHg",
+          "title": "九安4G摄像机 功能说明书",
+          "type": "wiki",
+          "summary": "九安4G摄像机功能说明书"
+        },
+        {
+          "id": "Se9OwjU2ZiiuN8kkWVFcX8Uvnsf",
+          "title": "美井泓 功能说明书",
+          "type": "wiki",
+          "summary": "美井泓功能说明书"
+        },
+        {
+          "id": "C6pFwjyOii7f2ukThBacXWjHnab",
+          "title": "摩象 小米智能室外摄像机 4C 3K 功能说明书",
+          "type": "wiki",
+          "summary": "摩象室外摄像机4C 3K功能说明书"
+        },
+        {
+          "id": "LuMNw8zTxiQ4W6kQT2xcnhlqnvc",
+          "title": "摩象 小米智能摄像机 4C 3.5K 功能说明书",
+          "type": "wiki",
+          "summary": "摩象摄像机4C 3.5K功能说明书"
+        },
+        {
+          "id": "KdXOwreNxibY9SkswXocE78fnTh",
+          "title": "小米智能摄像机 4 变焦版 功能说明书",
+          "type": "wiki",
+          "summary": "摄像机4变焦版功能说明书"
+        },
+        {
+          "id": "F7JiwhoCqiyYBtk9WwaczawonNe",
+          "title": "小米智能摄像机4 双摄版 功能说明书",
+          "type": "wiki",
+          "summary": "摄像机4双摄版功能说明书"
+        },
+        {
+          "id": "EdjjwZZnLi9MI4kCORUcwPninGc",
+          "title": "小米智能摄像机4 功能说明书",
+          "type": "wiki",
+          "summary": "摄像机4功能说明书"
+        },
+        {
+          "id": "ZnSPwoK30igTyEkz4Oxc3YGpnff",
+          "title": "云米摄像机Smart 功能说明书",
+          "type": "wiki",
+          "summary": "云米摄像机Smart功能说明书"
+        },
+        {
+          "id": "UauvwxkWCissU1k31JTcKQVTnSf",
+          "title": "小米室外摄像机 4 功能说明书",
+          "type": "wiki",
+          "summary": "室外摄像机4功能说明书"
         }
       ]
     },
