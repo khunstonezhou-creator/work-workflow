@@ -665,6 +665,75 @@ function qaSearchDocs(q) {
 }
 
 function qaGenerateFeatureListAnswer(q, code, docs) {
+  const qLower = q.toLowerCase();
+  const isAIQuestion = /ai|智能|算法/.test(qLower);
+
+  // AI 功能完整清单
+  const aiFeatures = {
+    '🔍 侦测类': [
+      { name: '人形侦测', file: 'Main/aicamera/HumanDetection.js', desc: '检测画面中的人形目标，支持灵敏度配置、区域设置', config: 'spec: ai-detection/human-detection-switch' },
+      { name: '移动侦测', file: 'Main/aicamera/HumanDetection.js', desc: '检测画面中的运动物体', config: 'spec: ai-detection/motion-detection-switch' },
+      { name: '宠物检测', file: 'Main/aicamera/PetDetection.js', desc: '检测猫狗等宠物（新版本替代宠物识别）', config: 'spec: ai-detection/pet-detection-switch' },
+      { name: '异常声响检测', file: 'Main/aicamera/AbnormalSound.js', desc: '检测哭声、玻璃破碎等异常声音', config: 'spec: ai-detection/abnormal-sound-detection' },
+      { name: '烟火检测', file: 'Main/aicamera/SmokeDetection.js', desc: '检测烟雾和火焰，包含电话外呼功能', config: 'spec: ai-detection/smoke-detection-switch' },
+      { name: '车辆检测', file: 'Main/aicamera/AICameraPage.js', desc: '检测画面中的车辆', config: 'spec: ai-detection/vehicle-detection-switch' }
+    ],
+    '👤 识别类': [
+      { name: '人脸识别', file: 'Main/aicamera/FaceManager.js', desc: '识别家庭成员和陌生人（云端算法）', config: '⚠️ 不要配置 face-detection-switch，否则认为是本地算法' },
+      { name: '人物身份识别(ReID)', file: 'Main/aicamera/PersonReID.js', desc: '跨摄像头追踪同一人物', config: '厂商需配置 reid 的 spec' },
+      { name: '每日故事', file: 'Main/aicamera/DailyStory.js', desc: '自动生成每日精彩瞬间视频', config: '硬编码中配置 model' }
+    ],
+    '🛡️ 保护类': [
+      { name: '虚拟围栏', file: 'Main/aicamera/VirtualFence.js', desc: '设定警戒区域，越界报警', config: 'spec: 按文档定义形状，不能按平台描述' },
+      { name: '区域隐私保护', file: 'Main/aicamera/VirtualFence.js', desc: '遮挡指定区域画面', config: 'spec: privacy-zone 配置' },
+      { name: '家人守护', file: 'Main/childCareCom/FamilyGuard.js', desc: '监测家人活动情况，关怀老人', config: 'family-guard-config 默认值为空字符串' }
+    ],
+    '🎯 高级功能': [
+      { name: '慧眼(LLM)', file: 'Main/huiYan/HuiYanPage.js', desc: '集成大模型能力，支持智能问答、场景分析', config: '需要开通慧眼服务' },
+      { name: '手势识别', file: 'Main/live/AudioVideoCallPage.js', desc: '识别手势触发通话等功能', config: 'spec: gesture-detection' },
+      { name: '哭声检测', file: 'Main/aicamera/AbnormalSound.js', desc: '检测婴儿哭声，用于看护场景', config: 'spec: abnormal-sound-detection' }
+    ]
+  };
+
+  // 如果是 AI 相关问题，展示完整 AI 功能清单
+  if (isAIQuestion || Object.keys(aiFeatures).some(cat => cat.includes('侦测') || cat.includes('识别'))) {
+    let answer = '<b>📋 结论</b>：摄像机目前已支持以下 AI 功能：<br><br>';
+
+    for (const [category, features] of Object.entries(aiFeatures)) {
+      answer += '<b>' + category + '</b><br>';
+      features.forEach(f => {
+        answer += '• <b>' + esc(f.name)+'</b>';
+        answer += '<br>&nbsp;&nbsp;&nbsp;&nbsp;📁 ' + esc(f.file);
+        answer += '<br>&nbsp;&nbsp;&nbsp;&nbsp;📝 ' + esc(f.desc);
+        answer += '<br>&nbsp;&nbsp;&nbsp;&nbsp;⚙️ ' + esc(f.config);
+        answer += '<br>';
+      });
+      answer += '<br>';
+    }
+
+    answer += '<b>📋 配置注意事项</b><br>';
+    answer += '• 人脸识别是云端算法，spec 中不要配置 face-detection-switch<br>';
+    answer += '• 虚拟围栏形状需按文档定义，不能按平台描述<br>';
+    answer += '• 家人守护的 family-guard-config 默认值必须为空字符串<br>';
+    answer += '• 部分功能有硬编码限制，需检查 model 列表<br><br>';
+
+    answer += '<b>🔧 代码目录</b><br>';
+    answer += '• AI 功能主目录：<code>Main/aicamera/</code><br>';
+    answer += '• 慧眼(LLM)目录：<code>Main/huiYan/</code><br>';
+    answer += '• 看护功能目录：<code>Main/childCareCom/</code><br>';
+    answer += '• 配置目录：<code>Main/stdConfig/</code><br><br>';
+
+    if (docs.length > 0) {
+      answer += '<b>📖 参考文档</b><br>';
+      docs.slice(0, 3).forEach(r => {
+        answer += '• <a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a><br>';
+      });
+    }
+
+    return answer;
+  }
+
+  // 非 AI 功能问题，使用通用功能列表
   let answer = '<b>📋 结论</b>：摄像机目前已支持以下功能：<br><br>';
 
   const features = {};
