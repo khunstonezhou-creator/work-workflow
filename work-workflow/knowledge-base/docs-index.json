@@ -1,6 +1,6 @@
 {
   "lastUpdate": "2026-06-14",
-  "total": 280,
+  "total": 281,
   "categories": {
     "接入流程与规范": {
       "icon": "📋",
@@ -77,6 +77,12 @@
           "title": "摄像机品类产品资料馆",
           "type": "docx",
           "summary": "摄像机品类产品定义标准化与流程规范化资料"
+        },
+        {
+          "id": "OjzjdS2ltoPSMdxtztzcsdXRnqg",
+          "title": "摄像机标插常见问题排查指南",
+          "type": "docx",
+          "summary": "摄像机标插开发常见问题排查指南，包含找人指南、硬编码配置、功能问题排查等"
         }
       ]
     },
