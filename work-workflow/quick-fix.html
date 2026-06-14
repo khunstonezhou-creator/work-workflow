@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速修复 - 个人工作台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 600px; padding: 20px; }
+.card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+h1 { text-align: center; margin-bottom: 30px; color: #333; }
+.email { background: #f3f4f6; padding: 16px; border-radius: 8px; text-align: center; margin-bottom: 24px; font-size: 18px; font-weight: 600; color: #667eea; }
+.btn { width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.2s; }
+.btn-primary { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4); }
+.btn-secondary { background: #6b7280; color: white; }
+.btn-secondary:hover { background: #4b5563; }
+.status { padding: 16px; border-radius: 8px; margin-top: 20px; text-align: center; font-size: 14px; }
+.status.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.status.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.steps { margin-top: 24px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+.steps h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
+.steps ol { padding-left: 20px; color: #555; font-size: 13px; line-height: 1.8; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>⚡ 快速修复登录</h1>
+
+    <div class="email">zhouruiqing1@xiaomi.com</div>
+
+    <p style="text-align: center; color: #666; margin-bottom: 24px;">
+      点击下方按钮一键修复登录问题
+    </p>
+
+    <button class="btn btn-primary" onclick="fixLogin()">🔧 一键修复并登录</button>
+
+    <div id="status" class="status hidden"></div>
+
+    <div class="steps">
+      <h3>修复步骤：</h3>
+      <ol>
+        <li>清除旧的登录数据</li>
+        <li>创建管理员账号（周睿卿）</li>
+        <li>设置权限为管理员</li>
+        <li>自动登录</li>
+        <li>跳转到工作台</li>
+      </ol>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button class="btn btn-secondary" onclick="goToWorkbench()">直接进入工作台</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'workbench_users';
+const CURRENT_USER_KEY = 'workbench_current_user';
+const ADMIN_EMAIL = 'zhouruiqing1@xiaomi.com';
+const ADMIN_NAME = '周睿卿';
+const ADMIN_COMPANY = '小米';
+
+function showStatus(text, type) {
+  const el = document.getElementById('status');
+  el.textContent = text;
+  el.className = `status ${type}`;
+  el.classList.remove('hidden');
+}
+
+function fixLogin() {
+  showStatus('正在修复...', 'success');
+
+  // 1. 清除旧数据
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(CURRENT_USER_KEY);
+
+  // 2. 创建管理员账号
+  const adminUser = {
+    email: ADMIN_EMAIL,
+    name: ADMIN_NAME,
+    company: ADMIN_COMPANY,
+    role: 'admin',
+    approvedTime: new Date().toISOString(),
+    screenshot: null
+  };
+
+  // 3. 保存用户数据
+  const users = {
+    approved: [adminUser],
+    pending: []
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+
+  // 4. 设置当前用户
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(adminUser));
+
+  showStatus('✅ 修复成功！正在跳转...', 'success');
+
+  // 5. 延迟跳转
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1000);
+}
+
+function goToWorkbench() {
+  // 先确保有管理员
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (!data) {
+    fixLogin();
+  } else {
+    const users = JSON.parse(data);
+    const admin = users.approved.find(u => u.email === ADMIN_EMAIL);
+    if (admin) {
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(admin));
+      window.location.href = 'index.html';
+    } else {
+      fixLogin();
+    }
+  }
+}
+</script>
+</body>
+</html>

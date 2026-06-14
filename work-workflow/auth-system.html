@@ -151,6 +151,9 @@ function showRegister() {
   hideMessage();
 }
 
+// 管理员邮箱（自动识别）
+const ADMIN_EMAILS = ['zhouruiqing1@xiaomi.com'];
+
 // 登录
 function login() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -160,6 +163,28 @@ function login() {
   }
 
   const users = getUsers();
+
+  // 检查是否是管理员邮箱（自动创建账号）
+  if (ADMIN_EMAILS.includes(email.toLowerCase())) {
+    let adminUser = users.approved.find(u => u.email === email);
+    if (!adminUser) {
+      // 自动创建管理员账号
+      adminUser = {
+        email: email,
+        name: '管理员',
+        company: '小米',
+        role: 'admin',
+        approvedTime: new Date().toISOString(),
+        screenshot: null
+      };
+      users.approved.push(adminUser);
+      saveUsers(users);
+    }
+    setCurrentUser(adminUser);
+    showAdminPanel();
+    return;
+  }
+
   const user = users.approved.find(u => u.email === email);
 
   if (user) {
