@@ -2558,11 +2558,23 @@ function renderMon(){
 // ---- 建议弹窗 ----
 function showSug(key){
   // 检查数据是否加载
-  if(!ALL||!ALL.issues){
+  if((!ALL||!ALL.issues)&&(!CAT||!CAT.categories)){
     alert('数据加载中，请稍后再试');
     return;
   }
-  const issue=ALL.issues.find(i=>i.key===key);
+
+  // 先在 ALL 中查找，再在 CAT 中查找
+  let issue=ALL?.issues?.find(i=>i.key===key);
+  if(!issue&&CAT?.categories){
+    // 从 CAT 中查找
+    for(const cat of CAT.categories){
+      const found=cat.issues?.find(i=>i.key===key);
+      if(found){
+        issue=found;
+        break;
+      }
+    }
+  }
   if(!issue)return;
   const cat=issue.category||'';
   document.getElementById('modal-t').textContent='💡 '+key+' 处理建议';
