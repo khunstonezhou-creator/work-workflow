@@ -652,13 +652,44 @@ function qaGenerateAnswer(q) {
   return qaGenerateGeneralAnswer(q, codeResults, docResults);
 }
 
-// 搜索相似 Jira 问题（优化性能，限制搜索范围）
+// 搜索相似 Jira 问题（优化性能，限制搜索范围，支持关键词泛化）
 function qaSearchSimilarJiras(q, excludeKey) {
   if (!ALL_ISSUES || !ALL_ISSUES.issues) return [];
   const qLower = q.toLowerCase();
 
+  // 关键词泛化映射
+  const keywordExpansion = {
+    '隐私': ['隐私', '敏感信息', '敏感弹窗', 'privacy', '法律信息', '授权'],
+    '弹窗': ['弹窗', '弹框', '对话框', 'dialog', 'popup', '提示框'],
+    '日志': ['日志', 'log', '上报', '打点', '埋点', '数据上报'],
+    '人脸': ['人脸', 'face', '人脸识别', '人物身份', 'ReID'],
+    '推送': ['推送', '通知', 'push', '消息', 'notification'],
+    '直播': ['直播', '实时画面', '预览', 'live', '实时视频'],
+    '回看': ['回看', '录像', '回放', 'playback', '时间轴'],
+    '存储': ['存储', 'SD卡', '云存', 'NAS', 'storage'],
+    '设置': ['设置', '配置', 'setting', 'config'],
+    '看家': ['看家', '事件', '报警', '侦测', '看护'],
+    'UI': ['UI', '界面', '显示', '布局', '适配', '样式'],
+    '黑屏': ['黑屏', '无画面', '画面异常', '显示异常'],
+    '卡顿': ['卡顿', '延迟', '不流畅', '卡死', '掉帧'],
+    '闪退': ['闪退', '崩溃', 'crash', '异常退出'],
+    '权限': ['权限', 'permission', '授权', '访问权限'],
+    '固件': ['固件', 'firmware', '升级', 'OTA', '版本'],
+    '网络': ['网络', 'WiFi', '连接', '断网', '超时'],
+    '音频': ['音频', '声音', '对讲', '语音', '麦克风', '扬声器'],
+  };
+
+  // 扩展查询关键词
+  let expandedKeywords = [qLower];
+  Object.entries(keywordExpansion).forEach(([key, synonyms]) => {
+    if (qLower.includes(key)) {
+      expandedKeywords.push(...synonyms);
+    }
+  });
+  expandedKeywords = [...new Set(expandedKeywords)];
+
   // 限制搜索数量，避免性能问题
-  const issues = ALL_ISSUES.issues.slice(0, 200);
+  const issues = ALL_ISSUES.issues.slice(0, 300);
 
   return issues
     .filter(issue => issue.key !== excludeKey)
@@ -666,9 +697,14 @@ function qaSearchSimilarJiras(q, excludeKey) {
       let score = 0;
       const searchText = (issue.key + ' ' + issue.summary + ' ' + (issue.category || '')).toLowerCase();
 
-      // 关键词匹配
+      // 扩展关键词匹配
+      expandedKeywords.forEach(w => {
+        if (searchText.includes(w)) score += 5;
+      });
+
+      // 原始关键词高权重匹配
       qLower.split(/\s+/).forEach(w => {
-        if (w.length >= 2 && searchText.includes(w)) score += 5;
+        if (w.length >= 2 && searchText.includes(w)) score += 8;
       });
 
       // 分类匹配
@@ -766,16 +802,46 @@ function qaSearchCode(q) {
   const qLower = q.toLowerCase();
   const results = [];
 
-  // 提取关键词（支持中文单字匹配）
+  // 关键词泛化映射
+  const keywordExpansion = {
+    '隐私': ['隐私', '敏感信息', '敏感弹窗', 'privacy', '法律信息', '授权'],
+    '弹窗': ['弹窗', '弹框', '对话框', 'dialog', 'popup', '提示框'],
+    '日志': ['日志', 'log', '上报', '打点', '埋点', '数据上报'],
+    '埋点': ['埋点', 'track', 'expose', '统计', '上报', '数据'],
+    '人脸': ['人脸', 'face', '人脸识别', '人物身份', 'ReID'],
+    '直播': ['直播', '实时画面', '预览', 'live', '实时视频', '视频流'],
+    '回看': ['回看', '录像', '回放', 'playback', '时间轴', 'sdcard'],
+    '存储': ['存储', 'SD卡', '云存', 'NAS', 'storage'],
+    '看家': ['看家', '事件', '报警', '侦测', '看护', 'alarm'],
+    'AI': ['AI', '智能', '算法', 'aicamera', '人形侦测', '宠物检测'],
+    '云台': ['云台', 'PTZ', '转动', '巡航', '马达'],
+    '通话': ['通话', '对讲', '语音', '视频通话', '双向语音'],
+  };
+
+  // 扩展查询关键词
+  let expandedKeywords = [qLower];
+  Object.entries(keywordExpansion).forEach(([key, synonyms]) => {
+    if (qLower.includes(key.toLowerCase())) {
+      expandedKeywords.push(...synonyms.map(s => s.toLowerCase()));
+    }
+  });
+  expandedKeywords = [...new Set(expandedKeywords)];
+
+  // 提取原始关键词
   const keywords = qLower.split(/[\s,，。、！？\?\!]+/).filter(w => w.length >= 1);
 
   CODE_DATA.files.forEach(file => {
     let score = 0;
     const searchText = (file.name + ' ' + file.path + ' ' + file.summary + ' ' + (file.keywords || []).join(' ')).toLowerCase();
 
-    // 关键词匹配
-    keywords.forEach(w => {
+    // 扩展关键词匹配
+    expandedKeywords.forEach(w => {
       if (searchText.includes(w)) score += 5;
+    });
+
+    // 原始关键词高权重匹配
+    keywords.forEach(w => {
+      if (searchText.includes(w)) score += 8;
     });
 
     // 完整查询匹配
@@ -784,14 +850,9 @@ function qaSearchCode(q) {
     // 关键词精确匹配（权重更高）
     if (file.keywords) {
       file.keywords.forEach(kw => {
-        if (qLower.includes(kw.toLowerCase()) || kw.toLowerCase().includes(qLower)) score += 8;
+        if (expandedKeywords.some(ek => ek.includes(kw.toLowerCase()) || kw.toLowerCase().includes(ek))) score += 8;
       });
     }
-
-    // 特殊关键词加权
-    if (/埋点|track|expose|统计/.test(qLower) && /埋点|track|expose/.test(searchText)) score += 15;
-    if (/直播|视频|播放/.test(qLower) && /直播|视频|Live/.test(searchText)) score += 10;
-    if (/AI|智能|算法/.test(qLower) && /AI|智能|aicamera/.test(searchText)) score += 10;
 
     if (score > 0) {
       results.push({ ...file, score, url: 'https://git.n.xiaomi.com/yanqingqing/miot.camera.spec.bot/-/blob/main/' + file.path });
@@ -806,20 +867,47 @@ function qaSearchDocs(q) {
   const qLower = q.toLowerCase();
   const results = [];
 
+  // 关键词泛化映射
+  const keywordExpansion = {
+    '隐私': ['隐私', '敏感信息', '敏感弹窗', 'privacy', '法律信息', '授权'],
+    '弹窗': ['弹窗', '弹框', '对话框', 'dialog', 'popup', '提示框'],
+    '接入': ['接入', '厂商', '对接', '合作', '集成', '流程'],
+    '规范': ['规范', '标准', '指南', 'SOP', '模板'],
+    '说明书': ['说明书', '功能说明', '规格', 'spec'],
+    '需求': ['需求', 'PRD', '产品需求', '功能需求'],
+  };
+
+  // 扩展查询关键词
+  let expandedKeywords = [qLower];
+  Object.entries(keywordExpansion).forEach(([key, synonyms]) => {
+    if (qLower.includes(key)) {
+      expandedKeywords.push(...synonyms);
+    }
+  });
+  expandedKeywords = [...new Set(expandedKeywords)];
+
   Object.entries(DOCS_DATA.categories).forEach(([cat, info]) => {
     (info.docs || []).forEach(doc => {
       const searchText = (doc.title + ' ' + (doc.summary || '') + ' ' + cat).toLowerCase();
       let score = 0;
-      qLower.split(/\s+/).forEach(w => {
-        if (w.length >= 2 && searchText.includes(w)) score += 3;
+
+      // 扩展关键词匹配
+      expandedKeywords.forEach(w => {
+        if (searchText.includes(w)) score += 3;
       });
+
+      // 原始关键词高权重匹配
+      qLower.split(/\s+/).forEach(w => {
+        if (w.length >= 2 && searchText.includes(w)) score += 5;
+      });
+
       if (score > 0) {
         results.push({ ...doc, category: cat, score, url: 'https://mi.feishu.cn/' + doc.type + '/' + doc.id });
       }
     });
   });
 
-  return results.sort((a, b) => b.score - a.score).slice(0, 3);
+  return results.sort((a, b) => b.score - a.score).slice(0, 5);
 }
 
 function qaGenerateFeatureListAnswer(q, code, docs) {
