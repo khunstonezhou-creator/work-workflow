@@ -1,5 +1,5 @@
 {
-  "lastUpdate": "2026-06-11",
+  "lastUpdate": "2026-06-15",
   "issues": [
     {
       "key": "MIECOCM-6294",
@@ -18,7 +18,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "In Progress",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "存储/回看类",
       "created": "2026-04-20",
       "updated": "2026-06-11"
@@ -29,7 +31,11 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["P2圆角适配", "厂商插件", "摄像机兼容性"],
+      "labels": [
+        "P2圆角适配",
+        "厂商插件",
+        "摄像机兼容性"
+      ],
       "category": "UI适配类",
       "created": "2025-09-14",
       "updated": "2026-06-10"
@@ -40,7 +46,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.6版本"],
+      "labels": [
+        "米家11.6版本"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-06-10",
       "updated": "2026-06-10"
@@ -62,7 +70,10 @@
       "assignee": "周睿卿",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["摄像机兼容性", "米家11.6版本"],
+      "labels": [
+        "摄像机兼容性",
+        "米家11.6版本"
+      ],
       "category": "UI适配类",
       "created": "2026-06-10",
       "updated": "2026-06-10"
@@ -73,7 +84,10 @@
       "assignee": "周睿卿",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["摄像机兼容性", "米家11.6版本"],
+      "labels": [
+        "摄像机兼容性",
+        "米家11.6版本"
+      ],
       "category": "UI适配类",
       "created": "2026-06-10",
       "updated": "2026-06-10"
@@ -95,7 +109,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IoT云服务"],
+      "labels": [
+        "IoT云服务"
+      ],
       "category": "看家助手/事件类",
       "created": "2026-05-29",
       "updated": "2026-06-10"
@@ -106,7 +122,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "存储/回看类",
       "created": "2026-06-04",
       "updated": "2026-06-05"
@@ -128,7 +146,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "看家助手/事件类",
       "created": "2025-11-04",
       "updated": "2026-06-03"
@@ -139,7 +159,11 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插", "不阻塞封样提测", "需求"],
+      "labels": [
+        "IPC7月标插",
+        "不阻塞封样提测",
+        "需求"
+      ],
       "category": "存储/回看类",
       "created": "2025-06-13",
       "updated": "2026-06-03"
@@ -150,7 +174,13 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "In Progress",
-      "labels": ["IPC1月标插", "IPC2月标插", "IPC7月标插", "兼容性", "大模型二期"],
+      "labels": [
+        "IPC1月标插",
+        "IPC2月标插",
+        "IPC7月标插",
+        "兼容性",
+        "大模型二期"
+      ],
       "category": "UI适配类",
       "created": "2025-11-10",
       "updated": "2026-06-03"
@@ -183,7 +213,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC9月标插"],
+      "labels": [
+        "IPC9月标插"
+      ],
       "category": "产品百科/设备信息类",
       "created": "2026-05-21",
       "updated": "2026-06-01"
@@ -194,7 +226,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "看家助手/事件类",
       "created": "2026-05-28",
       "updated": "2026-06-01"
@@ -205,7 +239,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-05-26",
       "updated": "2026-06-01"
@@ -216,7 +252,9 @@
       "assignee": "周睿卿",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "直播/视频类",
       "created": "2026-05-12",
       "updated": "2026-05-29"
@@ -238,7 +276,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "看家助手/事件类",
       "created": "2026-05-18",
       "updated": "2026-05-26"
@@ -249,7 +289,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["低功耗标插"],
+      "labels": [
+        "低功耗标插"
+      ],
       "category": "连接/配网类",
       "created": "2026-05-13",
       "updated": "2026-05-25"
@@ -260,7 +302,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.6版本"],
+      "labels": [
+        "米家11.6版本"
+      ],
       "category": "首页/卡片类",
       "created": "2026-04-15",
       "updated": "2026-05-22"
@@ -271,7 +315,9 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "隐私权限类",
       "created": "2026-03-23",
       "updated": "2026-05-21"
@@ -282,7 +328,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC5月标插"],
+      "labels": [
+        "IPC5月标插"
+      ],
       "category": "直播/视频类",
       "created": "2026-05-18",
       "updated": "2026-05-18"
@@ -293,7 +341,11 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["二级页-事件展示", "安防场景", "米家11.0版本"],
+      "labels": [
+        "二级页-事件展示",
+        "安防场景",
+        "米家11.0版本"
+      ],
       "category": "安防场景类",
       "created": "2025-07-28",
       "updated": "2026-05-15"
@@ -304,7 +356,11 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["二级页-事件展示", "安防场景", "米家11.0版本"],
+      "labels": [
+        "二级页-事件展示",
+        "安防场景",
+        "米家11.0版本"
+      ],
       "category": "安防场景类",
       "created": "2025-07-28",
       "updated": "2026-05-15"
@@ -315,7 +371,9 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["固件"],
+      "labels": [
+        "固件"
+      ],
       "category": "云台/PTZ类",
       "created": "2025-12-17",
       "updated": "2026-05-14"
@@ -326,7 +384,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["固件"],
+      "labels": [
+        "固件"
+      ],
       "category": "云台/PTZ类",
       "created": "2026-05-04",
       "updated": "2026-05-14"
@@ -337,7 +397,10 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家通用问题", "通用问题"],
+      "labels": [
+        "米家通用问题",
+        "通用问题"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-04-28",
       "updated": "2026-05-13"
@@ -348,7 +411,11 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插", "米家11.2版本", "米家11.5版本"],
+      "labels": [
+        "IPC7月标插",
+        "米家11.2版本",
+        "米家11.5版本"
+      ],
       "category": "存储/回看类",
       "created": "2026-02-03",
       "updated": "2026-05-12"
@@ -359,7 +426,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插"],
+      "labels": [
+        "IPC7月标插"
+      ],
       "category": "看护报告类",
       "created": "2025-10-29",
       "updated": "2026-05-12"
@@ -370,7 +439,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.5版本"],
+      "labels": [
+        "米家11.5版本"
+      ],
       "category": "存储/回看类",
       "created": "2026-04-29",
       "updated": "2026-05-11"
@@ -381,7 +452,9 @@
       "assignee": "周睿卿",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "深色模式类",
       "created": "2024-07-25",
       "updated": "2026-05-11"
@@ -392,7 +465,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.5版本"],
+      "labels": [
+        "米家11.5版本"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-04-29",
       "updated": "2026-05-06"
@@ -403,7 +478,10 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["Localization", "低功耗标插"],
+      "labels": [
+        "Localization",
+        "低功耗标插"
+      ],
       "category": "多语言/翻译类",
       "created": "2024-01-26",
       "updated": "2026-04-29"
@@ -414,7 +492,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["不计DI"],
+      "labels": [
+        "不计DI"
+      ],
       "category": "自动化/智能场景类",
       "created": "2026-04-24",
       "updated": "2026-04-27"
@@ -436,7 +516,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["插件"],
+      "labels": [
+        "插件"
+      ],
       "category": "人脸识别/大模型类",
       "created": "2026-04-16",
       "updated": "2026-04-22"
@@ -447,7 +529,11 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["不阻塞11.0灰度", "米家11.0版本", "米家11.2版本"],
+      "labels": [
+        "不阻塞11.0灰度",
+        "米家11.0版本",
+        "米家11.2版本"
+      ],
       "category": "首页/卡片类",
       "created": "2025-09-12",
       "updated": "2026-04-21"
@@ -458,7 +544,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.5版本"],
+      "labels": [
+        "米家11.5版本"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-03-31",
       "updated": "2026-04-13"
@@ -469,7 +557,10 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.4版本", "米家11.5版本"],
+      "labels": [
+        "米家11.4版本",
+        "米家11.5版本"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-03-24",
       "updated": "2026-04-13"
@@ -480,7 +571,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "直播/视频类",
       "created": "2026-04-10",
       "updated": "2026-04-13"
@@ -491,7 +584,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "直播/视频类",
       "created": "2026-04-10",
       "updated": "2026-04-13"
@@ -513,7 +608,10 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家通用问题", "通用问题"],
+      "labels": [
+        "米家通用问题",
+        "通用问题"
+      ],
       "category": "产品百科/设备信息类",
       "created": "2026-03-13",
       "updated": "2026-04-07"
@@ -524,7 +622,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["4G通用"],
+      "labels": [
+        "4G通用"
+      ],
       "category": "隐私弹窗类",
       "created": "2026-03-20",
       "updated": "2026-04-03"
@@ -535,7 +635,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "In Progress",
-      "labels": ["米家11.5版本"],
+      "labels": [
+        "米家11.5版本"
+      ],
       "category": "首页/卡片类",
       "created": "2026-03-25",
       "updated": "2026-04-02"
@@ -546,7 +648,9 @@
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "存储/回看类",
       "created": "2026-03-27",
       "updated": "2026-04-02"
@@ -557,7 +661,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "云台/PTZ类",
       "created": "2026-04-23",
       "updated": "2026-06-11"
@@ -579,7 +685,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "iOS音频会话类",
       "created": "2026-03-26",
       "updated": "2026-06-10"
@@ -623,7 +731,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "存储/回看类",
       "created": "2026-05-12",
       "updated": "2026-06-10"
@@ -634,7 +744,11 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["服务端", "转需求", "通用问题"],
+      "labels": [
+        "服务端",
+        "转需求",
+        "通用问题"
+      ],
       "category": "推送消息类",
       "created": "2026-03-27",
       "updated": "2026-06-10"
@@ -678,7 +792,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "In Progress",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "视频通话类",
       "created": "2026-03-16",
       "updated": "2026-06-08"
@@ -711,7 +827,9 @@
       "assignee": "赵容慧",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "深色模式类",
       "created": "2026-05-30",
       "updated": "2026-06-03"
@@ -733,7 +851,11 @@
       "assignee": "赵容慧",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["IPC7月标插", "人物身份识别", "通用问题"],
+      "labels": [
+        "IPC7月标插",
+        "人物身份识别",
+        "通用问题"
+      ],
       "category": "人脸管理类",
       "created": "2025-07-17",
       "updated": "2026-06-01"
@@ -744,7 +866,10 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["IPC7月标插", "通用问题"],
+      "labels": [
+        "IPC7月标插",
+        "通用问题"
+      ],
       "category": "存储/回看类",
       "created": "2026-04-08",
       "updated": "2026-06-01"
@@ -755,7 +880,10 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["IPC7月标插", "米家11.7版本"],
+      "labels": [
+        "IPC7月标插",
+        "米家11.7版本"
+      ],
       "category": "人脸管理类",
       "created": "2026-02-05",
       "updated": "2026-06-01"
@@ -766,7 +894,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "小爱/TV语控类",
       "created": "2026-05-02",
       "updated": "2026-06-01"
@@ -777,7 +907,10 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["本地化", "通用问题"],
+      "labels": [
+        "本地化",
+        "通用问题"
+      ],
       "category": "多语言/翻译类",
       "created": "2026-05-29",
       "updated": "2026-06-01"
@@ -788,7 +921,10 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["本地化", "通用问题"],
+      "labels": [
+        "本地化",
+        "通用问题"
+      ],
       "category": "多语言/翻译类",
       "created": "2026-05-29",
       "updated": "2026-06-01"
@@ -843,7 +979,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "设备名称类",
       "created": "2026-02-09",
       "updated": "2026-05-20"
@@ -854,7 +992,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "推送消息类",
       "created": "2026-04-05",
       "updated": "2026-05-20"
@@ -865,7 +1005,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "小爱/TV语控类",
       "created": "2026-04-05",
       "updated": "2026-05-20"
@@ -876,7 +1018,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "相册/家庭相册类",
       "created": "2026-04-25",
       "updated": "2026-05-20"
@@ -887,7 +1031,9 @@
       "assignee": "赵容慧",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["转需求跟进"],
+      "labels": [
+        "转需求跟进"
+      ],
       "category": "隐私权限类",
       "created": "2026-02-27",
       "updated": "2026-05-20"
@@ -920,7 +1066,9 @@
       "assignee": "赵容慧",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "推送消息类",
       "created": "2026-05-11",
       "updated": "2026-05-15"
@@ -931,7 +1079,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "推送消息类",
       "created": "2026-05-11",
       "updated": "2026-05-15"
@@ -942,7 +1092,10 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.7版本", "通用问题"],
+      "labels": [
+        "米家11.7版本",
+        "通用问题"
+      ],
       "category": "多路同屏类",
       "created": "2026-05-06",
       "updated": "2026-05-15"
@@ -953,7 +1106,11 @@
       "assignee": "赵容慧",
       "priority": "Minor",
       "status": "OPEN",
-      "labels": ["不阻塞封样", "米家10.1版本", "米家共性问题"],
+      "labels": [
+        "不阻塞封样",
+        "米家10.1版本",
+        "米家共性问题"
+      ],
       "category": "用户体验改进计划类",
       "created": "2024-03-21",
       "updated": "2026-05-12"
@@ -964,7 +1121,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["米家11.7版本"],
+      "labels": [
+        "米家11.7版本"
+      ],
       "category": "人脸管理类",
       "created": "2025-11-10",
       "updated": "2026-05-12"
@@ -975,7 +1134,10 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["摄像机云服务", "米家11.7版本"],
+      "labels": [
+        "摄像机云服务",
+        "米家11.7版本"
+      ],
       "category": "人脸管理类",
       "created": "2025-12-19",
       "updated": "2026-05-12"
@@ -986,7 +1148,9 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["米家11.7版本"],
+      "labels": [
+        "米家11.7版本"
+      ],
       "category": "人脸管理类",
       "created": "2026-02-04",
       "updated": "2026-05-12"
@@ -997,7 +1161,9 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["米家11.7版本"],
+      "labels": [
+        "米家11.7版本"
+      ],
       "category": "人脸管理类",
       "created": "2026-02-12",
       "updated": "2026-05-12"
@@ -1008,7 +1174,10 @@
       "assignee": "赵容慧",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["通用问题", "隐私"],
+      "labels": [
+        "通用问题",
+        "隐私"
+      ],
       "category": "隐私权限类",
       "created": "2026-04-03",
       "updated": "2026-04-23"
@@ -1019,7 +1188,11 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["096项目", "IPC8月标插", "米家11.7版本"],
+      "labels": [
+        "096项目",
+        "IPC8月标插",
+        "米家11.7版本"
+      ],
       "category": "多路同屏类",
       "created": "2026-03-31",
       "updated": "2026-04-24"
@@ -1030,7 +1203,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "视频通话类",
       "created": "2026-04-21",
       "updated": "2026-04-29"
@@ -1041,7 +1216,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["上线后验证"],
+      "labels": [
+        "上线后验证"
+      ],
       "category": "人数上报类",
       "created": "2026-03-07",
       "updated": "2026-04-29"
@@ -1052,7 +1229,10 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["转需求支持", "通用问题"],
+      "labels": [
+        "转需求支持",
+        "通用问题"
+      ],
       "category": "视频通话类",
       "created": "2026-03-28",
       "updated": "2026-04-21"
@@ -1063,7 +1243,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "视频通话类",
       "created": "2026-04-14",
       "updated": "2026-04-17"
@@ -1074,7 +1256,9 @@
       "assignee": "赵容慧",
       "priority": "Major",
       "status": "OPEN",
-      "labels": ["通用问题"],
+      "labels": [
+        "通用问题"
+      ],
       "category": "联系人/播报类",
       "created": "2026-04-09",
       "updated": "2026-04-17"

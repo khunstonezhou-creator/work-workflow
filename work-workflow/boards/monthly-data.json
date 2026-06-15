@@ -1,5 +1,5 @@
 {
-  "lastUpdate": "2026-06-11",
+  "lastUpdate": "2026-06-15",
   "issues": [
     {
       "key": "MIECOCM-6330",
@@ -7,7 +7,9 @@
       "assignee": "邱伟宸",
       "priority": "Critical",
       "status": "OPEN",
-      "labels": ["8月标插"],
+      "labels": [
+        "8月标插"
+      ],
       "category": "其他",
       "created": "2026-06-05",
       "updated": "2026-06-11"
@@ -18,7 +20,10 @@
       "assignee": "卢高振",
       "priority": "Minor",
       "status": "Verify",
-      "labels": ["7月标插", "转需求跟进"],
+      "labels": [
+        "7月标插",
+        "转需求跟进"
+      ],
       "category": "UI适配类",
       "created": "2026-05-12",
       "updated": "2026-06-11"
@@ -29,7 +34,9 @@
       "assignee": "周攀",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "存储/回看类",
       "created": "2026-05-27",
       "updated": "2026-06-10"
@@ -40,7 +47,9 @@
       "assignee": "高浩",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "人脸识别/管理",
       "created": "2026-06-02",
       "updated": "2026-06-10"
@@ -51,7 +60,9 @@
       "assignee": "卢高振",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "UI适配类",
       "created": "2026-06-06",
       "updated": "2026-06-10"
@@ -62,7 +73,9 @@
       "assignee": "杜逍",
       "priority": "Minor",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "存储/回看类",
       "created": "2026-06-09",
       "updated": "2026-06-10"
@@ -73,7 +86,9 @@
       "assignee": "卢高振",
       "priority": "Minor",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "UI适配类",
       "created": "2026-06-09",
       "updated": "2026-06-10"
@@ -84,7 +99,9 @@
       "assignee": "高浩",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "深色模式",
       "created": "2026-06-02",
       "updated": "2026-06-10"
@@ -95,7 +112,9 @@
       "assignee": "桂永乐",
       "priority": "Minor",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "隐私权限类",
       "created": "2026-06-08",
       "updated": "2026-06-10"
@@ -106,7 +125,9 @@
       "assignee": "高浩",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "UI适配类",
       "created": "2026-05-25",
       "updated": "2026-06-10"
@@ -117,7 +138,9 @@
       "assignee": "高浩",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "096AC1设备专属",
       "created": "2026-05-27",
       "updated": "2026-06-10"
@@ -128,7 +151,9 @@
       "assignee": "花宇虹",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "UI适配类",
       "created": "2026-05-28",
       "updated": "2026-05-28"
@@ -139,7 +164,9 @@
       "assignee": "花宇虹",
       "priority": "Major",
       "status": "Verify",
-      "labels": ["7月标插"],
+      "labels": [
+        "7月标插"
+      ],
       "category": "深色模式",
       "created": "2026-05-28",
       "updated": "2026-05-28"
