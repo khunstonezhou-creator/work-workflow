@@ -133,6 +133,8 @@ a:hover{text-decoration:underline}
 .sg-sol{color:#2e7d32;background:#e8f5e9;padding:4px 8px;border-radius:4px;font-size:11px;display:inline-block;margin-top:4px}
 .empty{text-align:center;padding:40px;color:#999;font-size:14px}
 .empty .ic{font-size:40px;margin-bottom:12px}
+.tag{padding:6px 14px;background:#f3f4f6;border-radius:20px;font-size:12px;color:#666;cursor:pointer;transition:all 0.2s}
+.tag:hover,.tag.active{background:#667eea;color:white}
 </style>
 </head>
 <body>
@@ -143,6 +145,7 @@ a:hover{text-decoration:underline}
   </div>
   <div class="nav on" onclick="go('qa',this)" id="nav-qa">🤖 智能问答（失败版）</div>
   <div class="nav" onclick="go('kb',this)" id="nav-kb">📚 知识库</div>
+  <div class="nav" onclick="go('vendor',this)" id="nav-vendor">🔌 接入问题处理</div>
   <div class="nav" onclick="go('jira',this)" data-permission="internal">📋 Jira 处理</div>
 <div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 产品遗留问题</div>
 <div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 全部问题</div>
@@ -236,7 +239,37 @@ a:hover{text-decoration:underline}
       </style>
     </div>
 
-    <!-- ==================== 1. 知识库 ==================== -->
+    <!-- ==================== 1. 接入问题处理 ==================== -->
+    <div class="tab" id="t-vendor">
+      <div class="section-hd">
+        <h3>🔌 接入问题处理</h3>
+        <p>厂商问题工单 · 自动同步飞书机器人收集的问题</p>
+      </div>
+
+      <!-- 搜索框 -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="padding:14px 16px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="vendor-search" placeholder="搜索厂商问题（关键词、Jira编号...）" style="flex:1;padding:10px 14px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none" oninput="vendorSearch()">
+            <button class="btn" onclick="vendorSearch()" style="padding:10px 20px;font-size:13px">🔍 搜索</button>
+            <button onclick="exportAnswers()" style="padding:10px 16px;background:#16a34a;color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer">📤 导出回答</button>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="tag" onclick="vendorFilter('all')">全部</span>
+            <span class="tag" onclick="vendorFilter('4G')">4G接入</span>
+            <span class="tag" onclick="vendorFilter('云存')">云存</span>
+            <span class="tag" onclick="vendorFilter('分享')">分享</span>
+            <span class="tag" onclick="vendorFilter('存储')">存储</span>
+            <span class="tag" onclick="vendorFilter('通知')">通知</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 问题列表 -->
+      <div id="vendor-list" style="margin-top:16px"></div>
+    </div>
+
+    <!-- ==================== 2. 知识库 ==================== -->
     <div class="tab" id="t-kb">
       <div class="section-hd">
         <h3>📚 知识库</h3>
@@ -462,9 +495,274 @@ a:hover{text-decoration:underline}
 </div>
 
 <script>
+/* ===== 接入问题处理 ===== */
+let VENDOR_DATA=null;
+let VENDOR_FILTER='all';
+
+// 加载厂商问题数据
+fetch('boards/vendor-qa.json').then(r=>r.json()).then(d=>{
+  VENDOR_DATA=d;
+  renderVendorList();
+}).catch(e=>console.error('厂商问题数据加载失败:',e));
+
+function renderVendorList(){
+  const el=document.getElementById('vendor-list');
+  if(!el||!VENDOR_DATA)return;
+
+  let qaList=VENDOR_DATA.qa||[];
+  const searchVal=document.getElementById('vendor-search')?.value?.toLowerCase()||'';
+
+  // 搜索过滤
+  if(searchVal){
+    qaList=qaList.filter(qa=>
+      qa.question.toLowerCase().includes(searchVal)||
+      qa.answer.toLowerCase().includes(searchVal)||
+      qa.id.toLowerCase().includes(searchVal)||
+      (qa.tags||[]).some(t=>t.toLowerCase().includes(searchVal))
+    );
+  }
+
+  // 分类过滤
+  if(VENDOR_FILTER!=='all'){
+    qaList=qaList.filter(qa=>
+      (qa.tags||[]).some(t=>t.includes(VENDOR_FILTER))||
+      qa.question.includes(VENDOR_FILTER)||
+      qa.answer.includes(VENDOR_FILTER)
+    );
+  }
+
+  if(qaList.length===0){
+    el.innerHTML='<div class="card" style="text-align:center;padding:40px;color:#999"><div style="font-size:32px;margin-bottom:12px">📭</div><p>暂无匹配的问题</p></div>';
+    return;
+  }
+
+  // 分离未解决和已解决的问题
+  const pendingList=qaList.filter(qa=>!qa.answer||qa.answer==='待解答'||qa.answer.trim()==='');
+  const solvedList=qaList.filter(qa=>qa.answer&&qa.answer!=='待解答'&&qa.answer.trim()!=='');
+
+  // 按分类整理已解决的问题
+  const solvedByCategory={};
+  solvedList.forEach(qa=>{
+    const cat=(qa.tags&&qa.tags.length)?qa.tags[0]:'其他';
+    if(!solvedByCategory[cat])solvedByCategory[cat]=[];
+    solvedByCategory[cat].push(qa);
+  });
+
+  let html='';
+
+  // 未解决问题置顶
+  if(pendingList.length>0){
+    html+='<div style="margin-bottom:16px">';
+    html+='<div style="font-size:13px;font-weight:600;color:#f59e0b;margin-bottom:12px;display:flex;align-items:center;gap:8px">';
+    html+='<span>⏳ 待解答问题</span>';
+    html+='<span style="font-size:10px;padding:2px 8px;background:#fef3c7;color:#92400e;border-radius:10px">'+pendingList.length+' 个</span>';
+    html+='</div>';
+
+    pendingList.forEach(qa=>{
+      html+=renderVendorCard(qa,true);
+    });
+    html+='</div>';
+  }
+
+  // 已解决问题按分类折叠展示
+  if(Object.keys(solvedByCategory).length>0){
+    html+='<div style="margin-top:16px">';
+    html+='<div style="font-size:13px;font-weight:600;color:#16a34a;margin-bottom:12px;display:flex;align-items:center;gap:8px">';
+    html+='<span>✅ 已解决问题</span>';
+    html+='<span style="font-size:10px;padding:2px 8px;background:#dcfce7;color:#166534;border-radius:10px">'+solvedList.length+' 个</span>';
+    html+='</div>';
+
+    Object.entries(solvedByCategory).forEach(([cat,qaItems])=>{
+      html+='<div class="card" style="margin-bottom:8px">';
+      html+='<div style="padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center" onclick="this.nextElementSibling.classList.toggle(\'show\')">';
+      html+='<div style="display:flex;align-items:center;gap:8px">';
+      html+='<span style="font-size:12px;font-weight:600;color:#333">'+esc(cat)+'</span>';
+      html+='<span style="font-size:10px;padding:2px 8px;background:#f3f4f6;color:#666;border-radius:10px">'+qaItems.length+' 个</span>';
+      html+='</div>';
+      html+='<span style="font-size:12px;color:#999">▼</span>';
+      html+='</div>';
+      html+='<div style="display:none;padding:0 16px 16px">';
+      qaItems.forEach(qa=>{
+        html+=renderVendorCard(qa,false);
+      });
+      html+='</div></div>';
+    });
+    html+='</div>';
+  }
+
+  el.innerHTML=html;
+}
+
+// 渲染单个问题卡片
+function renderVendorCard(qa,isPending){
+  const statusColor=isPending?'#f59e0b':'#22c55e';
+  const statusText=isPending?'待解答':'已解决';
+  const cardId='vendor-card-'+qa.id;
+  let html='';
+
+  html+='<div class="card" id="'+cardId+'" style="margin-bottom:8px">';
+  html+='<div style="cursor:pointer" onclick="toggleVendorAnswer(\''+cardId+'\')">';
+  html+='<div style="display:flex;justify-content:space-between;align-items:start">';
+  html+='<div style="flex:1">';
+  html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
+  html+='<span style="font-size:11px;color:#667eea;font-weight:600">'+esc(qa.id)+'</span>';
+  html+='<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:'+statusColor+'20;color:'+statusColor+'">'+statusText+'</span>';
+  html+='</div>';
+  html+='<div style="font-size:13px;color:#333;font-weight:500;margin-bottom:6px">'+esc(qa.question)+'</div>';
+  html+='<div style="font-size:11px;color:#999">提问人：'+esc(qa.asker)+' · '+esc(qa.time)+'</div>';
+  html+='</div>';
+  html+='<span style="font-size:12px;color:#999">▼</span>';
+  html+='</div></div>';
+
+  // 待解答问题默认展开
+  const defaultShow=isPending;
+  html+='<div class="vendor-answer" id="answer-'+cardId+'" style="'+(defaultShow?'':'display:none;')+'margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f0">';
+
+  if(!isPending){
+    html+='<div style="font-size:12px;color:#16a34a;font-weight:600;margin-bottom:8px">✅ 解答</div>';
+    html+='<div style="font-size:12px;color:#333;line-height:1.8;white-space:pre-line">'+esc(qa.answer)+'</div>';
+  }else{
+    html+='<div style="font-size:12px;color:#f59e0b;font-weight:600;margin-bottom:8px">⏳ 待解答</div>';
+    html+='<div id="answer-form-'+esc(qa.id)+'">';
+    html+='<textarea id="answer-input-'+esc(qa.id)+'" placeholder="输入你的回答..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:12px;min-height:80px;resize:vertical"></textarea>';
+    html+='<div style="display:flex;gap:8px;margin-top:8px">';
+    html+='<button onclick="submitAnswer(\''+esc(qa.id)+'\',\''+esc(qa.question).replace(/'/g,"\\'")+'\')" style="padding:8px 16px;background:#16a34a;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer">📤 提交回答</button>';
+    html+='<button onclick="toggleVendorAnswer(\''+cardId+'\')" style="padding:8px 16px;background:#e5e7eb;color:#374151;border:none;border-radius:6px;font-size:12px;cursor:pointer">收起</button>';
+    html+='</div>';
+    html+='<div style="margin-top:8px;font-size:10px;color:#999">💡 提交后点击右上角「📤 导出回答」同步到飞书</div>';
+    html+='</div>';
+  }
+
+  if(qa.tags&&qa.tags.length){
+    html+='<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">';
+    qa.tags.forEach(t=>{
+      html+='<span style="font-size:10px;padding:2px 8px;background:#f3f4f6;border-radius:10px;color:#666">'+esc(t)+'</span>';
+    });
+    html+='</div>';
+  }
+
+  html+='</div></div>';
+  return html;
+}
+
+// 切换问题展开/收起
+function toggleVendorAnswer(cardId){
+  const answerEl=document.getElementById('answer-'+cardId);
+  if(answerEl){
+    answerEl.style.display=answerEl.style.display==='none'?'block':'none';
+  }
+}
+
+// 导出回答
+function exportAnswers(){
+  const pendingAnswers=JSON.parse(localStorage.getItem('vendor_answers')||'{}');
+  const keys=Object.keys(pendingAnswers);
+
+  if(keys.length===0){
+    alert('暂无待同步的回答');
+    return;
+  }
+
+  // 生成导出内容
+  let exportText='以下回答需要同步到飞书文档：\n\n';
+  keys.forEach(qaId=>{
+    const item=pendingAnswers[qaId];
+    exportText+='## '+qaId+'\n';
+    exportText+='**问题**：'+item.question+'\n';
+    exportText+='**回答**：'+item.answer+'\n';
+    exportText+='**时间**：'+item.time+'\n\n';
+  });
+
+  // 复制到剪贴板
+  navigator.clipboard.writeText(exportText).then(()=>{
+    alert('✅ 已复制到剪贴板！\n\n请在 Claude 中粘贴并告诉我：\n"同步这些回答到飞书文档"');
+  }).catch(()=>{
+    // 如果复制失败，显示内容让用户手动复制
+    prompt('请复制以下内容，在 Claude 中粘贴：', exportText);
+  });
+}
+
+function vendorSearch(){
+  renderVendorList();
+}
+
+function vendorFilter(tag){
+  VENDOR_FILTER=tag;
+  document.querySelectorAll('.tag').forEach(el=>el.classList.remove('active'));
+  event.target.classList.add('active');
+  renderVendorList();
+}
+
+// 提交回答
+function submitAnswer(qaId,question){
+  const input=document.getElementById('answer-input-'+qaId);
+  if(!input)return;
+  const answer=input.value.trim();
+  if(!answer){
+    alert('请输入回答内容');
+    return;
+  }
+
+  // 显示提交中状态
+  const formEl=document.getElementById('answer-form-'+qaId);
+  if(formEl){
+    formEl.innerHTML='<div style="padding:16px;text-align:center;color:#667eea">📤 正在推送到飞书文档...</div>';
+  }
+
+  // 调用飞书 MCP 更新文档
+  // 注意：这里需要在 Claude 中执行，网站本身无法直接调用 MCP
+  // 所以我们先保存到本地，然后提示用户在 Claude 中执行更新
+
+  // 保存到本地 localStorage
+  const pendingAnswers=JSON.parse(localStorage.getItem('vendor_answers')||'{}');
+  pendingAnswers[qaId]={question,answer,time:new Date().toISOString()};
+  localStorage.setItem('vendor_answers',JSON.stringify(pendingAnswers));
+
+  // 更新本地数据
+  if(VENDOR_DATA&&VENDOR_DATA.qa){
+    const qaItem=VENDOR_DATA.qa.find(q=>q.id===qaId);
+    if(qaItem){
+      qaItem.answer=answer;
+      qaItem.status='已解决';
+    }
+  }
+
+  // 显示成功提示
+  if(formEl){
+    formEl.innerHTML='<div style="padding:12px;background:#f0fdf4;border-radius:6px;border:1px solid #bbf7d0">';
+    formEl.innerHTML+='<div style="font-size:12px;color:#16a34a;font-weight:600;margin-bottom:4px">✅ 回答已保存</div>';
+    formEl.innerHTML+='<div style="font-size:11px;color:#666">回答将推送到飞书文档</div>';
+    formEl.innerHTML+='</div>';
+  }
+
+  // 提示用户
+  setTimeout(()=>{
+    alert('回答已保存！\n\n请在 Claude 中执行以下命令推送到飞书文档：\n\n/kb update-vendor-answer '+qaId);
+  },500);
+}
+
+// 取消回答
+function cancelAnswer(qaId){
+  const formEl=document.getElementById('answer-form-'+qaId);
+  if(formEl){
+    formEl.innerHTML='<button onclick="showAnswerForm(\''+qaId+'\')" style="padding:8px 16px;background:#667eea;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer">💬 回答此问题</button>';
+  }
+}
+
+// 显示回答表单
+function showAnswerForm(qaId){
+  const formEl=document.getElementById('answer-form-'+qaId);
+  if(!formEl)return;
+  formEl.innerHTML='<textarea id="answer-input-'+qaId+'" placeholder="输入你的回答..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:12px;min-height:80px;resize:vertical"></textarea>';
+  formEl.innerHTML+='<div style="display:flex;gap:8px;margin-top:8px">';
+  formEl.innerHTML+='<button onclick="submitAnswer(\''+qaId+'\',\'\')" style="padding:8px 16px;background:#16a34a;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer">📤 提交回答</button>';
+  formEl.innerHTML+='<button onclick="cancelAnswer(\''+qaId+'\')" style="padding:8px 16px;background:#e5e7eb;color:#374151;border:none;border-radius:6px;font-size:12px;cursor:pointer">取消</button>';
+  formEl.innerHTML+='</div>';
+}
+
 /* ===== 工作台导航 ===== */
 const TITLES={
-  qa:'🤖 智能问答（失败版）',kb:'📚 知识库',jira:'📋 Jira 处理',
+  qa:'🤖 智能问答（失败版）',kb:'📚 知识库',vendor:'🔌 接入问题处理',jira:'📋 Jira 处理',
   docs:'📝 产品文档产出',req:'📊 需求管理',other:'⚙️ 其他业务',
   'jira-cat':'📋 产品遗留问题分类','jira-all':'📝 全部问题','jira-mon':'📅 月度发版'
 };
