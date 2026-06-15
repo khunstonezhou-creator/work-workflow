@@ -2557,6 +2557,11 @@ function renderMon(){
 
 // ---- 建议弹窗 ----
 function showSug(key){
+  // 检查数据是否加载
+  if(!ALL||!ALL.issues){
+    alert('数据加载中，请稍后再试');
+    return;
+  }
   const issue=ALL.issues.find(i=>i.key===key);
   if(!issue)return;
   const cat=issue.category||'';
@@ -2603,6 +2608,9 @@ let KB_DATA=null;
 let DOCS_DATA=null;
 let CODE_DATA=null; // 代码仓库索引
 let ALL_ISSUES=null; // 所有 Jira 问题
+let ALL=null; // Jira 数据（兼容旧代码）
+let CAT=null;
+let MON=null;
 let SOLUTIONS_RAW=''; // solutions.md 原始内容
 
 // Jira 项目分析
