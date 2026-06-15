@@ -147,7 +147,6 @@ a:hover{text-decoration:underline}
 <div class="nav sub" onclick="go('jira-cat',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 产品遗留问题</div>
 <div class="nav sub" onclick="go('jira-all',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 全部问题</div>
 <div class="nav sub" onclick="go('jira-mon',this)" style="padding-left:40px;font-size:12px" data-permission="internal">　└ 月度发版</div>
-  <div class="nav" onclick="go('access',this)" data-permission="internal">🔌 接入问题处理</div>
   <div class="nav" onclick="go('docs',this)" data-permission="internal">📝 产品文档产出</div>
   <div class="nav" onclick="go('req',this)" data-permission="internal">📊 需求管理</div>
   <div class="nav" onclick="go('other',this)" data-permission="internal">⚙️ 其他业务</div>
@@ -346,34 +345,6 @@ a:hover{text-decoration:underline}
       </div>
     </div>
 
-    <!-- ==================== 3. 接入问题处理 ==================== -->
-    <div class="tab" id="t-access" data-permission="internal">
-      <div class="section-hd">
-        <h3>🔌 接入问题处理</h3>
-        <p>设备接入相关问题的处理和跟踪</p>
-      </div>
-      <div class="ph-grid">
-        <div class="ph-card">
-          <div class="ph-icon">📱</div>
-          <div class="ph-title">设备接入问题库</div>
-          <div class="ph-desc">记录和跟踪设备接入过程中遇到的技术问题</div>
-          <span class="ph-tag building">搭建中</span>
-        </div>
-        <div class="ph-card">
-          <div class="ph-icon">🔧</div>
-          <div class="ph-title">接入流程文档</div>
-          <div class="ph-desc">标准化设备接入流程和规范文档</div>
-          <span class="ph-tag building">搭建中</span>
-        </div>
-        <div class="ph-card">
-          <div class="ph-icon">📊</div>
-          <div class="ph-title">接入进度看板</div>
-          <div class="ph-desc">可视化展示各设备的接入进度和状态</div>
-          <span class="ph-tag building">搭建中</span>
-        </div>
-      </div>
-    </div>
-
     <!-- ==================== 4. 产品文档产出 ==================== -->
     <div class="tab" id="t-docs" data-permission="internal">
       <div class="section-hd">
@@ -493,7 +464,7 @@ a:hover{text-decoration:underline}
 <script>
 /* ===== 工作台导航 ===== */
 const TITLES={
-  qa:'🤖 智能问答',kb:'📚 知识库',jira:'📋 Jira 处理',access:'🔌 接入问题处理',
+  qa:'🤖 智能问答',kb:'📚 知识库',jira:'📋 Jira 处理',
   docs:'📝 产品文档产出',req:'📊 需求管理',other:'⚙️ 其他业务',
   'jira-cat':'📋 产品遗留问题分类','jira-all':'📝 全部问题','jira-mon':'📅 月度发版'
 };
@@ -531,25 +502,31 @@ function qaAsk() {
   const question = input.value.trim();
   if (!question) return;
 
-  // 添加用户消息
   qaAddMessage(question, 'user');
   input.value = '';
-
-  // 显示加载状态
   const loadingId = qaAddLoading();
 
-  // 使用本地回答
-  setTimeout(() => {
-    try {
-      const answer = qaGenerateAnswer(question);
-      qaRemoveLoading(loadingId);
-      qaAddMessage(answer, 'assistant');
-    } catch (error) {
-      console.error('回答生成失败:', error);
-      qaRemoveLoading(loadingId);
-      qaAddMessage('抱歉，回答生成失败，请稍后重试。', 'assistant');
+  // 调用后端自动回答
+  fetch('/api/qa/ask', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question })
+  })
+  .then(r => r.json())
+  .then(data => {
+    qaRemoveLoading(loadingId);
+    if (data.ok && data.answer) {
+      qaAddMessage(data.answer, 'assistant');
+    } else {
+      qaAddMessage('未能获取回答: ' + (data.error || '未知错误'), 'assistant');
     }
-  }, 300);
+  })
+  .catch(() => {
+    // 后端不可用，降级为本地回答
+    const answer = qaGenerateAnswer(question);
+    qaRemoveLoading(loadingId);
+    qaAddMessage(answer, 'assistant');
+  });
 }
 
 // 构建上下文信息
