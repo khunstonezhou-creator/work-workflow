@@ -2,8 +2,104 @@
   "lastUpdate": "2026-06-15",
   "issues": [
     {
+      "key": "MIECOCM-5582",
+      "summary": "IPC096AC1 NAS存储连接问题",
+      "assignee": "赵容慧",
+      "priority": "Minor",
+      "status": "In Progress",
+      "labels": [],
+      "category": "存储/回看类",
+      "created": "2026-05-12",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIECOMX-3608",
+      "summary": "CW401D 回看云存视频时长不一致",
+      "assignee": "赵容慧",
+      "priority": "Critical",
+      "status": "OPEN",
+      "labels": [],
+      "category": "存储/回看类",
+      "created": "2026-05-28",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIECOMX-3263",
+      "summary": "CW401D 直播流黑屏一两秒",
+      "assignee": "周睿卿",
+      "priority": "Critical",
+      "status": "OPEN",
+      "labels": [
+        "IPC7月标插"
+      ],
+      "category": "直播/视频类",
+      "created": "2026-05-12",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIIO-130098",
+      "summary": "iOS直播开启声音锁屏后无声音",
+      "assignee": "周睿卿",
+      "priority": "Major",
+      "status": "OPEN",
+      "labels": [
+        "米家11.9版本"
+      ],
+      "category": "iOS音频会话类",
+      "created": "2026-06-10",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIECOMX-3744",
+      "summary": "CW401D 看家过期报警事件显示一帧图",
+      "assignee": "周睿卿",
+      "priority": "Major",
+      "status": "OPEN",
+      "labels": [],
+      "category": "看家助手/事件类",
+      "created": "2026-06-03",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MOXIANG-4009",
+      "summary": "云台3共享账号看家助手检测失败",
+      "assignee": "周睿卿",
+      "priority": "Major",
+      "status": "OPEN",
+      "labels": [],
+      "category": "看家助手/事件类",
+      "created": "2026-06-12",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIECOCM-6057",
+      "summary": "视频通话版2 人脸管理索取相机权限问题",
+      "assignee": "赵容慧",
+      "priority": "Critical",
+      "status": "OPEN",
+      "labels": [
+        "通用问题"
+      ],
+      "category": "隐私权限类",
+      "created": "2026-05-27",
+      "updated": "2026-06-12"
+    },
+    {
+      "key": "MIIO-130111",
+      "summary": "小蚁摄像机安全密码页面卡屏",
+      "assignee": "周睿卿",
+      "priority": "Major",
+      "status": "OPEN",
+      "labels": [
+        "米家11.7版本"
+      ],
+      "category": "UI适配类",
+      "created": "2026-06-10",
+      "updated": "2026-06-12"
+    },
+    {
       "key": "MIECOCM-6294",
-      "summary": "【云台3-4G版】【5.3.3_0818/3517】【4g新形态适配】设备断电断网的离线UI与设计图不一致：离线图标和帮助按钮",
+      "summary": "云台3-4G版离线UI不一致",
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
@@ -14,7 +110,7 @@
     },
     {
       "key": "MIECOCM-4748",
-      "summary": "【海外C501D】【预封样】【5.3.3_0972】【3145】【存储管理】Redmi K50U 流量切WiFi，无法下载回看视频",
+      "summary": "海外C501D流量切WiFi无法下载回看",
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "In Progress",
@@ -26,86 +122,21 @@
       "updated": "2026-06-11"
     },
     {
-      "key": "MIIO-114404",
-      "summary": "【米家集测】【米家11.0集测】【兼容性】【Android】插件首页左下角文案显示不全",
+      "key": "CHUANGMI-31344",
+      "summary": "iOS直播页休眠弹窗被刘海遮挡",
       "assignee": "周睿卿",
-      "priority": "Minor",
+      "priority": "Critical",
       "status": "OPEN",
       "labels": [
-        "P2圆角适配",
-        "厂商插件",
         "摄像机兼容性"
       ],
       "category": "UI适配类",
-      "created": "2025-09-14",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIIO-130098",
-      "summary": "【11.6集测】【iOS】【mxiang.camera.mwc10/11】直播开启声音，手机屏幕锁屏再解锁后返回直播，声音按钮为开启，实际没有声音",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.6版本"
-      ],
-      "category": "iOS音频会话类",
       "created": "2026-06-10",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-6340",
-      "summary": "【IPC096AC1&IPC090AC1】【固件0855，插件3543】【车机】车机打开摄像机，直播页面切换清晰度，时间戳无变化",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "车机/多路同屏类",
-      "created": "2026-06-05",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "CHUANGMI-31344",
-      "summary": "【米家集测】【米家11.6集测】【chuangmi.camera.xiaobai】【兼容性】【iOS】直播页休眠弹窗被刘海遮挡",
-      "assignee": "周睿卿",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "摄像机兼容性",
-        "米家11.6版本"
-      ],
-      "category": "UI适配类",
-      "created": "2026-06-10",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "CHUANGMI-31345",
-      "summary": "【米家集测】【米家11.6集测】【chuangmi.cateye.i023a01】【兼容性】【iOS】直播页点击门铃报警弹窗被刘海遮挡",
-      "assignee": "周睿卿",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "摄像机兼容性",
-        "米家11.6版本"
-      ],
-      "category": "UI适配类",
-      "created": "2026-06-10",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MOXIANG-2901",
-      "summary": "【C302】【海外】插件多语问题",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "多语言/翻译类",
-      "created": "2025-06-14",
       "updated": "2026-06-10"
     },
     {
       "key": "MICAM-4599",
-      "summary": "【PC02】【OTA3】【5.3.3_0146】【标插3470】【看家事件】看家事件概率漏显示宝宝进出围栏事件、宠物进出围栏事件",
+      "summary": "PC02看家事件概率漏显示围栏事件",
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
@@ -117,125 +148,34 @@
       "updated": "2026-06-10"
     },
     {
-      "key": "MIIO-129831",
-      "summary": "【6月标插集测】【回看】【iOS & Android】云存/SD卡回看，放大时间轴时间定位线静止时间水印正常",
-      "assignee": "周睿卿",
-      "priority": "Major",
+      "key": "MIECOCM-6158",
+      "summary": "C401阿拉伯语消息通知显示空白",
+      "assignee": "赵容慧",
+      "priority": "Critical",
       "status": "OPEN",
       "labels": [
-        "IPC7月标插"
+        "本地化"
       ],
-      "category": "存储/回看类",
-      "created": "2026-06-04",
-      "updated": "2026-06-05"
-    },
-    {
-      "key": "MIECOCM-6000",
-      "summary": "【云台3-4G版】【固件：5.3.4_0812】【插件：3441】【安卓】手机录屏连续点击两次录屏按钮会提示视频录制失败",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "直播/视频类",
-      "created": "2026-05-26",
-      "updated": "2026-06-05"
-    },
-    {
-      "key": "MIECOCM-2296",
-      "summary": "【C501双摄】【OTA1】【5.3.1_0935】【标插2291】【看家助手+共享用户】关闭看家助手，仅查看用户进入插件后出现「开启看家助手「的现象",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插"
-      ],
-      "category": "看家助手/事件类",
-      "created": "2025-11-04",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "CHUANGMI-29549",
-      "summary": "【082ac1】【回看】缩略图和时间轴的渲染没有一一对应，下载页面同一fileID事件框选，没有完整框住缩略图",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插",
-        "不阻塞封样提测",
-        "需求"
-      ],
-      "category": "存储/回看类",
-      "created": "2025-06-13",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "MIIO-118348",
-      "summary": "【C700双目】【双目大模型二期】【看家事件】【兼容性】看家事件的事件描述文案大于等于3行会显示不全&截断",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "In Progress",
-      "labels": [
-        "IPC1月标插",
-        "IPC2月标插",
-        "IPC7月标插",
-        "兼容性",
-        "大模型二期"
-      ],
-      "category": "UI适配类",
-      "created": "2025-11-10",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "MIECOMX-3615",
-      "summary": "【CW401 D】枪机球机直播画面按钮隐藏，点击枪机或球机休眠，另一个画面的按钮会一直展示，不会隐藏",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "车机/多路同屏类",
-      "created": "2026-05-29",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "MIECOCM-6233",
-      "summary": "【云台3-4G版】【固件：5.3.3_0812】【插件：3517】米家语言切成英文后，切换夜视模式为一直打开或一直关闭，直播页面没有定向通知",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
       "category": "多语言/翻译类",
-      "created": "2026-06-02",
-      "updated": "2026-06-02"
-    },
-    {
-      "key": "MIIO-129213",
-      "summary": "【092ac1接标插】【IOS&Android】【上市后复测】更多设备信息页，点击「产品百科「无反应",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC9月标插"
-      ],
-      "category": "产品百科/设备信息类",
-      "created": "2026-05-21",
+      "created": "2026-05-29",
       "updated": "2026-06-01"
     },
     {
       "key": "MIIO-129521",
-      "summary": "【6月标插集测】【pc02】【iOS & Android】人物识别优先级太高 影响围栏事件生成",
+      "summary": "人物识别优先级太高影响围栏事件",
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
       "labels": [
         "IPC7月标插"
       ],
-      "category": "看家助手/事件类",
+      "category": "人脸识别/管理",
       "created": "2026-05-28",
       "updated": "2026-06-01"
     },
     {
       "key": "MIECOCM-6010",
-      "summary": "【C401】【封样】【5.3.2_0796】【3134.8-8.5】【插件】苹果手机，播放音乐，在回放界面点击监听，音乐没有暂停",
+      "summary": "C401回放界面点击监听音乐没暂停",
       "assignee": "周睿卿",
       "priority": "Major",
       "status": "OPEN",
@@ -245,1034 +185,6 @@
       "category": "iOS音频会话类",
       "created": "2026-05-26",
       "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOMX-3263",
-      "summary": "【CW401 D】竖屏直播页面/全屏：全部画面：home/锁屏返回，直播流黑屏一两秒",
-      "assignee": "周睿卿",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插"
-      ],
-      "category": "直播/视频类",
-      "created": "2026-05-12",
-      "updated": "2026-05-29"
-    },
-    {
-      "key": "MIECOCM-6070",
-      "summary": "【云台3-4G版】【固件：5.3.3_0812】点击微信小程序视频详情页，页面一直加载",
-      "assignee": "周睿卿",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [],
-      "category": "直播/视频类",
-      "created": "2026-05-28",
-      "updated": "2026-05-28"
-    },
-    {
-      "key": "MIIO-128918",
-      "summary": "【围栏需求】【iOS & Android】宝宝围栏、警戒区域、宠物围栏云台校准中 进入设置检测区域 校准不暂停",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插"
-      ],
-      "category": "看家助手/事件类",
-      "created": "2026-05-18",
-      "updated": "2026-05-26"
-    },
-    {
-      "key": "MIIO-128615",
-      "summary": "【米家11.6集测】【madv.cateye.mi3iot】【Android】门铃3超过最大连接数没有提示，实时画面提示「连接失败「显示黑屏",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "低功耗标插"
-      ],
-      "category": "连接/配网类",
-      "created": "2026-05-13",
-      "updated": "2026-05-25"
-    },
-    {
-      "key": "MIIO-127115",
-      "summary": "【BW701a屏蔽直播】【Andriod】插件设置页首页卡片大小页面，点击首页卡片形态切换展示为「大卡片√「",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.6版本"
-      ],
-      "category": "首页/卡片类",
-      "created": "2026-04-15",
-      "updated": "2026-05-22"
-    },
-    {
-      "key": "MIECOCM-3808",
-      "summary": "【C401海外】【固件：5.3.2_0761 插件：2948】【隐私】不同意隐私政策，可以通过操作快捷卡片和手动控制、自动化操作设备",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "隐私权限类",
-      "created": "2026-03-23",
-      "updated": "2026-05-21"
-    },
-    {
-      "key": "MIIO-128917",
-      "summary": "【xcode26升级标插回归】【iOS】直播/看家/回看云存/回看sd卡/存储管理云存/sd卡无截图功能",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC5月标插"
-      ],
-      "category": "直播/视频类",
-      "created": "2026-05-18",
-      "updated": "2026-05-18"
-    },
-    {
-      "key": "MIIO-110685",
-      "summary": "【安防场景】【二级页】【pv】事件分类-人员动态类型，有人出现，%s靠近车，有人靠近非机动车",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "二级页-事件展示",
-        "安防场景",
-        "米家11.0版本"
-      ],
-      "category": "安防场景类",
-      "created": "2025-07-28",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "MIIO-110677",
-      "summary": "【安防场景】【二级页】【pv】事件分类-异常类型，看护区域有人移动，侦测区域有变化",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "二级页-事件展示",
-        "安防场景",
-        "米家11.0版本"
-      ],
-      "category": "安防场景类",
-      "created": "2025-07-28",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "MICAM-3903",
-      "summary": "【PC02】【算法提测14轮】【5.3.3_0091】【AI算法】【虚拟围栏】区域绘制仅为矩形框",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "固件"
-      ],
-      "category": "云台/PTZ类",
-      "created": "2025-12-17",
-      "updated": "2026-05-14"
-    },
-    {
-      "key": "MICAM-4575",
-      "summary": "【PC02】【OTA 2】【5.3.3_0143】【3043】【人形特写】人形特写跟踪过程中，点击常看位置，画面会抖动",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "固件"
-      ],
-      "category": "云台/PTZ类",
-      "created": "2026-05-04",
-      "updated": "2026-05-14"
-    },
-    {
-      "key": "MIECOCM-5026",
-      "summary": "【C701Pro】【OTA0】【5.3.3_0750】【3134.6-6.5】【对讲】播放外部音乐时开启摄像机对讲，音乐未暂停",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家通用问题",
-        "通用问题"
-      ],
-      "category": "iOS音频会话类",
-      "created": "2026-04-28",
-      "updated": "2026-05-13"
-    },
-    {
-      "key": "MIIO-123725",
-      "summary": "【米家11.2集测】【IOS】【部分设备】 在回看云存中，拨动时间轴，与视频中水印的时间段，相差比较大",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插",
-        "米家11.2版本",
-        "米家11.5版本"
-      ],
-      "category": "存储/回看类",
-      "created": "2026-02-03",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-117759",
-      "summary": "【c700双目ui走查问题】【看护报告页】大模型开关、看家助手开关、人物身份识别为关时，空白页面没有任何提示",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插"
-      ],
-      "category": "看护报告类",
-      "created": "2025-10-29",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-128144",
-      "summary": "【米家11.5集测】【iOS&Android】【小米智能摄像机云台版 2K】下载视频列表页，下载过程中暂停下载后再次点击，视频从0%重新开始下载",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.5版本"
-      ],
-      "category": "存储/回看类",
-      "created": "2026-04-29",
-      "updated": "2026-05-11"
-    },
-    {
-      "key": "CHUANGMI-23347",
-      "summary": "【迭代】【小米智能摄像机 母婴看护版】深色模式下小贴士没有同步为深色",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "深色模式类",
-      "created": "2024-07-25",
-      "updated": "2026-05-11"
-    },
-    {
-      "key": "MIIO-128175",
-      "summary": "【米家11.5集测】【IOS】【c501双摄】看家视频页打开监听切至后台再回到前台时没有声音",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.5版本"
-      ],
-      "category": "iOS音频会话类",
-      "created": "2026-04-29",
-      "updated": "2026-05-06"
-    },
-    {
-      "key": "FENGJING-2674",
-      "summary": "[Madv Smart Video Doorbell 2M][L10n][RU/ES] 视频播放中界面发生错误换行",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "Localization",
-        "低功耗标插"
-      ],
-      "category": "多语言/翻译类",
-      "created": "2024-01-26",
-      "updated": "2026-04-29"
-    },
-    {
-      "key": "MICAM-4545",
-      "summary": "【小米智能摄像机 4 Pro AI变焦版】【迭代】1.0智能场景可以创建大模型IF本地自动化，无法执行",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "不计DI"
-      ],
-      "category": "自动化/智能场景类",
-      "created": "2026-04-24",
-      "updated": "2026-04-27"
-    },
-    {
-      "key": "MICAM-3713",
-      "summary": "【PC02】【大模型功能】【用户体验相关】【智能检索】慧眼助手页无「下拉查看历史记录「的文案提示",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "自动化/智能场景类",
-      "created": "2025-11-25",
-      "updated": "2026-04-24"
-    },
-    {
-      "key": "MICAM-4491",
-      "summary": "【PC02】【大模型功能】【PD】【5.3.3_0133】【3134】【看家事件】关闭大模型开关后，看家事件缩略图左下角有事件图标",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "插件"
-      ],
-      "category": "人脸识别/大模型类",
-      "created": "2026-04-16",
-      "updated": "2026-04-22"
-    },
-    {
-      "key": "CHUANGMI-30910",
-      "summary": "[P1-S-线上]【米家11.0】[IOS]首页部分设备在中小卡片上没有休眠按钮，卡片颜色灰置",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "不阻塞11.0灰度",
-        "米家11.0版本",
-        "米家11.2版本"
-      ],
-      "category": "首页/卡片类",
-      "created": "2025-09-12",
-      "updated": "2026-04-21"
-    },
-    {
-      "key": "MIIO-126163",
-      "summary": "【米家11.5集测】【iOS】【标插单摄ipc009】插件页播放状态手机来电中断后无声音",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.5版本"
-      ],
-      "category": "iOS音频会话类",
-      "created": "2026-03-31",
-      "updated": "2026-04-13"
-    },
-    {
-      "key": "MIIO-125765",
-      "summary": "【米家11.4集测】【iOS】回看云存播放视频打开声音切后台再切回前台小喇叭打开但无声",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.4版本",
-        "米家11.5版本"
-      ],
-      "category": "iOS音频会话类",
-      "created": "2026-03-24",
-      "updated": "2026-04-13"
-    },
-    {
-      "key": "HUALAI-11035",
-      "summary": "【hlc7】【ios】场景模式横屏进入插件在返回，直播卡住，安卓端无该问题",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "直播/视频类",
-      "created": "2026-04-10",
-      "updated": "2026-04-13"
-    },
-    {
-      "key": "HUALAI-11034",
-      "summary": "【hlc7】【ios】快捷卡片观看视频，休眠设备在唤醒或者进入插件后退出再次点击快捷卡片，一直加载中",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "直播/视频类",
-      "created": "2026-04-10",
-      "updated": "2026-04-13"
-    },
-    {
-      "key": "MIECO70M-3142",
-      "summary": "【门铃4Pro B01】【OH4W】语控打开直播时不显示IPC切换画面的图标",
-      "assignee": "周睿卿",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "语控/小爱类",
-      "created": "2026-04-08",
-      "updated": "2026-04-08"
-    },
-    {
-      "key": "MIECOCM-3501",
-      "summary": "【创米自测】【082ae2】【标插2927】【时区】设备更多信息里显示时区",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家通用问题",
-        "通用问题"
-      ],
-      "category": "产品百科/设备信息类",
-      "created": "2026-03-13",
-      "updated": "2026-04-07"
-    },
-    {
-      "key": "MIECOHLC-3097",
-      "summary": "【华来4 双摄4G】【米家App通用问题】【5.3.3_0402】【隐私弹窗】【安卓】安卓端中文/英文下，均不弹出隐私更新弹窗",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "4G通用"
-      ],
-      "category": "隐私弹窗类",
-      "created": "2026-03-20",
-      "updated": "2026-04-03"
-    },
-    {
-      "key": "MIIO-125877",
-      "summary": "【米家11.5集测】云台版设备进入大卡全屏页 无云台操作台",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "In Progress",
-      "labels": [
-        "米家11.5版本"
-      ],
-      "category": "首页/卡片类",
-      "created": "2026-03-25",
-      "updated": "2026-04-02"
-    },
-    {
-      "key": "MIECOCM-3966",
-      "summary": "【创米自测】【082ae2】【插件：3011】【存储管理】1分钟小视频页面超过最大连接数未与直播页面提示统一",
-      "assignee": "周睿卿",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "存储/回看类",
-      "created": "2026-03-27",
-      "updated": "2026-04-02"
-    },
-    {
-      "key": "MIECOCM-4824",
-      "summary": "【IPC096AC1】【固件5.3.3_0794，插件3200】【车机查看直播】车机查看直播，云台按钮显示上下左右，096仅支持水平云台",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "云台/PTZ类",
-      "created": "2026-04-23",
-      "updated": "2026-06-11"
-    },
-    {
-      "key": "MIECOCM-6501",
-      "summary": "【IPC096AC1】【固件5.3.3_0861，插件3579】【联系人播报】联系人名称设置为「xx x「，前两个跟最后一个字符有空格时，只播报前两个字",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "联系人/播报类",
-      "created": "2026-06-11",
-      "updated": "2026-06-11"
-    },
-    {
-      "key": "MIECOCM-3927",
-      "summary": "【IPC096AC1】【固件：5.3.3_0765   插件：3026】【通话效果】【iOS】直播页面插入有线耳机，开启音频，有线耳机有声音可调节，拔掉耳机无外放声音",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "iOS音频会话类",
-      "created": "2026-03-26",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-6449",
-      "summary": "【IPC096AC1】【固件5.3.3_0859，插件3579】【状态水印】触发异常声响，直播页面不显示状态水印",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "状态水印类",
-      "created": "2026-06-10",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "CHUANGMI-31332",
-      "summary": "【小米智能摄像机 视频通话版 2】【预封样】设备绑定过程中拔掉路由器网线，设备播报网络连接成功",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "绑定/配网类",
-      "created": "2026-06-04",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-6243",
-      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【人脸管理】人脸识别页面点击人脸管理，进入页面标题建议改为人脸管理",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "人脸管理类",
-      "created": "2026-06-02",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-5598",
-      "summary": "【IPC096AC1】【固件5.3.3_0810，插件3307】【存储管理-云存】云存视频播放页面，切换横竖屏动画不流畅",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "存储/回看类",
-      "created": "2026-05-12",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-3953",
-      "summary": "【IPC096AC1】【固件0767，插件3031】触发大声事件，推送显示画面变动",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "服务端",
-        "转需求",
-        "通用问题"
-      ],
-      "category": "推送消息类",
-      "created": "2026-03-27",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "MIECOCM-6057",
-      "summary": "【小米智能摄像机 视频通话版 2】【插件】【隐私】安卓手机点击「AI功能-人脸识别-人脸管理-添加-从手机相册选照片「索取「相机「权限",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [],
-      "category": "隐私权限类",
-      "created": "2026-05-27",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "CHUANGMI-31325",
-      "summary": "【小米智能摄像机 视频通话版 2】【兼容性】【Android & iOS】英文模式下，看家助手设置页面的看家时间段设置单词换行错误",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "多语言/翻译类",
-      "created": "2026-06-04",
-      "updated": "2026-06-10"
-    },
-    {
-      "key": "CHUANGMI-31328",
-      "summary": "【小米智能摄像机 视频通话版 2】【兼容性】【Android】【小米 MIX FOLD大屏】横屏下，看家事件页面可滑动区域过小",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [],
-      "category": "UI适配类",
-      "created": "2026-06-04",
-      "updated": "2026-06-09"
-    },
-    {
-      "key": "MIECOCM-3557",
-      "summary": "【IPC096AC1】【固件5.3.3_0758，插件2960】设备未在通话状态，直播页面显示通话中",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "In Progress",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "视频通话类",
-      "created": "2026-03-16",
-      "updated": "2026-06-08"
-    },
-    {
-      "key": "CHUANGMI-31293",
-      "summary": "【小米智能摄像机 视频通话版 2】【预封样】产品百科中配置不规范",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [],
-      "category": "产品百科/设备信息类",
-      "created": "2026-05-30",
-      "updated": "2026-06-08"
-    },
-    {
-      "key": "MIECOCM-6182",
-      "summary": "【云台3-4G版】【固件：5.3.4_0812】【插件：3441】【双端】设备大卡页面全屏模式下没有云台按钮",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "云台/PTZ类",
-      "created": "2026-06-01",
-      "updated": "2026-06-05"
-    },
-    {
-      "key": "CHUANGMI-31294",
-      "summary": "【小米智能摄像机 视频通话版 2】【预封样】深色模式下，购买云存页面及小贴士页面，未适配深色",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "深色模式类",
-      "created": "2026-05-30",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "MIECOCM-6241",
-      "summary": "【视频通话版2】【预封样】【5.3.3_0830】【3420.14】【人脸管理】人脸出现记录滑动时，记录信息可以与日期重叠",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "人脸管理类",
-      "created": "2026-06-02",
-      "updated": "2026-06-03"
-    },
-    {
-      "key": "CHUANGMI-29982",
-      "summary": "【IPC083】【线上环境】【人物ReID】【5.3.2_0337&1811】【小贴士】支持人物身份识别设备，小贴士里仍显示人脸识别",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插",
-        "人物身份识别",
-        "通用问题"
-      ],
-      "category": "人脸管理类",
-      "created": "2025-07-17",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-4352",
-      "summary": "【IPC090ACC1】【3080】【090ac1接标插】存储卡文件管理页面，点击暂停后再点击继续，播放时间会往前1-2s",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插",
-        "通用问题"
-      ],
-      "category": "存储/回看类",
-      "created": "2026-04-08",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIIO-123970",
-      "summary": "【SDK人脸管理】【079ac1】【PV】【IOS】陌生人物详情页对应的视频，跳转不对应或者出现跳转失败",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "IPC7月标插",
-        "米家11.7版本"
-      ],
-      "category": "人脸管理类",
-      "created": "2026-02-05",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-5231",
-      "summary": "【IPC090ACC1】【插件3262固件0800】小爱音箱/TV语控「摄像头画面转动180度「小爱音箱画面无旋转",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "小爱/TV语控类",
-      "created": "2026-05-02",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-6158",
-      "summary": "[小米智能摄像机C401][Localization][ar-AE][IOS]Missing translation:阿拉伯语消息通知显示空白",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "本地化",
-        "通用问题"
-      ],
-      "category": "多语言/翻译类",
-      "created": "2026-05-29",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-6165",
-      "summary": "[小米智能摄像机C401][Localization][ru-RU][IOS]Inconsistency:多种语言消息通知名字翻译未本地化",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "本地化",
-        "通用问题"
-      ],
-      "category": "多语言/翻译类",
-      "created": "2026-05-29",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-6169",
-      "summary": "【IPC096AC1】【固件5.3.3_0845，插件3478】【 米家音视频通话】米家音视频通话过程中，将米家App置于后台自动断开通话",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "视频通话类",
-      "created": "2026-05-30",
-      "updated": "2026-06-01"
-    },
-    {
-      "key": "MIECOCM-5984",
-      "summary": "【云台3-4G版】【固件：5.3.3_0812】【插件：3441】设置>看家助手设置>手机应用通知>通知事件类型，默认开关状态应该都为打开",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "看家助手/事件类",
-      "created": "2026-05-25",
-      "updated": "2026-05-26"
-    },
-    {
-      "key": "MIECOCM-5893",
-      "summary": "【创米自测】【IPC091AC1】【固件5.3.3_0843】【插件3435】设备插入小于16G的SD卡，ios手机设备直播页面无定向通知",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "Verify",
-      "labels": [],
-      "category": "SD卡/存储类",
-      "created": "2026-05-22",
-      "updated": "2026-05-25"
-    },
-    {
-      "key": "MIECOCM-5319",
-      "summary": "【IPC096AC1】【固件5.3.3_0805，插件3247】【push消息】看家报警消息，时间和文案之间有的消息带空格，有的不带",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [],
-      "category": "推送消息类",
-      "created": "2026-05-04",
-      "updated": "2026-05-22"
-    },
-    {
-      "key": "MIECOCM-2729",
-      "summary": "【IPC096AC1】【固件5.3.3_0730，插件2801】【设备名称】米家设备列表内096的名称和086未做区分",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "设备名称类",
-      "created": "2026-02-09",
-      "updated": "2026-05-20"
-    },
-    {
-      "key": "MIECOCM-4298",
-      "summary": "【IPC096AC1】【PV】【固件0781，标插3079】【AI功能】未开启画面变动算法，触发手势通话，同时推送了一条画面变动消息",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "推送消息类",
-      "created": "2026-04-05",
-      "updated": "2026-05-20"
-    },
-    {
-      "key": "MIECOCM-4300",
-      "summary": "【IPC096AC1】【固件5.3.3_0781，插件3074】【连通性】小爱和TV语控设备的连通性测试中，096设备整体次于086设备",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "小爱/TV语控类",
-      "created": "2026-04-05",
-      "updated": "2026-05-20"
-    },
-    {
-      "key": "MIECOCM-4930",
-      "summary": "【IPC096A01】【固件0794，标插3222，插件12.4】【pad兼容测试】【家庭相册】家庭相册添加照片，照片编辑页面与插件不在一个层级",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "相册/家庭相册类",
-      "created": "2026-04-25",
-      "updated": "2026-05-20"
-    },
-    {
-      "key": "MIECOCM-3112",
-      "summary": "【IPC096AC1】【固件5.3.3_0730，插件2849】未开启相册权限时，ios端进入插件点击录像的提示没有居中且全屏时提示占了满屏",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "转需求跟进"
-      ],
-      "category": "隐私权限类",
-      "created": "2026-02-27",
-      "updated": "2026-05-20"
-    },
-    {
-      "key": "MIECOCM-5761",
-      "summary": "【创米自测】【IPC091AC1】【标插3375】【固件 5.3.3_0813】通用设置-智能场景里探索页面，显示场景推荐即将上线，敬请期待",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [],
-      "category": "智能场景类",
-      "created": "2026-05-18",
-      "updated": "2026-05-18"
-    },
-    {
-      "key": "MIECOCM-5427",
-      "summary": "【创米自测】【IPC091AC1】【标插3236】【人脸】本地人脸设备，未开通云存时米家app更多设置-人脸识别管理中不展示设备",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "Verify",
-      "labels": [],
-      "category": "人脸管理类",
-      "created": "2026-05-07",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "MIECOCM-5528",
-      "summary": "【IPC096AC1】【固件5.3.3_0810，插件3307】【报警消息推送】【iOS】通知样式设置文本＋图标、文本＋缩略图，报警消息仅展示文本",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "推送消息类",
-      "created": "2026-05-11",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "MIECOCM-5527",
-      "summary": "【IPC096AC1】【固件5.3.3_0810，插件3284】【报警消息推送】【iOS】通知样式设置文本＋图标，触发异常声响事件，报警消息仅展示文本",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "推送消息类",
-      "created": "2026-05-11",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "MIECOCM-5379",
-      "summary": "【创米自测】【IPC091AC1】【标插3236】直播页面点击多路按钮没有任何效果",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.7版本",
-        "通用问题"
-      ],
-      "category": "多路同屏类",
-      "created": "2026-05-06",
-      "updated": "2026-05-15"
-    },
-    {
-      "key": "CHUANGMI-20170",
-      "summary": "【IPC086AC1】【用户体验改进计划】【5.3.1.0418】Android设备用户体验改进计划内缺少下载按钮",
-      "assignee": "赵容慧",
-      "priority": "Minor",
-      "status": "OPEN",
-      "labels": [
-        "不阻塞封样",
-        "米家10.1版本",
-        "米家共性问题"
-      ],
-      "category": "用户体验改进计划类",
-      "created": "2024-03-21",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-118372",
-      "summary": "【SDK人脸管理】【pc02/079ac1/81ac1】【AT】【Android】【IOS】人物管理页和人物详情页修改头像功能没做英文适配",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "米家11.7版本"
-      ],
-      "category": "人脸管理类",
-      "created": "2025-11-10",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-120769",
-      "summary": "【pv验证】【SDK人脸管理】【079ac1】【AT】【安卓&IOS】人物详情中陌生人添加为已备注的人后，陌生人tab页仍然展示已添加的陌生人图片",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "摄像机云服务",
-        "米家11.7版本"
-      ],
-      "category": "人脸管理类",
-      "created": "2025-12-19",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-123846",
-      "summary": "【SDK人脸管理】【079ac1】【PV】【IOS】看家视频有对应的识别人脸视频，人脸识别管理人物详细页视频tab无对应看家视频",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "米家11.7版本"
-      ],
-      "category": "人脸管理类",
-      "created": "2026-02-04",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIIO-124258",
-      "summary": "【SDK人脸管理】【兼容性】【iOS】人物详情页面点击头像右下角拍照调用的是系统相册，无法跳转到录入人脸页面",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "米家11.7版本"
-      ],
-      "category": "人脸管理类",
-      "created": "2026-02-12",
-      "updated": "2026-05-12"
-    },
-    {
-      "key": "MIECOCM-4276",
-      "summary": "【Xiaomi Smart Camera C401】【插件】【隐私】安卓手机点击「截图/录像「功能索取「音乐和音频「权限",
-      "assignee": "赵容慧",
-      "priority": "Critical",
-      "status": "OPEN",
-      "labels": [
-        "通用问题",
-        "隐私"
-      ],
-      "category": "隐私权限类",
-      "created": "2026-04-03",
-      "updated": "2026-04-23"
-    },
-    {
-      "key": "MIIO-126194",
-      "summary": "【096ac1视频通话版2】【多路同屏】【pv】直播页不展示多路同屏入口",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "096项目",
-        "IPC8月标插",
-        "米家11.7版本"
-      ],
-      "category": "多路同屏类",
-      "created": "2026-03-31",
-      "updated": "2026-04-24"
-    },
-    {
-      "key": "MIECOCM-4751",
-      "summary": "【IPC096AC1】【固件5.3.3_0791，插件3177】【手势通话】手势通话接听页面显示OTA升级弹窗，遮挡接听/挂断按钮",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "视频通话类",
-      "created": "2026-04-21",
-      "updated": "2026-04-29"
-    },
-    {
-      "key": "MIECOCM-3351",
-      "summary": "【IPC096AC1】【固件5.3.3_0741，插件2902】人数上报未适配，可搭配的设备里不显示096",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "上线后验证"
-      ],
-      "category": "人数上报类",
-      "created": "2026-03-07",
-      "updated": "2026-04-29"
-    },
-    {
-      "key": "MIECOCM-3977",
-      "summary": "【IPC096AC1】【PV】【手势通话】当小爱/TV查看设备直播时，触发手势通话，手势通话并不会打断小爱/TV的直播画面",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "转需求支持",
-        "通用问题"
-      ],
-      "category": "视频通话类",
-      "created": "2026-03-28",
-      "updated": "2026-04-21"
-    },
-    {
-      "key": "MIECOCM-4493",
-      "summary": "【IPC096AC1】【固件5.3.3_0791，插件3117】【手势通话】【iOS】kill米家app/手机锁屏状态下设备发起手势通话，点击push消息会连续弹出两次接通页面",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "视频通话类",
-      "created": "2026-04-14",
-      "updated": "2026-04-17"
-    },
-    {
-      "key": "MIECOCM-4400",
-      "summary": "【IPC096AC1】【PV】【固件0783，标插3095】【联系人头像】【仅iPhone17复现】微信/设备联系人更换头像选择拍照，取景框内的画面会先被拉长",
-      "assignee": "赵容慧",
-      "priority": "Major",
-      "status": "OPEN",
-      "labels": [
-        "通用问题"
-      ],
-      "category": "联系人/播报类",
-      "created": "2026-04-09",
-      "updated": "2026-04-17"
-    },
-    {
-      "key": "MIECOCM-4640",
-      "summary": "设备端检测到人脸事件后无法上传人脸图片",
-      "assignee": "赵容慧",
-      "priority": "Blocker",
-      "status": "OPEN",
-      "labels": [],
-      "category": "人脸管理类",
-      "created": "2026-04-17",
-      "updated": "2026-04-17"
     }
   ]
 }
