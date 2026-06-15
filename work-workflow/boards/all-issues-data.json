@@ -2,6 +2,17 @@
   "lastUpdate": "2026-06-15",
   "issues": [
     {
+      "key": "MIECOCM-3722",
+      "summary": "多语言下异常声响和复合事件的推送消息未翻译",
+      "assignee": "周睿卿",
+      "priority": "Major",
+      "status": "Verify",
+      "labels": [],
+      "category": "多语言/翻译类",
+      "created": "2026-01-15",
+      "updated": "2026-06-15"
+    },
+    {
       "key": "MIECOCM-5582",
       "summary": "IPC096AC1 NAS存储连接问题",
       "assignee": "赵容慧",
